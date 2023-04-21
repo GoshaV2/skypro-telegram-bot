@@ -1,6 +1,6 @@
-package repository;
+package com.skypro.skyprotelegrambot.repository;
 
-import entity.User;
+import com.skypro.skyprotelegrambot.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

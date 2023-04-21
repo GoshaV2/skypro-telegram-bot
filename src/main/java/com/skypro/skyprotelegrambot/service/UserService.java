@@ -1,8 +1,8 @@
-package service;
+package com.skypro.skyprotelegrambot.service;
 
-import entity.User;
+import com.skypro.skyprotelegrambot.entity.User;
 import org.springframework.stereotype.Service;
-import repository.UserRepository;
+import com.skypro.skyprotelegrambot.repository.UserRepository;
 
 @Service
 public class UserService {
