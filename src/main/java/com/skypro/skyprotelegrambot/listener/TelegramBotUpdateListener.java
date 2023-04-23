@@ -18,13 +18,9 @@ import java.util.List;
 
 @Component
 public class TelegramBotUpdateListener implements UpdatesListener {
-<<<<<<< HEAD
-    private final TelegramBot telegramBot;
-=======
 
     private final TelegramBot telegramBot;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
->>>>>>> feature-oleg
 
     public TelegramBotUpdateListener(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
