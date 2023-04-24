@@ -9,6 +9,10 @@ import com.skypro.skyprotelegrambot.repository.AnswerRepository;
 
 import java.util.List;
 
+/**
+ * Класс определяющий методы обработки ответов
+ * */
+
 @Service
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
