@@ -12,4 +12,20 @@ public class Session {
     @ManyToOne
     @JoinColumn(name = "selected_shelter_id")
     private Shelter selectedShelter;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Shelter getSelectedShelter(Shelter shelter) {
+        return selectedShelter;
+    }
+
+    public void setSelectedShelter(Shelter selectedShelter) {
+        this.selectedShelter = selectedShelter;
+    }
 }
