@@ -9,6 +9,11 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
+import com.skypro.skyprotelegrambot.entity.*;
+import com.skypro.skyprotelegrambot.exception.NotFoundElement;
+import com.skypro.skyprotelegrambot.service.AnswerService;
+import com.skypro.skyprotelegrambot.service.ShelterService;
+import com.skypro.skyprotelegrambot.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,9 +26,15 @@ public class TelegramBotUpdateListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
+    private final AnswerService answerService;
+    private final UserService userService;
+    private final ShelterService shelterService;
 
-    public TelegramBotUpdateListener(TelegramBot telegramBot) {
+    public TelegramBotUpdateListener(TelegramBot telegramBot, AnswerService answerService, UserService userService, ShelterService shelterService) {
         this.telegramBot = telegramBot;
+        this.answerService = answerService;
+        this.userService = userService;
+        this.shelterService = shelterService;
     }
 
     @PostConstruct
@@ -41,7 +52,6 @@ public class TelegramBotUpdateListener implements UpdatesListener {
 
                 Message message = update.message();
                 CallbackQuery callbackQuery = update.callbackQuery();
-
                 if (callbackQuery != null) {
                     chatId = callbackQuery.from().id();
                     text = callbackQuery.data();
@@ -49,6 +59,13 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     chatId = message.chat().id();
                     text = message.text();
                 }
+                User user;
+                try {
+                    user = userService.findUserByChatId(chatId);
+                } catch (NotFoundElement e) {
+                    user = userService.createUser(chatId);
+                }
+                Session session = user.getSession();
                 if ("/start".equals(text)) { //обработка входной точки
                     SendMessage sendMessage = new SendMessage(chatId,
                             "Привет. Я помогаю приютам для бездомных животных пристроить их питомцев. Какое животное ты бы выбрал?");
@@ -56,7 +73,44 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
                             new InlineKeyboardButton("кота или кошечку").callbackData("/cats"),
                             new InlineKeyboardButton("собаку").callbackData("/dogs"));
+                    for (Shelter shelter : shelterService.getAllShelter()) {
+                        inlineKeyboard.addRow(
+                                new InlineKeyboardButton(shelter.getName())
+                                        .callbackData("/chooseShelter/" + shelter.getId())
+                        );
+                    }
                     sendMessage.replyMarkup(inlineKeyboard);
+                    send(sendMessage);
+
+                }else if (text.matches("\\/chooseShelter\\/\\d*")) { //обработка выбора приюта
+                    long shelterId = Long.parseLong(text.replaceAll("\\/chooseShelter\\/", ""));
+                    userService.chooseShelterForUser(chatId, shelterId);
+                    SendMessage sendMessage = new SendMessage(chatId,
+                            "Приют выбран!");
+                    InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
+                            new InlineKeyboardButton("Рассказать о приюте подробнее").callbackData("/info"));
+                    inlineKeyboard.addRow(new InlineKeyboardButton("Как взять животное из приюта").callbackData("/cats_get_pet"));
+                    inlineKeyboard.addRow(new InlineKeyboardButton("Прислать отчет о взятом питомце").callbackData("/cats_send_report"));
+                    inlineKeyboard.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("/cats_volunteer"),
+                            new InlineKeyboardButton("вернуться к выбору приюта").callbackData("/start"));
+                    sendMessage.replyMarkup(inlineKeyboard);
+                    send(sendMessage);
+
+                }else if ("/info".equals(text)) { //обработка информации о приюте
+                    SendMessage sendMessage = new SendMessage(chatId,
+                            "Выбери вариант");
+                    InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+                    for (Answer answer : answerService.getAnswersByCategory(Category.INFORMATION, session.getSelectedShelter())) {
+                        inlineKeyboard.addRow(new InlineKeyboardButton(answer.getTitle())
+                                .callbackData(answer.getCommand()));
+                    }
+                    sendMessage.replyMarkup(inlineKeyboard);
+                    send(sendMessage);
+
+                }else if (answerService.hasCommand(text)) { //обработка информации о приюте
+                    Answer answer=answerService.getAnswer(text);
+                    SendMessage sendMessage = new SendMessage(chatId,
+                            answer.getText());
                     send(sendMessage);
 
                 } else if ("/cats".equals(text)) { //выбран приют для кошек
@@ -341,7 +395,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     //to do some things...
                     sendMessage.replyMarkup(inlineKeyboard);
                     send(sendMessage);
-                }else if ("/dogs_get_pet_cytologists".equals(text)) { //как забрать собаку (этап 2)
+                } else if ("/dogs_get_pet_cytologists".equals(text)) { //как забрать собаку (этап 2)
                     SendMessage sendMessage = new SendMessage(chatId,
                             "В разработке...");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
@@ -349,7 +403,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     //to do some things...
                     sendMessage.replyMarkup(inlineKeyboard);
                     send(sendMessage);
-                }else if ("/dogs_get_pet_fail".equals(text)) { //как забрать собаку (этап 2)
+                } else if ("/dogs_get_pet_fail".equals(text)) { //как забрать собаку (этап 2)
                     SendMessage sendMessage = new SendMessage(chatId,
                             "В разработке...");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
@@ -375,7 +429,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                             new InlineKeyboardButton("Назад").callbackData("/cats"));
                     sendMessage.replyMarkup(inlineKeyboard);
                     send(sendMessage);
-                }else if ("/cats_send_report_template".equals(text)) { //отчет по кошкам (этап 3)
+                } else if ("/cats_send_report_template".equals(text)) { //отчет по кошкам (этап 3)
                     SendMessage sendMessage = new SendMessage(chatId,
                             "В разработке...");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
@@ -383,7 +437,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     //to do some things...
                     sendMessage.replyMarkup(inlineKeyboard);
                     send(sendMessage);
-                }else if ("/cats_send_report_send".equals(text)) { //отчет по кошкам (этап 3)
+                } else if ("/cats_send_report_send".equals(text)) { //отчет по кошкам (этап 3)
                     SendMessage sendMessage = new SendMessage(chatId,
                             "В разработке...");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
@@ -401,7 +455,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                             new InlineKeyboardButton("Назад").callbackData("/dogs"));
                     sendMessage.replyMarkup(inlineKeyboard);
                     send(sendMessage);
-                }else if ("/dogs_send_report_template".equals(text)) { //отчет по собакам (этап 3)
+                } else if ("/dogs_send_report_template".equals(text)) { //отчет по собакам (этап 3)
                     SendMessage sendMessage = new SendMessage(chatId,
                             "В разработке...");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
@@ -409,7 +463,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     //to do some things...
                     sendMessage.replyMarkup(inlineKeyboard);
                     send(sendMessage);
-                }else if ("/dogs_send_report_send".equals(text)) { //отчет по собакам (этап 3)
+                } else if ("/dogs_send_report_send".equals(text)) { //отчет по собакам (этап 3)
                     SendMessage sendMessage = new SendMessage(chatId,
                             "В разработке...");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
@@ -417,7 +471,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     //to do some things...
                     sendMessage.replyMarkup(inlineKeyboard);
                     send(sendMessage);
-                }else if ("/cats_volunteer".equals(text)) { //отчет по собакам (этап 3)
+                } else if ("/cats_volunteer".equals(text)) { //отчет по собакам (этап 3)
                     SendMessage sendMessage = new SendMessage(chatId,
                             "В разработке...");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
@@ -425,7 +479,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     //to do some things...
                     sendMessage.replyMarkup(inlineKeyboard);
                     send(sendMessage);
-                }else if ("/dogs_volunteer".equals(text)) { //отчет по собакам (этап 3)
+                } else if ("/dogs_volunteer".equals(text)) { //отчет по собакам (этап 3)
                     SendMessage sendMessage = new SendMessage(chatId,
                             "В разработке...");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(

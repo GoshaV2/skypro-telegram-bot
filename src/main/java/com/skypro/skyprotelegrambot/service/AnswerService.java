@@ -9,4 +9,5 @@ import java.util.List;
 public interface AnswerService {
     Answer getAnswer(String command);
     List<Answer> getAnswersByCategory(Category category, Shelter shelter);
+    boolean hasCommand(String command);
 }

@@ -31,4 +31,9 @@ public class AnswerServiceImpl implements AnswerService {
     public List<Answer> getAnswersByCategory(Category category, Shelter shelter) {
         return answerRepository.findAllByCategoryAndShelter(category,shelter);
     }
+
+    @Override
+    public boolean hasCommand(String command) {
+        return answerRepository.existsByCommand(command);
+    }
 }

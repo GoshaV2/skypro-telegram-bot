@@ -3,6 +3,8 @@ package com.skypro.skyprotelegrambot.service;
 import com.skypro.skyprotelegrambot.entity.Session;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
+import com.skypro.skyprotelegrambot.exception.NotFoundElement;
+import com.skypro.skyprotelegrambot.repository.SessionRepository;
 import org.springframework.stereotype.Service;
 import com.skypro.skyprotelegrambot.repository.UserRepository;
 
@@ -14,10 +16,12 @@ import com.skypro.skyprotelegrambot.repository.UserRepository;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ShelterService shelterService;
+    private final SessionRepository sessionRepository;
 
-    public UserServiceImpl(UserRepository userRepository, ShelterService shelterService) {
+    public UserServiceImpl(UserRepository userRepository, ShelterService shelterService, SessionRepository sessionRepository) {
         this.userRepository = userRepository;
         this.shelterService = shelterService;
+        this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -29,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public User findUserByChatId(Long chatId) {
         User user = userRepository.findUserByChatId(chatId);
         if (user == null) {
-            return new User();
+           throw new NotFoundElement(chatId,User.class);
         }
         return user;
     }
@@ -37,9 +41,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User chooseShelterForUser(Long chatId, Long id) {
         Shelter shelter = shelterService.findShelterById(id);
-        User user = new User();
+        User user = findUserByChatId(chatId);
         Session session = user.getSession();
-        session.getSelectedShelter(shelter);
+        session.setSelectedShelter(shelter);
+        sessionRepository.save(session);
         return user;
     }
 
@@ -49,6 +54,7 @@ public class UserServiceImpl implements UserService {
         user.setChatId(chatId);
         Session session = new Session();
         user.setSession(session);
+        sessionRepository.save(session);
         userRepository.save(user);
         return user;
     }

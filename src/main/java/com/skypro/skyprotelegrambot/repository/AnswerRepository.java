@@ -12,4 +12,5 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     Optional<Answer> findByCommand(String command);
 
     List<Answer> findAllByCategoryAndShelter(Category category, Shelter shelter);
+    boolean existsByCommand(String command);
 }
