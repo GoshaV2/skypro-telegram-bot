@@ -3,7 +3,7 @@ package com.skypro.skyprotelegrambot.service;
 import com.skypro.skyprotelegrambot.entity.Session;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
-import com.skypro.skyprotelegrambot.exeption.UserNotFoundException;
+import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
 import com.skypro.skyprotelegrambot.repository.SessionRepository;
 import org.springframework.stereotype.Service;
 import com.skypro.skyprotelegrambot.repository.UserRepository;
@@ -37,13 +37,9 @@ public class UserServiceImpl implements UserService {
      * Метод находит пользователя по chat id
      */
 
-    @Override
-    public Optional<User> findUserByChatId(Long chatId) {
-        if (userRepository.findUserByChatId(chatId) == null) {
-            throw new UserNotFoundException("Пользователь не найден");
-        } else {
-            return Optional.ofNullable(userRepository.findUserByChatId(chatId));
-        }
+    public User findUserByChatId(Long chatId) {
+       return userRepository.findUserByChatId(chatId).orElseThrow(()
+                -> new UserNotFoundException("Пользователь не найден"));
     }
 
     /**
@@ -51,10 +47,10 @@ public class UserServiceImpl implements UserService {
      */
 
     @Override
-    public Optional<User> chooseShelterForUser(Long chatId, Long id) {
+    public User chooseShelterForUser(Long chatId, Long id) {
         Shelter shelter = shelterService.findShelterById(id);
-        Optional<User> user = findUserByChatId(chatId);
-        Session session = user.orElseThrow().getSession();
+        User user = findUserByChatId(chatId);
+        Session session = user.getSession();
         session.setSelectedShelter(shelter);
         sessionRepository.save(session);
         return user;

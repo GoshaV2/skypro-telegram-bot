@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface UserService {
     User saveUser(User user);
 
-    Optional<User> findUserByChatId(Long chatId); //Получение пользователя по chat id
+    User findUserByChatId(Long chatId); //Получение пользователя по chat id
 
-    Optional<User> chooseShelterForUser(Long chatId, Long shelterId);
+    User chooseShelterForUser(Long chatId, Long shelterId);
 
     User createUser(Long chatId);
 }
