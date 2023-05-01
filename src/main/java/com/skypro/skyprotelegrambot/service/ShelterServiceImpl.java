@@ -22,28 +22,23 @@ public class ShelterServiceImpl implements ShelterService {
 
     @Override
     public Shelter findShelterById(Long id) {
-        return shelterRepository.findShelterById(id);
+        return shelterRepository.findShelterById(id)
+                .orElseThrow(() -> new NotFoundElement(id, Shelter.class));
     }
 
     @Override
-    public ShelterDto createShelter(Long id, String name) {
-        ShelterDto shelterDto = new ShelterDto();
-        shelterDto.setId(shelterDto.getId());
-        shelterDto.setName(shelterDto.getName());
-        return shelterDto;
+    public Shelter createShelter(ShelterDto shelterDto) {
+        Shelter shelter = new Shelter();
+        shelter = shelterRepository.save(new Shelter());
+        return shelter;
     }
 
     @Override
-    public Shelter getShelterByName(String name) {
-        return shelterRepository.findByName(name)
-                .orElseThrow(() -> new NotFoundElement(name, Shelter.class));
+    public Shelter updateShelter(ShelterDto shelterDto) {
+        Shelter shelter = new Shelter();
+        findShelterById(shelter.getId());
+        shelter.setName(shelterDto.getName());
+        return shelterRepository.save(new Shelter());
     }
 
-    @Override
-    public ShelterDto updateShelter(String name) {
-        getShelterByName(name);
-        ShelterDto shelterDto = new ShelterDto();
-        shelterDto.setName(shelterDto.getName());
-        return shelterDto;
-    }
 }

@@ -4,15 +4,13 @@ import com.skypro.skyprotelegrambot.entity.Category;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 
 public class AnswerDto {
-    private Long id;
     private String title;
     private String text;
     private String command;
     private Category category;
-    private Shelter shelterId;
+    private Long shelterId;
 
-    public AnswerDto(Long id, String title, String text, String command, Category category, Shelter shelterId) {
-        this.id = id;
+    public AnswerDto(String title, String text, String command, Category category, Long shelterId) {
         this.title = title;
         this.text = text;
         this.command = command;
@@ -55,19 +53,13 @@ public class AnswerDto {
         this.category = category;
     }
 
-    public Shelter getShelterId() {
+    public Long getShelterId() {
         return shelterId;
     }
 
-    public void setShelterId(Shelter shelterId) {
+    public Shelter setShelterId(Long shelterId) {
         this.shelterId = shelterId;
+        return null;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

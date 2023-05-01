@@ -2,7 +2,6 @@ package com.skypro.skyprotelegrambot.controller;
 
 
 import com.skypro.skyprotelegrambot.dto.request.AnswerDto;
-import com.skypro.skyprotelegrambot.dto.request.ShelterDto;
 import com.skypro.skyprotelegrambot.entity.Answer;
 import com.skypro.skyprotelegrambot.entity.Category;
 import com.skypro.skyprotelegrambot.entity.Shelter;
@@ -41,28 +40,24 @@ public class AnswerController {
     @Operation(
             summary = "Создание ответа"
     )
-    public AnswerDto create(@RequestParam @Parameter(description = "Наименование ответа") String title,
-                            @RequestParam @Parameter(description = "Содержание ответа") String text,
-                            @RequestParam @Parameter(description = "Команда") String command,
-                            @RequestParam @Parameter(description = "Категория ответа") Category category,
-                            @RequestParam @Parameter(description = "Приют") Shelter shelterId,
-                            AnswerDto answerDto) {
-        return answerService.createAnswer(answerDto.getTitle(), answerDto.getText(), answerDto.getCommand(), answerDto.getCategory(), answerDto.getShelterId());
+    public Answer create(@Parameter(description = "Приют") Long shelterId,
+                         @RequestBody AnswerDto answerDto) {
+        return answerService.createAnswer(shelterId, answerDto);
     }
 
     @PutMapping("/")
     @Operation(
             summary = "Изменение параметров ответа"
     )
-    public AnswerDto update(@RequestBody AnswerDto answerDto) {
-        return answerService.updateAnswer(answerDto.getTitle(), answerDto.getText(),answerDto.getCommand());
+    public Answer update(@RequestBody AnswerDto answerDto, @PathVariable Long id) {
+        return answerService.updateAnswer(answerDto);
     }
 
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Удаление ответа"
     )
-    public AnswerDto delete(@PathVariable @Parameter(description = "id ответа") Long id) {
-        return answerService.deleteAnswer(id);
+    public void delete(@PathVariable @Parameter(description = "id ответа") Long id) {
+        answerService.deleteAnswerById(id);
     }
 }

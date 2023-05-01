@@ -17,9 +17,15 @@ import java.util.List;
 @Service
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
+    private final ShelterService shelterService;
+    private final AnswerService answerService;
 
-    public AnswerServiceImpl(AnswerRepository answerRepository) {
+    public AnswerServiceImpl(AnswerRepository answerRepository,
+                             ShelterService shelterService,
+                             AnswerService answerService) {
         this.answerRepository = answerRepository;
+        this.shelterService = shelterService;
+        this.answerService = answerService;
     }
 
     @Override
@@ -40,29 +46,26 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public AnswerDto createAnswer(String title, String text, String command, Category category, Shelter shelterId) {
-        AnswerDto answerDto = new AnswerDto();
-        answerDto.setTitle(answerDto.getTitle());
-        answerDto.setText(answerDto.getText());
-        answerDto.setCommand(answerDto.getCommand());
-        answerDto.setCategory(answerDto.getCategory());
-        answerDto.setShelterId(answerDto.getShelterId());
-        return answerDto;
+    public Answer createAnswer(Long shelterId, AnswerDto answerDto) {
+        Answer answer = new Answer();
+        shelterService.findShelterById(shelterId);
+        answer.setShelter(answerDto.setShelterId(shelterId));
+        answer = answerRepository.save(new Answer());
+        return answer;
     }
 
     @Override
-    public AnswerDto updateAnswer(Long id, String title, String text, String command) {
-        findAnswerById(id);
-        AnswerDto answerDto = new AnswerDto();
-        answerDto.setTitle(answerDto.getTitle());
-        answerDto.setText(answerDto.getText());
-        return answerDto;
+    public Answer updateAnswer(AnswerDto answerDto) {
+        Answer answer = new Answer();
+        findAnswerById(answer.getId());
+        answer.setTitle(answerDto.getTitle());
+        answer.setText(answerDto.getText());
+        answer.setCommand(answerDto.getCommand());
+        return answerRepository.save(new Answer());
     }
 
     @Override
-    public AnswerDto deleteAnswer(Long id) {
-        return answerRepository.deleteAnswerById(id)
-                .orElseThrow(() -> new NotFoundElement(id, Answer.class));
+    public void deleteAnswerById(Long id) {
+        answerService.findAnswerById(id);
     }
-
 }

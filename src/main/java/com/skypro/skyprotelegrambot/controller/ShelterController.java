@@ -18,18 +18,16 @@ public class ShelterController {
     @Operation(
             summary = "Создание приюта"
     )
-    public ShelterDto create(@RequestParam @Parameter(description = "Идентификатор приюта") Long id,
-                             @RequestParam @Parameter(description = "Наименование приюта") String name,
-                             ShelterDto shelterDto) {
-        return shelterService.createShelter(shelterDto.getId(), shelterDto.getName());
+    public Shelter create(@RequestBody ShelterDto shelterDto) {
+        return shelterService.createShelter(shelterDto);
     }
 
     @PutMapping("/")
     @Operation(
             summary = "Изменение параметров приюта"
     )
-    public ShelterDto update(@RequestBody ShelterDto shelterDto) {
-        return shelterService.updateShelter(shelterDto.getName());
+    public Shelter update(@RequestBody ShelterDto shelterDto, @PathVariable Long id) {
+        return shelterService.updateShelter(shelterDto);
     }
 
     @GetMapping
@@ -39,9 +37,4 @@ public class ShelterController {
     public Shelter findShelterById(@PathVariable @Parameter(description = "id приюта") long id) {
         return shelterService.findShelterById(id);
     }
-
-
-//    public Shelter delete() { //Нужно ли удалять приют?
-//        return null;
-//    }
 }

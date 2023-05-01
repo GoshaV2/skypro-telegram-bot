@@ -2,7 +2,6 @@ package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.entity.User;
 
-import java.util.Optional;
 
 /**
  * Общий сервис пользователей

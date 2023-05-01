@@ -1,30 +1,24 @@
 package com.skypro.skyprotelegrambot.dto.request;
 
-import com.skypro.skyprotelegrambot.entity.User;
-
-import java.util.List;
 
 public class ShelterDto {
 
     private Long id;
     private String name;
     private int age;
-    List<User> userList;
 
-    public ShelterDto(Long id, String name, int age, List<User> userList) {
+    public ShelterDto(Long id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
-        this.userList = userList;
     }
 
     public ShelterDto() {
     }
 
-    public ShelterDto(Long id, String name, List<User> userList) {
+    public ShelterDto(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.userList = userList;
     }
 
     public Long getId() {
@@ -49,13 +43,5 @@ public class ShelterDto {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
     }
 }

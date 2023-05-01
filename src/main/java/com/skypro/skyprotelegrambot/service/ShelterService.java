@@ -10,9 +10,7 @@ import com.skypro.skyprotelegrambot.entity.Shelter;
 public interface ShelterService {
     Shelter findShelterById(Long id);
 
-    ShelterDto createShelter(Long id, String name);
+    Shelter createShelter(ShelterDto shelterDto);
 
-    Shelter getShelterByName(String name);
-
-    ShelterDto updateShelter(String name);
+    Shelter updateShelter(ShelterDto shelterDto);
 }

@@ -13,9 +13,9 @@ public interface AnswerService {
 
     Answer findAnswerById(Long id);
 
-    AnswerDto createAnswer(String title, String text, String command, Category category, Shelter shelterId);
+    Answer createAnswer(Long shelterId, AnswerDto answerDto);
 
-    AnswerDto updateAnswer(Long id, String title, String text, String command);
+    Answer updateAnswer(AnswerDto answerDto);
 
-    AnswerDto deleteAnswer(Long id);
+    void deleteAnswerById(Long id);
 }

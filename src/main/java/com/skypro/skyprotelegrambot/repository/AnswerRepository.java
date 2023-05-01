@@ -1,6 +1,5 @@
 package com.skypro.skyprotelegrambot.repository;
 
-import com.skypro.skyprotelegrambot.dto.request.AnswerDto;
 import com.skypro.skyprotelegrambot.entity.Answer;
 import com.skypro.skyprotelegrambot.entity.Category;
 import com.skypro.skyprotelegrambot.entity.Shelter;
@@ -14,7 +13,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     List<Answer> findAllByCategoryAndShelter(Category category, Shelter shelter);
 
-    Optional<AnswerDto>deleteAnswerById(Long id);
+    void deleteAnswerById(Long id);
 
     Optional<Answer> findAnswerById(Long id);
 }

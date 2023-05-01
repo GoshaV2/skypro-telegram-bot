@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ShelterRepository extends JpaRepository<Shelter, Long> {
 
-    Shelter findShelterById(Long id);
+    Optional<Shelter> findShelterById(Long id);
 
     Optional<Shelter> findByName(String name);
 }
