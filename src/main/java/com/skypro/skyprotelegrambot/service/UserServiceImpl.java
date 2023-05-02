@@ -8,7 +8,6 @@ import com.skypro.skyprotelegrambot.repository.SessionRepository;
 import org.springframework.stereotype.Service;
 import com.skypro.skyprotelegrambot.repository.UserRepository;
 
-import java.util.Optional;
 
 /**
  * Класс определяющий методы обработки пользовательских состояний

@@ -1,9 +1,11 @@
 package com.skypro.skyprotelegrambot.controller;
 
-import com.skypro.skyprotelegrambot.dto.request.DtoRequest;
+import com.skypro.skyprotelegrambot.dto.request.ShelterDto;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.service.ShelterService;
-import org.springframework.web.bind.annotation.RequestBody;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.web.bind.annotation.*;
 
 public class ShelterController {
     private final ShelterService shelterService;
@@ -12,19 +14,27 @@ public class ShelterController {
         this.shelterService = shelterService;
     }
 
-    public Shelter create(@RequestBody DtoRequest dtoRequest) {
-        return null;
+    @PostMapping("/")
+    @Operation(
+            summary = "Создание приюта"
+    )
+    public Shelter create(@RequestBody ShelterDto shelterDto) {
+        return shelterService.createShelter(shelterDto);
     }
 
-    public Shelter read() {
-        return null;
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Изменение параметров приюта"
+    )
+    public Shelter update(@RequestBody ShelterDto shelterDto, @PathVariable (name = "id") Long id) {
+        return shelterService.updateShelter(shelterDto, id);
     }
 
-    public Shelter update() {
-        return null;
-    }
-
-    public Shelter delete() {
-        return null;
+    @GetMapping
+    @Operation(
+            summary = "Поиск приюта по id"
+    )
+    public Shelter findShelterById(@PathVariable @Parameter(description = "id приюта") long id) {
+        return shelterService.findShelterById(id);
     }
 }
