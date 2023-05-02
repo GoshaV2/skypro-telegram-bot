@@ -12,8 +12,6 @@ public class Shelter {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "age")
-    private int age;
     @ManyToMany
     @JoinTable(name = "shelter_user",
             joinColumns = @JoinColumn(name = "shelter_id"),
@@ -33,14 +31,6 @@ public class Shelter {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public List<User> getUserList() {

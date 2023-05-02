@@ -13,7 +13,7 @@ public interface AnswerService {
 
     Answer findAnswerById(Long id);
 
-    Answer createAnswer(AnswerDto answerDto, Long id);
+    Answer createAnswer(AnswerDto answerDto);
 
     Answer updateAnswer(AnswerDto answerDto, Long id);
 
