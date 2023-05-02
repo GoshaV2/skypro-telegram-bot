@@ -1,7 +1,6 @@
 package com.skypro.skyprotelegrambot.dto.request;
 
 import com.skypro.skyprotelegrambot.entity.Category;
-import com.skypro.skyprotelegrambot.entity.Shelter;
 
 public class AnswerDto {
     private String title;
@@ -60,5 +59,4 @@ public class AnswerDto {
     public void setShelterId(Long shelterId) {
         this.shelterId = shelterId;
     }
-
 }

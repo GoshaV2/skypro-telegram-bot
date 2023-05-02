@@ -1,9 +1,6 @@
 package com.skypro.skyprotelegrambot.service;
 
-
-import com.skypro.skyprotelegrambot.dto.request.AnswerDto;
 import com.skypro.skyprotelegrambot.dto.request.ShelterDto;
-import com.skypro.skyprotelegrambot.entity.Answer;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.repository.ShelterRepository;
@@ -33,9 +30,8 @@ public class ShelterServiceImpl implements ShelterService {
     @Override
     public Shelter createShelter(ShelterDto shelterDto) {
         Shelter shelter = new Shelter();
-        shelterDto.setId(shelterDto.getId());
-        shelterDto.setName(shelterDto.getName());
-        shelter = shelterRepository.save(new Shelter());
+        shelter.setName(shelterDto.getName());
+        shelter = shelterRepository.save(shelter);
         return shelter;
     }
 
@@ -43,6 +39,6 @@ public class ShelterServiceImpl implements ShelterService {
     public Shelter updateShelter(ShelterDto shelterDto, Long id) {
         Shelter shelter = shelterService.findShelterById(id);
         shelter.setName(shelterDto.getName());
-        return shelterRepository.save(new Shelter());
+        return shelterRepository.save(shelter);
     }
 }

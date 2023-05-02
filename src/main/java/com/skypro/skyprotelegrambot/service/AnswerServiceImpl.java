@@ -46,13 +46,13 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public Answer createAnswer(AnswerDto answerDto, Long id) {
+    public Answer createAnswer(AnswerDto answerDto) {
         Answer answer = new Answer();
-        answerDto.setTitle(answerDto.getTitle());
-        answerDto.setText(answerDto.getText());
-        answerDto.setCommand(answerDto.getCommand());
-        answer.setShelter(shelterService.findShelterById(id));
-        return answerRepository.save(new Answer());
+        answer.setTitle(answerDto.getTitle());
+        answer.setText(answerDto.getText());
+        answer.setCommand(answerDto.getCommand());
+        answer.setShelter(shelterService.findShelterById(answerDto.getShelterId()));
+        return answerRepository.save(answer);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class AnswerServiceImpl implements AnswerService {
         answer.setTitle(answerDto.getTitle());
         answer.setText(answerDto.getText());
         answer.setCommand(answerDto.getCommand());
-        return answerRepository.save(new Answer());
+        return answerRepository.save(answer);
     }
 
     @Override

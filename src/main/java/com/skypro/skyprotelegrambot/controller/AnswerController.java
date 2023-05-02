@@ -41,7 +41,7 @@ public class AnswerController {
             summary = "Создание ответа"
     )
     public Answer create(@RequestBody AnswerDto answerDto, @PathVariable (name = "id") Long id) {
-        return answerService.createAnswer(answerDto, id);
+        return answerService.createAnswer(answerDto);
     }
 
     @PutMapping("/{id}")
