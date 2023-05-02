@@ -22,12 +22,12 @@ public class ShelterController {
         return shelterService.createShelter(shelterDto);
     }
 
-    @PutMapping("/")
+    @PutMapping("/{id}")
     @Operation(
             summary = "Изменение параметров приюта"
     )
-    public Shelter update(@RequestBody ShelterDto shelterDto, @PathVariable Long id) {
-        return shelterService.updateShelter(shelterDto);
+    public Shelter update(@RequestBody ShelterDto shelterDto, @PathVariable (name = "id") Long id) {
+        return shelterService.updateShelter(shelterDto, id);
     }
 
     @GetMapping

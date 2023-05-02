@@ -57,9 +57,8 @@ public class AnswerDto {
         return shelterId;
     }
 
-    public Shelter setShelterId(Long shelterId) {
+    public void setShelterId(Long shelterId) {
         this.shelterId = shelterId;
-        return null;
     }
 
 }

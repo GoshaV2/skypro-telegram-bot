@@ -12,5 +12,5 @@ public interface ShelterService {
 
     Shelter createShelter(ShelterDto shelterDto);
 
-    Shelter updateShelter(ShelterDto shelterDto);
+    Shelter updateShelter(ShelterDto shelterDto, Long id);
 }

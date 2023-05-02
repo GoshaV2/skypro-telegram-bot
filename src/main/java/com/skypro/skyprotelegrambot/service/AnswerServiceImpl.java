@@ -46,18 +46,18 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public Answer createAnswer(Long shelterId, AnswerDto answerDto) {
+    public Answer createAnswer(AnswerDto answerDto, Long id) {
         Answer answer = new Answer();
-        shelterService.findShelterById(shelterId);
-        answer.setShelter(answerDto.setShelterId(shelterId));
-        answer = answerRepository.save(new Answer());
-        return answer;
+        answerDto.setTitle(answerDto.getTitle());
+        answerDto.setText(answerDto.getText());
+        answerDto.setCommand(answerDto.getCommand());
+        answer.setShelter(shelterService.findShelterById(id));
+        return answerRepository.save(new Answer());
     }
 
     @Override
-    public Answer updateAnswer(AnswerDto answerDto) {
-        Answer answer = new Answer();
-        findAnswerById(answer.getId());
+    public Answer updateAnswer(AnswerDto answerDto, Long id) {
+        Answer answer = answerService.findAnswerById(id);
         answer.setTitle(answerDto.getTitle());
         answer.setText(answerDto.getText());
         answer.setCommand(answerDto.getCommand());
@@ -66,6 +66,6 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public void deleteAnswerById(Long id) {
-        answerService.findAnswerById(id);
+        answerRepository.delete(answerService.findAnswerById(id));
     }
 }

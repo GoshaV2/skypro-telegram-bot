@@ -13,9 +13,9 @@ public interface AnswerService {
 
     Answer findAnswerById(Long id);
 
-    Answer createAnswer(Long shelterId, AnswerDto answerDto);
+    Answer createAnswer(AnswerDto answerDto, Long id);
 
-    Answer updateAnswer(AnswerDto answerDto);
+    Answer updateAnswer(AnswerDto answerDto, Long id);
 
     void deleteAnswerById(Long id);
 }

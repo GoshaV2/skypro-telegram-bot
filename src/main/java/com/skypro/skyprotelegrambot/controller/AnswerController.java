@@ -36,21 +36,20 @@ public class AnswerController {
         return answerService.getAnswersByCategory(category, shelter);
     }
 
-    @PostMapping("/")
+    @PostMapping("/{id}")
     @Operation(
             summary = "Создание ответа"
     )
-    public Answer create(@Parameter(description = "Приют") Long shelterId,
-                         @RequestBody AnswerDto answerDto) {
-        return answerService.createAnswer(shelterId, answerDto);
+    public Answer create(@RequestBody AnswerDto answerDto, @PathVariable (name = "id") Long id) {
+        return answerService.createAnswer(answerDto, id);
     }
 
-    @PutMapping("/")
+    @PutMapping("/{id}")
     @Operation(
             summary = "Изменение параметров ответа"
     )
-    public Answer update(@RequestBody AnswerDto answerDto, @PathVariable Long id) {
-        return answerService.updateAnswer(answerDto);
+    public Answer update(@RequestBody AnswerDto answerDto, @PathVariable (name = "id") Long id) {
+        return answerService.updateAnswer(answerDto, id);
     }
 
     @DeleteMapping("/{id}")
