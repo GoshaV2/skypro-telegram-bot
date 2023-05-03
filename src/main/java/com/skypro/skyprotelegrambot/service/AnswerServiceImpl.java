@@ -1,12 +1,12 @@
 package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.dto.request.AnswerDto;
-import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.entity.Answer;
 import com.skypro.skyprotelegrambot.entity.Category;
 import com.skypro.skyprotelegrambot.entity.Shelter;
-import org.springframework.stereotype.Service;
+import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.repository.AnswerRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -18,14 +18,11 @@ import java.util.List;
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
     private final ShelterService shelterService;
-    private final AnswerService answerService;
 
     public AnswerServiceImpl(AnswerRepository answerRepository,
-                             ShelterService shelterService,
-                             AnswerService answerService) {
+                             ShelterService shelterService) {
         this.answerRepository = answerRepository;
         this.shelterService = shelterService;
-        this.answerService = answerService;
     }
 
     @Override
@@ -57,7 +54,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Answer updateAnswer(AnswerDto answerDto, Long id) {
-        Answer answer = answerService.findAnswerById(id);
+        Answer answer = findAnswerById(id);
         answer.setTitle(answerDto.getTitle());
         answer.setText(answerDto.getText());
         answer.setCommand(answerDto.getCommand());
@@ -66,6 +63,11 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public void deleteAnswerById(Long id) {
-        answerRepository.delete(answerService.findAnswerById(id));
+        answerRepository.delete(findAnswerById(id));
+    }
+
+    @Override
+    public boolean hasCommand(String command) {
+        return answerRepository.existsByCommand(command);
     }
 }

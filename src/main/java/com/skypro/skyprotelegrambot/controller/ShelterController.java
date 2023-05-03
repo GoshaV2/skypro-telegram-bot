@@ -6,7 +6,8 @@ import com.skypro.skyprotelegrambot.service.ShelterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
-
+@RestController
+@RequestMapping("/shelters")
 public class ShelterController {
     private final ShelterService shelterService;
 

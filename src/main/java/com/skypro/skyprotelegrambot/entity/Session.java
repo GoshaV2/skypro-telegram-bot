@@ -21,7 +21,7 @@ public class Session {
         this.id = id;
     }
 
-    public Shelter getSelectedShelter(Shelter shelter) {
+    public Shelter getSelectedShelter() {
         return selectedShelter;
     }
 

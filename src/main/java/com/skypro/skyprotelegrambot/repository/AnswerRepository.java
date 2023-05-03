@@ -16,4 +16,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     void deleteAnswerById(Long id);
 
     Optional<Answer> findAnswerById(Long id);
+
+    boolean existsByCommand(String command);
 }
