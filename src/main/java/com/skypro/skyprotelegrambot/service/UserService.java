@@ -1,20 +1,17 @@
 package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.entity.User;
-import org.springframework.stereotype.Service;
-import com.skypro.skyprotelegrambot.repository.UserRepository;
 
-@Service
-public class UserService {
 
-    private final UserRepository userRepository;
+/**
+ * Общий сервис пользователей
+ */
+public interface UserService {
+    User saveUser(User user);
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    User findUserByChatId(Long chatId); //Получение пользователя по chat id
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
+    User chooseShelterForUser(Long chatId, Long shelterId);
+
+    User createUser(Long chatId);
 }
-
