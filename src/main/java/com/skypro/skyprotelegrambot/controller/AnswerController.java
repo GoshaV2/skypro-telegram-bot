@@ -11,7 +11,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("/answers")
 public class AnswerController {
 
     private final AnswerService answerService;
@@ -28,19 +29,19 @@ public class AnswerController {
         return answerService.getAnswer(command);
     }
 
-    @GetMapping
+    /*@GetMapping
     @Operation(
             summary = "Получение ответа по категории"
     )
     public List<Answer> getAnswersByCategory(Category category, Shelter shelter) {
         return answerService.getAnswersByCategory(category, shelter);
-    }
+    }*/
 
-    @PostMapping("/{id}")
+    @PostMapping
     @Operation(
             summary = "Создание ответа"
     )
-    public Answer create(@RequestBody AnswerDto answerDto, @PathVariable (name = "id") Long id) {
+    public Answer create(@RequestBody AnswerDto answerDto) {
         return answerService.createAnswer(answerDto);
     }
 

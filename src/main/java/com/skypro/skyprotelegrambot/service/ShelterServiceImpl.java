@@ -6,6 +6,8 @@ import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.repository.ShelterRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Класс определяющий методы обработки состояний приютов
  */
@@ -14,11 +16,9 @@ import org.springframework.stereotype.Service;
 public class ShelterServiceImpl implements ShelterService {
 
     private final ShelterRepository shelterRepository;
-    private final ShelterService shelterService;
 
-    public ShelterServiceImpl(ShelterRepository shelterRepository, ShelterService shelterService) {
+    public ShelterServiceImpl(ShelterRepository shelterRepository) {
         this.shelterRepository = shelterRepository;
-        this.shelterService = shelterService;
     }
 
     @Override
@@ -37,8 +37,13 @@ public class ShelterServiceImpl implements ShelterService {
 
     @Override
     public Shelter updateShelter(ShelterDto shelterDto, Long id) {
-        Shelter shelter = shelterService.findShelterById(id);
+        Shelter shelter = findShelterById(id);
         shelter.setName(shelterDto.getName());
         return shelterRepository.save(shelter);
+    }
+
+    @Override
+    public List<Shelter> getShelters() {
+        return shelterRepository.findAll();
     }
 }

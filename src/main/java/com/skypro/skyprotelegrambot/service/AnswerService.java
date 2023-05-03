@@ -18,4 +18,5 @@ public interface AnswerService {
     Answer updateAnswer(AnswerDto answerDto, Long id);
 
     void deleteAnswerById(Long id);
+    boolean hasCommand(String command);
 }
