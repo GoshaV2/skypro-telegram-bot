@@ -5,9 +5,8 @@ public class ShelterDto {
     private String name;
     private int age;
 
-    public ShelterDto(String name, int age) {
+    public ShelterDto(String name) {
         this.name = name;
-        this.age = age;
     }
 
     public ShelterDto() {
@@ -23,13 +22,5 @@ public class ShelterDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 }
