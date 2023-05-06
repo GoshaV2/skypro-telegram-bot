@@ -70,17 +70,11 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                 }
 
                 if ("/start".equals(text)) { //обработка входной точки
-                   /* SendMessage sendMessage = new SendMessage(chatId,
-                            "Привет. Я помогаю приютам для бездомных животных пристроить их питомцев. Какое животное ты бы выбрал?");
-
-                    InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
-                            new InlineKeyboardButton("кота или кошечку").callbackData("/cats"),
-                            new InlineKeyboardButton("собаку").callbackData("/dogs"));
-                    sendMessage.replyMarkup(inlineKeyboard);*/
                     SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId);
                     send(sendMessage);
 
                 } else if (text.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern())) {
+                    //
                     long shelterId = Long.parseLong(text
                             .replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
                     user = userService.chooseShelterForUser(chatId, shelterId);
