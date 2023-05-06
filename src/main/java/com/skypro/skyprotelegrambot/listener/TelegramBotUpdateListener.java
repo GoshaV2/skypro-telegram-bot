@@ -11,6 +11,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
+import com.skypro.skyprotelegrambot.handler.CommandHandler;
 import com.skypro.skyprotelegrambot.service.AnswerService;
 import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -29,14 +31,17 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     private final ShelterMessageService shelterMessageService;
     private final UserService userService;
     private final AnswerService answerService;
+    private final Collection<CommandHandler> commandHandlers;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
 
     public TelegramBotUpdateListener(TelegramBot telegramBot, ShelterMessageService shelterMessageService,
-                                     UserService userService, AnswerService answerService) {
+                                     UserService userService, AnswerService answerService,
+                                     Collection<CommandHandler> commandHandlers) {
         this.telegramBot = telegramBot;
         this.shelterMessageService = shelterMessageService;
         this.userService = userService;
         this.answerService = answerService;
+        this.commandHandlers = commandHandlers;
     }
 
     @PostConstruct
@@ -48,6 +53,12 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     public int process(List<Update> list) {
         try {
             list.forEach(update -> {
+                for(CommandHandler commandHandler:commandHandlers){
+                    if(commandHandler.apply(update)){
+                        commandHandler.process(update);
+                        break;
+                    }
+                }
                 logger.info("New update: {}", update);
                 String text; //text message
                 Long chatId; //chat id from telegram base. Bot can't work in group chats
