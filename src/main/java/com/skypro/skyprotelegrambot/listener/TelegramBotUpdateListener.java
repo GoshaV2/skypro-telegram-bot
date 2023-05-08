@@ -74,7 +74,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     send(sendMessage);
 
                 } else if (text.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern())) {
-                    //
+                    //Может быть добавлять пользователя в базу приюта тут?
                     long shelterId = Long.parseLong(text
                             .replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
                     user = userService.chooseShelterForUser(chatId, shelterId);
@@ -86,7 +86,13 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                 } else if (answerService.hasCommand(text)) {
                     SendMessage sendMessage = shelterMessageService.getAnswer(chatId, text);
                     send(sendMessage);
-                } else if ("/cats".equals(text)) { //выбран приют для кошек
+                } else if (text.matches(ShelterCommand.SEND_REPORT.getStartPath())) {
+                    user.getSession().setReportSending(true);
+                } else if (user.getSession().isReportSending()) {
+                    sendReport();
+                }
+                /*
+                else if ("/cats".equals(text)) { //выбран приют для кошек
                     SendMessage sendMessage = new SendMessage(chatId,
                             "Был выбран кошачий приют. Чем я могу быть полезен?");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
@@ -462,6 +468,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     send(sendMessage);
                 }
 
+                     */
             });
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -474,6 +481,10 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         if (!sendResponse.isOk()) {
             logger.error("Error during sending message: {}", sendResponse.description());
         }
+    }
+
+    private void sendReport() {
+        //to do something...
     }
 
 }

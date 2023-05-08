@@ -3,7 +3,6 @@ package com.skypro.skyprotelegrambot.dto.request;
 
 public class ShelterDto {
     private String name;
-    private int age;
 
     public ShelterDto(String name) {
         this.name = name;
