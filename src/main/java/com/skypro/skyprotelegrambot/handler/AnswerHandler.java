@@ -1,10 +1,10 @@
 package com.skypro.skyprotelegrambot.handler;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
 import com.skypro.skyprotelegrambot.listener.TelegramBotUpdateListener;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.service.UserService;
@@ -28,33 +28,28 @@ public class AnswerHandler implements CommandHandler {
 
     @Override
     public boolean apply(Update update) {
-        Message message = update.message();
-        Long chatId = message.chat().id();
-        String text = message.text();
-        if (chatId == null && text == null) {
-            throw new NullPointerException();
-        } else {
-            message.chat().id();
-            message.text();
+        CallbackQuery callbackQuery = update.callbackQuery();
+        if (callbackQuery == null) {
+            return false;
         }
-        try {
-            userService.findUserByChatId(chatId);
-        } catch (UserNotFoundException e) {
-            userService.createUser(chatId);
-            logger.info("New user success created");
+        Long chatId = callbackQuery.from().id();
+        String text = callbackQuery.message().text();
+        if (ShelterCommand.GET_INFO_MENU.getStartPath().equals(text)) {
+            SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId,
+                    userService.findUserByChatId(chatId).getSession().getSelectedShelter());
+            telegramBotUpdateListener.send(sendMessage);
         }
         return false;
     }
 
     @Override
     public void process(Update update) {
-        Message message = update.message();
-        Long chatId = message.chat().id();
-        String text = message.text();
-        if (ShelterCommand.GET_INFO_MENU.getStartPath().equals(text)) {
-            SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId,
-                    userService.findUserByChatId(chatId).getSession().getSelectedShelter());
-            telegramBotUpdateListener.send(sendMessage);
-        }
+        CallbackQuery callbackQuery = update.callbackQuery();
+        Long chatId = callbackQuery.from().id();
+        SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId, userService
+                .findUserByChatId(chatId)
+                .getSession()
+                .getSelectedShelter());
+        telegramBotUpdateListener.send(sendMessage);
     }
 }

@@ -4,7 +4,6 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
 import com.skypro.skyprotelegrambot.listener.TelegramBotUpdateListener;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.service.UserService;
@@ -32,16 +31,12 @@ public class GetInfoMenuHandler implements CommandHandler {
         Long chatId = message.chat().id();
         String text = message.text();
         if (chatId == null && text == null) {
-            throw new NullPointerException();
-        } else {
-            message.chat().id();
-            message.text();
+            return false;
         }
-        try {
-            userService.findUserByChatId(chatId);
-        } catch (UserNotFoundException e) {
-            userService.createUser(chatId);
-            logger.info("New user success created");
+        if (ShelterCommand.GET_INFO_MENU.getStartPath().equals(text)) {
+            SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId,
+                    userService.findUserByChatId(chatId).getSession().getSelectedShelter());
+            telegramBotUpdateListener.send(sendMessage);
         }
         return false;
     }
@@ -50,11 +45,8 @@ public class GetInfoMenuHandler implements CommandHandler {
     public void process(Update update) {
         Message message = update.message();
         Long chatId = message.chat().id();
-        String text = message.text();
-        if (ShelterCommand.GET_INFO_MENU.getStartPath().equals(text)) {
-            SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId,
-                    userService.findUserByChatId(chatId).getSession().getSelectedShelter());
-            telegramBotUpdateListener.send(sendMessage);
-        }
+        SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId,
+                userService.findUserByChatId(chatId).getSession().getSelectedShelter());
+        telegramBotUpdateListener.send(sendMessage);
     }
 }

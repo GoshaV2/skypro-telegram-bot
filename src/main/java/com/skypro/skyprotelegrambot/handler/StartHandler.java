@@ -33,28 +33,22 @@ public class StartHandler implements CommandHandler {
         Long chatId = message.chat().id();
         String text = message.text();
         if (chatId == null && text == null) {
-            throw new NullPointerException();
-        } else {
-            chatId = message.chat().id();
-            text = message.text();
+            return false;
         }
+        return "start".equals(text);
+    }
+
+    @Override
+    public void process(Update update) {
+        Message message = update.message();
+        Long chatId = message.chat().id();
         try {
             userService.findUserByChatId(chatId);
         } catch (UserNotFoundException e) {
             userService.createUser(chatId);
             logger.info("New user success created");
         }
-        return false;
-    }
-
-    @Override
-    public void process(Update update) {
-        SendMessage sendMessage = new SendMessage(2, "test");
-        telegramBot.execute(sendMessage);
-        Message message = update.message();
-        Long chatId = message.chat().id();
-        String text = message.text();
-        sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId);
+        SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId);
         telegramBotUpdateListener.send(sendMessage);
     }
 }

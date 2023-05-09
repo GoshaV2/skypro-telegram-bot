@@ -1,6 +1,7 @@
 package com.skypro.skyprotelegrambot.handler;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -24,31 +25,29 @@ public class ChoosingShelterHandler implements CommandHandler {
 
     @Override
     public boolean apply(Update update) {
-        Message message = update.message();
-        Long chatId = message.chat().id();
-        String text = message.text();
-        if (chatId == null && text == null) {
-            throw new NullPointerException();
-        } else {
-            message.chat().id();
-            message.text();
+        CallbackQuery callbackQuery = update.callbackQuery();
+        if (callbackQuery == null) {
+            return false;
+        }
+        Long chatId = callbackQuery.from().id();
+        String text = callbackQuery.message().text();
+        if (text.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern())) {
+            Long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
+            userService.chooseShelterForUser(chatId, shelterId);
+            SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
+            telegramBotUpdateListener.send(sendMessage);
         }
         return false;
     }
 
     @Override
     public void process(Update update) {
-        Message message = update.message();
-        Long chatId = message.chat().id();
-        String text = message.text();
-        if (text.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern())) {
-            long shelterId = Long.parseLong(text
-                    .replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
-            userService.chooseShelterForUser(chatId, shelterId);
-            SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
-            telegramBotUpdateListener.send(sendMessage);
-        }
+        CallbackQuery callbackQuery = update.callbackQuery();
+        Long chatId = callbackQuery.from().id();
+        String text = callbackQuery.message().text();
+        Long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
+        userService.chooseShelterForUser(chatId, shelterId);
+        SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
+        telegramBotUpdateListener.send(sendMessage);
     }
 }
-
-
