@@ -2,16 +2,15 @@ package com.skypro.skyprotelegrambot.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.CallbackQuery;
-import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.model.*;
+import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.GetFileResponse;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
 import com.skypro.skyprotelegrambot.service.AnswerService;
+import com.skypro.skyprotelegrambot.service.ReportService;
 import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
@@ -30,13 +29,15 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     private final UserService userService;
     private final AnswerService answerService;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
+    private final ReportService reportService;
 
     public TelegramBotUpdateListener(TelegramBot telegramBot, ShelterMessageService shelterMessageService,
-                                     UserService userService, AnswerService answerService) {
+                                     UserService userService, AnswerService answerService, ReportService reportService) {
         this.telegramBot = telegramBot;
         this.shelterMessageService = shelterMessageService;
         this.userService = userService;
         this.answerService = answerService;
+        this.reportService = reportService;
     }
 
     @PostConstruct
@@ -88,8 +89,10 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     send(sendMessage);
                 } else if (text.matches(ShelterCommand.SEND_REPORT.getStartPath())) {
                     user.getSession().setReportSending(true);
-                } else if (user.getSession().isReportSending()) {
-                    sendReport();
+                    SendMessage sendMessage = shelterMessageService.getMessageBeforeReport(chatId, user.getSession().getSelectedShelter());
+                    send(sendMessage);
+                } else if (user.getSession().isReportSending() && message != null) {
+                    sendReport(user, message.photo(), message.caption());
                 }
                 /*
                 else if ("/cats".equals(text)) { //выбран приют для кошек
@@ -483,8 +486,15 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         }
     }
 
-    private void sendReport() {
+    private void sendReport(User user, PhotoSize[] photo, String caption) {
         //to do something...
+        String fileId = photo[photo.length - 1].fileId();
+        GetFile request = new GetFile(fileId);
+        GetFileResponse getFileResponse = telegramBot.execute(request);
+        File file = getFileResponse.file();
+        String filePath = file.filePath();
+        logger.info("file path: {}", filePath);
+        user.getSession().setReportSending(false);
     }
 
 }

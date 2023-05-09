@@ -11,4 +11,6 @@ public interface ShelterMessageService {
     SendMessage getMessageWithInfo(long chatId, Shelter shelter);
 
     SendMessage getAnswer(Long chatId, String command);
+
+    SendMessage getMessageBeforeReport(long chatId, Shelter shelter);
 }

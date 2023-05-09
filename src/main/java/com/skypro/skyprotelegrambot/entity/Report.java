@@ -26,11 +26,11 @@ public class Report {
     private final LocalDate date;
 
     @ManyToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @Column(name = "shelter_id")
+    @JoinColumn(name = "shelter_id", nullable = false)
     private Shelter shelter;
 
     public Report() {

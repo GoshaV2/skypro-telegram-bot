@@ -49,4 +49,11 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
         sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(answer.getShelter()));
         return sendMessage;
     }
+
+    @Override
+    public SendMessage getMessageBeforeReport(long chatId, Shelter shelter) {
+        SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.send.report.info"));
+        sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(shelter));
+        return sendMessage;
+    }
 }
