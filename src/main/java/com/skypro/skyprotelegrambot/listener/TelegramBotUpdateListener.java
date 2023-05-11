@@ -7,6 +7,7 @@ import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.GetFileResponse;
 import com.pengrad.telegrambot.response.SendResponse;
+import com.skypro.skyprotelegrambot.entity.Session;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
 import com.skypro.skyprotelegrambot.service.AnswerService;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -61,8 +63,9 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     text = callbackQuery.data();
                 } else {
                     chatId = message.chat().id();
-                    text = message.text();
+                    text = (message.text() != null) ? message.text() : message.caption();
                 }
+
                 try {
                     user = userService.findUserByChatId(chatId);
                 } catch (UserNotFoundException e) {
@@ -88,7 +91,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     SendMessage sendMessage = shelterMessageService.getAnswer(chatId, text);
                     send(sendMessage);
                 } else if (text.matches(ShelterCommand.SEND_REPORT.getStartPath())) {
-                    user.getSession().setReportSending(true);
+                    userService.turnOnReportSending(user);
                     SendMessage sendMessage = shelterMessageService.getMessageBeforeReport(chatId, user.getSession().getSelectedShelter());
                     send(sendMessage);
                 } else if (user.getSession().isReportSending() && message != null) {
@@ -487,14 +490,20 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     }
 
     private void sendReport(User user, PhotoSize[] photo, String caption) {
-        //to do something...
-        String fileId = photo[photo.length - 1].fileId();
-        GetFile request = new GetFile(fileId);
-        GetFileResponse getFileResponse = telegramBot.execute(request);
+        //to do something... SELECT * FROM users INNER JOIN session ON users.session_id=session.id;
+
+        String fileId = photo[photo.length - 1].fileId();//самая крупная фотка лежит в конце массива
+        GetFileResponse getFileResponse = telegramBot.execute(new GetFile(fileId));
         File file = getFileResponse.file();
-        String filePath = file.filePath();
-        logger.info("file path: {}", filePath);
-        user.getSession().setReportSending(false);
+        try {
+            byte[] photoFile = telegramBot.getFileContent(file);
+            reportService.CreateReport(user, caption, photoFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        userService.turnOffReportSending(user);
     }
 
 }
