@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
 import com.skypro.skyprotelegrambot.listener.TelegramBotUpdateListener;
 import com.skypro.skyprotelegrambot.service.UserService;
@@ -30,9 +31,12 @@ public class StartHandler implements CommandHandler {
     @Override
     public boolean apply(Update update) {
         Message message = update.message();
+        if (message == null) {
+            return false;
+        }
         Long chatId = message.chat().id();
         String text = message.text();
-        if (chatId == null && text == null) {
+        if (chatId == null || text == null) {
             return false;
         }
         return "start".equals(text);

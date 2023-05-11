@@ -33,12 +33,10 @@ public class GetInfoMenuHandler implements CommandHandler {
         if (chatId == null && text == null) {
             return false;
         }
-        if (ShelterCommand.GET_INFO_MENU.getStartPath().equals(text)) {
-            SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId,
-                    userService.findUserByChatId(chatId).getSession().getSelectedShelter());
-            telegramBotUpdateListener.send(sendMessage);
+        if (ShelterCommand.GET_INFO_MENU.getStartPath() == null) {
+            return false;
         }
-        return false;
+        return ShelterCommand.GET_INFO_MENU.getStartPath().equals(text);
     }
 
     @Override

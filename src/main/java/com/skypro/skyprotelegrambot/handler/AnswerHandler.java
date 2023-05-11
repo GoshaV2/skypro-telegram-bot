@@ -32,14 +32,11 @@ public class AnswerHandler implements CommandHandler {
         if (callbackQuery == null) {
             return false;
         }
-        Long chatId = callbackQuery.from().id();
         String text = callbackQuery.message().text();
-        if (ShelterCommand.GET_INFO_MENU.getStartPath().equals(text)) {
-            SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId,
-                    userService.findUserByChatId(chatId).getSession().getSelectedShelter());
-            telegramBotUpdateListener.send(sendMessage);
+        if (ShelterCommand.GET_INFO_MENU.getStartPath() == null) {
+            return false;
         }
-        return false;
+        return ShelterCommand.GET_INFO_MENU.getStartPath().equals(text);
     }
 
     @Override

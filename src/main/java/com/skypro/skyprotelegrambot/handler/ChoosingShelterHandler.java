@@ -31,13 +31,10 @@ public class ChoosingShelterHandler implements CommandHandler {
         }
         Long chatId = callbackQuery.from().id();
         String text = callbackQuery.message().text();
-        if (text.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern())) {
-            Long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
-            userService.chooseShelterForUser(chatId, shelterId);
-            SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
-            telegramBotUpdateListener.send(sendMessage);
+        if (ShelterCommand.CHOOSE_SHELTER.getStartPathPattern() == null) {
+            return false;
         }
-        return false;
+        return text.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern());
     }
 
     @Override
