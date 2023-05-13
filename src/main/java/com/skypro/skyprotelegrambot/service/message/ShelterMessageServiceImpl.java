@@ -30,7 +30,8 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
 
     @Override
     public SendMessage getMessageAfterChosenShelter(long chatId) {
-        SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.menu.chosen.getInfo"));
+        SendMessage sendMessage = new SendMessage(chatId,
+                propertyMessageService.getMessage("shelter.menu.chosen.getInfo"));
         sendMessage.replyMarkup(shelterButtonService.getInfoMenu());
         return sendMessage;
     }
