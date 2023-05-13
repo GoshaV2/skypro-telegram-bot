@@ -1,12 +1,11 @@
 package com.skypro.skyprotelegrambot.handler;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
 import com.skypro.skyprotelegrambot.listener.TelegramBotUpdateListener;
+import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
 import org.slf4j.Logger;
@@ -17,16 +16,15 @@ import org.springframework.stereotype.Component;
 public class StartHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;
     private final UserService userService;
-    private final TelegramBotUpdateListener telegramBotUpdateListener;
+    private final TelegramMessageService telegramMessageService;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
-    private final TelegramBot telegramBot;
 
-    public StartHandler(ShelterMessageService shelterMessageService, UserService userService, TelegramBotUpdateListener telegramBotUpdateListener, TelegramBot telegramBot) {
+    public StartHandler(ShelterMessageService shelterMessageService, UserService userService, TelegramMessageService telegramMessageService) {
         this.shelterMessageService = shelterMessageService;
         this.userService = userService;
-        this.telegramBotUpdateListener = telegramBotUpdateListener;
-        this.telegramBot = telegramBot;
+        this.telegramMessageService = telegramMessageService;
     }
+
 
     @Override
     public boolean apply(Update update) {
@@ -39,7 +37,7 @@ public class StartHandler implements CommandHandler {
         if (chatId == null || text == null) {
             return false;
         }
-        return "start".equals(text);
+        return "/start".equals(text);
     }
 
     @Override
@@ -53,6 +51,6 @@ public class StartHandler implements CommandHandler {
             logger.info("New user success created");
         }
         SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId);
-        telegramBotUpdateListener.send(sendMessage);
+        telegramMessageService.sendMessage(sendMessage);
     }
 }

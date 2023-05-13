@@ -47,6 +47,7 @@ public class AnswerServiceImpl implements AnswerService {
         Answer answer = new Answer();
         answer.setTitle(answerDto.getTitle());
         answer.setText(answerDto.getText());
+        answer.setCategory(answerDto.getCategory());
         answer.setCommand(answerDto.getCommand());
         answer.setShelter(shelterService.findShelterById(answerDto.getShelterId()));
         return answerRepository.save(answer);
@@ -57,6 +58,7 @@ public class AnswerServiceImpl implements AnswerService {
         Answer answer = findAnswerById(id);
         answer.setTitle(answerDto.getTitle());
         answer.setText(answerDto.getText());
+        answer.setCategory(answerDto.getCategory());
         answer.setCommand(answerDto.getCommand());
         return answerRepository.save(answer);
     }
