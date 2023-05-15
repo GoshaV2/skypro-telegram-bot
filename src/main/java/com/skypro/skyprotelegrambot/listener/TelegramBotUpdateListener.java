@@ -2,16 +2,17 @@ package com.skypro.skyprotelegrambot.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.*;
-import com.pengrad.telegrambot.request.GetFile;
+import com.pengrad.telegrambot.model.CallbackQuery;
+import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
+import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.GetFileResponse;
 import com.pengrad.telegrambot.response.SendResponse;
-import com.skypro.skyprotelegrambot.entity.Session;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
+import com.skypro.skyprotelegrambot.handler.CommandHandler;
 import com.skypro.skyprotelegrambot.service.AnswerService;
-import com.skypro.skyprotelegrambot.service.ReportService;
 import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
@@ -20,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -30,16 +30,15 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     private final ShelterMessageService shelterMessageService;
     private final UserService userService;
     private final AnswerService answerService;
+    private final Collection<CommandHandler> commandHandlers;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
-    private final ReportService reportService;
 
     public TelegramBotUpdateListener(TelegramBot telegramBot, ShelterMessageService shelterMessageService,
-                                     UserService userService, AnswerService answerService, ReportService reportService) {
+                                     UserService userService, AnswerService answerService) {
         this.telegramBot = telegramBot;
         this.shelterMessageService = shelterMessageService;
         this.userService = userService;
         this.answerService = answerService;
-        this.reportService = reportService;
     }
 
     @PostConstruct
@@ -51,34 +50,25 @@ public class TelegramBotUpdateListener implements UpdatesListener {
     public int process(List<Update> list) {
         try {
             list.forEach(update -> {
-                logger.info("New update: {}", update);
-                String text; //text message
-                Long chatId; //chat id from telegram base. Bot can't work in group chats
-                User user;
-                Message message = update.message();
-                CallbackQuery callbackQuery = update.callbackQuery();
-
-                if (callbackQuery != null) {
-                    chatId = callbackQuery.from().id();
-                    text = callbackQuery.data();
-                } else {
-                    chatId = message.chat().id();
-                    text = (message.text() != null) ? message.text() : message.caption();
-                }
-
-                try {
-                    user = userService.findUserByChatId(chatId);
-                } catch (UserNotFoundException e) {
-                    user = userService.createUser(chatId);
-                    logger.info("New user success created");
+                for(CommandHandler commandHandler:commandHandlers){
+                    if(commandHandler.apply(update)){
+                        commandHandler.process(update);
+                        break;
+                    }
                 }
 
                 if ("/start".equals(text)) { //обработка входной точки
+                   /* SendMessage sendMessage = new SendMessage(chatId,
+                            "Привет. Я помогаю приютам для бездомных животных пристроить их питомцев. Какое животное ты бы выбрал?");
+
+                    InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
+                            new InlineKeyboardButton("кота или кошечку").callbackData("/cats"),
+                            new InlineKeyboardButton("собаку").callbackData("/dogs"));
+                    sendMessage.replyMarkup(inlineKeyboard);*/
                     SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId);
                     send(sendMessage);
 
                 } else if (text.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern())) {
-                    //Может быть добавлять пользователя в базу приюта тут?
                     long shelterId = Long.parseLong(text
                             .replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
                     user = userService.chooseShelterForUser(chatId, shelterId);
@@ -90,15 +80,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                 } else if (answerService.hasCommand(text)) {
                     SendMessage sendMessage = shelterMessageService.getAnswer(chatId, text);
                     send(sendMessage);
-                } else if (text.matches(ShelterCommand.SEND_REPORT.getStartPath())) {
-                    userService.turnOnReportSending(user);
-                    SendMessage sendMessage = shelterMessageService.getMessageBeforeReport(chatId, user.getSession().getSelectedShelter());
-                    send(sendMessage);
-                } else if (user.getSession().isReportSending() && message != null) {
-                    sendReport(user, message.photo(), message.caption());
-                }
-                /*
-                else if ("/cats".equals(text)) { //выбран приют для кошек
+                } else if ("/cats".equals(text)) { //выбран приют для кошек
                     SendMessage sendMessage = new SendMessage(chatId,
                             "Был выбран кошачий приют. Чем я могу быть полезен?");
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup().addRow(
@@ -474,7 +456,6 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     send(sendMessage);
                 }
 
-                     */
             });
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
