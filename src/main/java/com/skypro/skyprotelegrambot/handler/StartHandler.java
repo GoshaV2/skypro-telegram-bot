@@ -11,7 +11,9 @@ import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
+/**
+ * Обработка стартовой точки
+ */
 @Component
 public class StartHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;

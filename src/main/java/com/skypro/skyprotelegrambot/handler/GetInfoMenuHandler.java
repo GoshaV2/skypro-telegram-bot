@@ -13,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Что тут происходит???
+ */
 @Component
 public class GetInfoMenuHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;
@@ -38,7 +41,16 @@ public class GetInfoMenuHandler implements CommandHandler {
         if (chatId == null && command == null) {
             return false;
         }
-        return ShelterCommand.GET_INFO_MENU.getStartPath().equals(command); //нужно менять
+        return command.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern());
+        /*
+        else if (text.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern())) {
+                    //Может быть добавлять пользователя в базу приюта тут?
+                    long shelterId = Long.parseLong(text
+                            .replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
+                    user = userService.chooseShelterForUser(chatId, shelterId);
+                    SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
+                    send(sendMessage);
+         */
     }
 
     @Override

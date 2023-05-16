@@ -12,6 +12,9 @@ import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
 import org.springframework.stereotype.Component;
 
+/**
+ * Обработка выбора приюта
+ */
 @Component
 public class ChoosingShelterHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;
