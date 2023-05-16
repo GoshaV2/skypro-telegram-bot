@@ -62,4 +62,21 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
         });
         return inlineKeyboardMarkup;
     }
+    @Override
+    public Keyboard getTakePetInformationMenu(Shelter shelter) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        answerService.getAnswersByCategory(Category.GETTING_ANIMAL, shelter).forEach(answer -> {
+            inlineKeyboardMarkup.addRow(new InlineKeyboardButton(answer.getTitle())
+                    .callbackData(answer.getCommand()));
+        });
+        return inlineKeyboardMarkup;
+    }
+    public Keyboard backFromReport(Shelter shelter){
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(propertyMessageService.getMessage("back"))
+                .callbackData(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern()));
+        return inlineKeyboardMarkup;
+    }
+
+
 }

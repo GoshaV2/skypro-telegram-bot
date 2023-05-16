@@ -30,6 +30,7 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
 
     @Override
     public SendMessage getMessageAfterChosenShelter(long chatId) {
+        // надо переделать так чтобы в сообщении фигурировало название приюта.
         SendMessage sendMessage = new SendMessage(chatId,
                 propertyMessageService.getMessage("shelter.menu.chosen.getInfo"));
         sendMessage.replyMarkup(shelterButtonService.getInfoMenu());

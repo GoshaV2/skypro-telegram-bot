@@ -38,7 +38,7 @@ public class GetInfoMenuHandler implements CommandHandler {
         if (chatId == null && command == null) {
             return false;
         }
-        return ShelterCommand.GET_INFO_MENU.getStartPath().equals(command);
+        return ShelterCommand.GET_INFO_MENU.getStartPath().equals(command); //нужно менять
     }
 
     @Override

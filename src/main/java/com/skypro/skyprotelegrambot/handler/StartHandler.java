@@ -28,16 +28,14 @@ public class StartHandler implements CommandHandler {
 
     @Override
     public boolean apply(Update update) {
-        Message message = update.message();
-        if (message == null) {
+        String command = (update.message() != null) ? update.message().text() : update.callbackQuery().data(); //команда может прилететь из калбэка см. ShelterButtonServiceImpl
+        Long chatId = (update.message() != null) ? update.message().from().id() : update.callbackQuery().from().id();
+
+        if (chatId == null || command == null) { //Зачем проверка?
             return false;
         }
-        Long chatId = message.chat().id();
-        String text = message.text();
-        if (chatId == null || text == null) {
-            return false;
-        }
-        return "/start".equals(text);
+
+        return "/start".equals(command);
     }
 
     @Override
