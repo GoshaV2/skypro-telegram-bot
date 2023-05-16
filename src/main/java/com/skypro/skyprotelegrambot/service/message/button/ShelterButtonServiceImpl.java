@@ -71,10 +71,11 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
         });
         return inlineKeyboardMarkup;
     }
+    @Override
     public Keyboard backFromReport(Shelter shelter){
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton(propertyMessageService.getMessage("back"))
-                .callbackData(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern()));
+                .callbackData(ShelterCommand.CHOOSE_SHELTER.getStartPath() + shelter.getId()));
         return inlineKeyboardMarkup;
     }
 

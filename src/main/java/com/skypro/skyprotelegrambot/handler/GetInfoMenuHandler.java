@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * Что тут происходит???
+ * Обработчик базовой информации о приюте (Этап 1 по ТЗ)
  */
 @Component
 public class GetInfoMenuHandler implements CommandHandler {
@@ -41,7 +41,7 @@ public class GetInfoMenuHandler implements CommandHandler {
         if (chatId == null && command == null) {
             return false;
         }
-        return command.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern());
+        return ShelterCommand.GET_INFO_MENU.getStartPath().equals(command);
         /*
         else if (text.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern())) {
                     //Может быть добавлять пользователя в базу приюта тут?
@@ -50,6 +50,17 @@ public class GetInfoMenuHandler implements CommandHandler {
                     user = userService.chooseShelterForUser(chatId, shelterId);
                     SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
                     send(sendMessage);
+
+        CallbackQuery callbackQuery = update.callbackQuery();
+        if (callbackQuery == null) {
+            return false;
+        }
+        Long chatId = callbackQuery.from().id();
+        String command = callbackQuery.data();
+        if (chatId == null && command == null) {
+            return false;
+        }
+        return ShelterCommand.GET_INFO_MENU.getStartPath().equals(command);
          */
     }
 
@@ -57,7 +68,7 @@ public class GetInfoMenuHandler implements CommandHandler {
     public void process(Update update) {
         CallbackQuery callbackQuery=update.callbackQuery();
         Long chatId = callbackQuery.from().id();
-        SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId,
+        SendMessage sendMessage = shelterMessageService.getMessageWithBaseInfo(chatId,
                 userService.findUserByChatId(chatId).getSession().getSelectedShelter());
         telegramMessageService.sendMessage(sendMessage);
     }

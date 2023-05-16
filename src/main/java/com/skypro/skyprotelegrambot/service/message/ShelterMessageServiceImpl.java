@@ -15,7 +15,8 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
     private final PropertyMessageService propertyMessageService;
     private final AnswerService answerService;
 
-    public ShelterMessageServiceImpl(ShelterButtonService shelterButtonService, MessageSource messageSource, PropertyMessageService propertyMessageService, AnswerService answerService) {
+    public ShelterMessageServiceImpl(ShelterButtonService shelterButtonService,
+                                     PropertyMessageService propertyMessageService, AnswerService answerService) {
         this.shelterButtonService = shelterButtonService;
         this.propertyMessageService = propertyMessageService;
         this.answerService = answerService;
@@ -30,7 +31,7 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
 
     @Override
     public SendMessage getMessageAfterChosenShelter(long chatId) {
-        // надо переделать так чтобы в сообщении фигурировало название приюта.
+        // надо бы переделать так чтобы в сообщении фигурировало название приюта.
         SendMessage sendMessage = new SendMessage(chatId,
                 propertyMessageService.getMessage("shelter.menu.chosen.getInfo"));
         sendMessage.replyMarkup(shelterButtonService.getInfoMenu());
@@ -38,9 +39,15 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
     }
 
     @Override
-    public SendMessage getMessageWithInfo(long chatId, Shelter shelter) {
+    public SendMessage getMessageWithBaseInfo(long chatId, Shelter shelter) {
         SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.selectFromList"));
         sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(shelter));
+        return sendMessage;
+    }
+    @Override
+    public SendMessage getMessageWithTakePetInfo(long chatId, Shelter shelter) {
+        SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.selectFromList"));
+        sendMessage.replyMarkup(shelterButtonService.getTakePetInformationMenu(shelter));
         return sendMessage;
     }
 
@@ -55,7 +62,7 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
     @Override
     public SendMessage getMessageBeforeReport(long chatId, Shelter shelter) {
         SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.send.report.info"));
-        sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(shelter));
+        sendMessage.replyMarkup(shelterButtonService.backFromReport(shelter));
         return sendMessage;
     }
 }

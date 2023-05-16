@@ -3,6 +3,7 @@ package com.skypro.skyprotelegrambot.handler;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
@@ -35,9 +36,12 @@ public class ReportInitialHandler implements CommandHandler {
     @Override
     public void process(Update update) {
         Long id = update.callbackQuery().from().id();
-        userService.turnOnReportSending(userService.findUserByChatId(id));
+        User user = userService.findUserByChatId(id);
 
-        SendMessage sendMessage = shelterMessageService.getMessageBeforeReport()
+        userService.turnOnReportSending(user);
+
+        SendMessage sendMessage = shelterMessageService.getMessageBeforeReport(id,
+                user.getSession().getSelectedShelter());
 
     }
 }
