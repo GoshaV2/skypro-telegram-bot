@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class TelegramMessageServiceImpl implements TelegramMessageService{
+public class TelegramMessageServiceImpl implements TelegramMessageService {
     private final TelegramBot telegramBot;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
 
@@ -21,15 +21,16 @@ public class TelegramMessageServiceImpl implements TelegramMessageService{
     }
 
     @Override
-    public <T extends BaseRequest<T, R>, R extends BaseResponse>  R execute(BaseRequest<T, R> request) {
+    public <T extends BaseRequest<T, R>, R extends BaseResponse> R execute(BaseRequest<T, R> request) {
         R response = telegramBot.execute(request);
         if (!response.isOk()) {
             logger.error("Error during sending message: {}", response.description());
         }
         return response;
     }
+
     @Override
     public byte[] getFileContent(File file) throws IOException {
-       return telegramBot.getFileContent(file);
+        return telegramBot.getFileContent(file);
     }
 }

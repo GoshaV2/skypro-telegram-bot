@@ -36,6 +36,7 @@ public class Report {
     public Report() {
         date = LocalDate.now();
     }
+
     public Report(String report, byte[] photo, User user, Shelter shelter) {
         date = LocalDate.now();
         setReport(report);
