@@ -1,35 +1,22 @@
-package com.skypro.skyprotelegrambot.entity;
+package com.skypro.skyprotelegrambot.dto.request;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "volunteer_contact")
-public class VolunteerContact {
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "phone")
+public class VolunteerContactDto {
     private String phone;
-    @Column(name = "telegram_tag")
     private String telegramTag;
-    @Column(name = "email")
     private String email;
-    @Column(name = "full_name",nullable = false)
     private String fullName;
-    @ManyToOne
-    @JoinColumn(name = "shelter_id")
-    private Shelter shelter;
+    private Long shelterId;
 
-    public VolunteerContact() {
+    public VolunteerContactDto(String phone, String telegramTag, String email, String fullName, Long shelterId) {
+        this.phone = phone;
+        this.telegramTag = telegramTag;
+        this.email = email;
+        this.fullName = fullName;
+        this.shelterId = shelterId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public VolunteerContactDto() {
     }
 
     public String getPhone() {
@@ -64,11 +51,11 @@ public class VolunteerContact {
         this.fullName = fullName;
     }
 
-    public Shelter getShelter() {
-        return shelter;
+    public Long getShelterId() {
+        return shelterId;
     }
 
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
+    public void setShelterId(Long shelterId) {
+        this.shelterId = shelterId;
     }
 }

@@ -31,11 +31,11 @@ public class ShelterController {
         return shelterService.updateShelter(shelterDto, id);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     @Operation(
             summary = "Поиск приюта по id"
     )
-    public Shelter findShelterById(@PathVariable @Parameter(description = "id приюта") long id) {
+    public Shelter findShelterById(@PathVariable (name = "id") Long id) {
         return shelterService.findShelterById(id);
     }
 }
