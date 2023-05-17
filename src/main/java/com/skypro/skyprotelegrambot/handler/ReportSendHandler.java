@@ -67,7 +67,7 @@ public class ReportSendHandler implements CommandHandler {
 
         try {
             byte[] photoFile = telegramMessageService.getFileContent(file);
-            reportService.CreateReport(user, caption, photoFile);
+            reportService.createReport(user, caption, photoFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

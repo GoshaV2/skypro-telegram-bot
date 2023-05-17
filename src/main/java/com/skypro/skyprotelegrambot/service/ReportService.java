@@ -7,7 +7,7 @@ import com.skypro.skyprotelegrambot.entity.User;
 import java.util.List;
 
 public interface ReportService {
-    Report CreateReport(User user, String text, byte[] photo);
+    Report createReport(User user, String text, byte[] photo);
 
     Report getById(Long id);
 

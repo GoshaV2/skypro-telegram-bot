@@ -12,40 +12,38 @@ import java.util.List;
 @Service
 public class ReportServiceImpl implements ReportService {
     private final ReportRepository reportRepository;
-    private final UserService userService;
 
-    public ReportServiceImpl(ReportRepository reportRepository, UserService userService) {
+    public ReportServiceImpl(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
-        this.userService = userService;
     }
 
     @Override
-    public Report CreateReport(User user, String text, byte[] photo) {
+    public Report createReport(User user, String text, byte[] photo) {
         return reportRepository.save(new Report(text, photo,
                 user, user.getSession().getSelectedShelter()));
     }
 
     @Override
-    public Report getById(Long id){
-      return reportRepository.findById(id).orElseThrow(
-              ()->new NotFoundElement(id, Report.class)
-      );
+    public Report getById(Long id) {
+        return reportRepository.findById(id).orElseThrow(
+                () -> new NotFoundElement(id, Report.class)
+        );
     }
 
     @Override
-    public List<Report> getAllByUserAndShelter(User user, Shelter shelter){
+    public List<Report> getAllByUserAndShelter(User user, Shelter shelter) {
         return reportRepository.findAllByUserAndShelter(user, shelter);
     }
 
     @Override
-    public void updatePhoto(byte[] photo, Long id){
-     Report edited = getById(id);
-     edited.setPhoto(photo);
-     reportRepository.save(edited);
+    public void updatePhoto(byte[] photo, Long id) {
+        Report edited = getById(id);
+        edited.setPhoto(photo);
+        reportRepository.save(edited);
     }
 
     @Override
-    public void updateText(String text, Long id){
+    public void updateText(String text, Long id) {
         Report edited = getById(id);
         edited.setReport(text);
         reportRepository.save(edited);
