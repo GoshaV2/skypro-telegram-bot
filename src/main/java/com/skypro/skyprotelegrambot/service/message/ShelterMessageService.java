@@ -14,7 +14,7 @@ public interface ShelterMessageService {
      * @param chatId чат куда шлем сообщение
      * @return сообщение о выборе приюта.
      */
-    SendMessage getMessageAfterChosenShelter(long chatId, long shelterId);
+    SendMessage getMessageAfterChosenShelter(long chatId, Shelter shelter);
 
     /**
      * @param chatId  чат куда шлем сообщение

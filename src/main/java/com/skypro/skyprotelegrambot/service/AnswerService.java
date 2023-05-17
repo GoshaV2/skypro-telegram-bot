@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface AnswerService {
     Answer getAnswer(String command);
+
     List<Answer> getAnswersByCategory(Category category, Shelter shelter);
 
     Answer findAnswerById(Long id);
@@ -18,5 +19,6 @@ public interface AnswerService {
     Answer updateAnswer(AnswerDto answerDto, Long id);
 
     void deleteAnswerById(Long id);
+
     boolean hasCommand(String command);
 }

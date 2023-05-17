@@ -3,14 +3,11 @@ package com.skypro.skyprotelegrambot.controller;
 
 import com.skypro.skyprotelegrambot.dto.request.AnswerDto;
 import com.skypro.skyprotelegrambot.entity.Answer;
-import com.skypro.skyprotelegrambot.entity.Category;
-import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.service.AnswerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 @RestController
 @RequestMapping("/answers")
 public class AnswerController {
@@ -49,7 +46,7 @@ public class AnswerController {
     @Operation(
             summary = "Изменение параметров ответа"
     )
-    public Answer update(@RequestBody AnswerDto answerDto, @PathVariable (name = "id") Long id) {
+    public Answer update(@RequestBody AnswerDto answerDto, @PathVariable(name = "id") Long id) {
         return answerService.updateAnswer(answerDto, id);
     }
 

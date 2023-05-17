@@ -1,7 +1,6 @@
 package com.skypro.skyprotelegrambot.handler;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.skyprotelegrambot.listener.TelegramBotUpdateListener;
@@ -49,7 +48,7 @@ public class GetInfoMenuHandler implements CommandHandler {
 
     @Override
     public void process(Update update) {
-        CallbackQuery callbackQuery=update.callbackQuery();
+        CallbackQuery callbackQuery = update.callbackQuery();
         Long chatId = callbackQuery.from().id();
         SendMessage sendMessage = shelterMessageService.getMessageWithBaseInfo(chatId,
                 userService.findUserByChatId(chatId).getSession().getSelectedShelter());

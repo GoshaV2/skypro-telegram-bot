@@ -1,11 +1,9 @@
 package com.skypro.skyprotelegrambot.handler;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.skyprotelegrambot.listener.TelegramBotUpdateListener;
+import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.UserService;
@@ -46,8 +44,8 @@ public class ChoosingShelterHandler implements CommandHandler {
         Long chatId = callbackQuery.from().id();
         String text = callbackQuery.data();
         long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
-        userService.chooseShelterForUser(chatId, shelterId);
-        SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
+        User user=userService.chooseShelterForUser(chatId, shelterId);
+        SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId, user.getSession().getSelectedShelter());
         telegramMessageService.execute(sendMessage);
     }
 }

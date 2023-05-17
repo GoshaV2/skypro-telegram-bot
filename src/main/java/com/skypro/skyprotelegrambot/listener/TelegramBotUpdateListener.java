@@ -3,10 +3,12 @@ package com.skypro.skyprotelegrambot.listener;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.skyprotelegrambot.handler.CommandHandler;
-import com.skypro.skyprotelegrambot.service.AnswerService;
+import com.skypro.skyprotelegrambot.service.PropertyMessageService;
+import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.UserService;
-import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,24 +18,25 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
+@Slf4j
 public class TelegramBotUpdateListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
-    private final ShelterMessageService shelterMessageService;
-    private final UserService userService;
-    private final AnswerService answerService;
     private final Collection<CommandHandler> commandHandlers;
+    private final TelegramMessageService telegramMessageService;
+    private final PropertyMessageService propertyMessageService;
+    private final UserService userService;
 
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
 
-    public TelegramBotUpdateListener(TelegramBot telegramBot, ShelterMessageService shelterMessageService,
-                                     UserService userService, AnswerService answerService,
-                                     Collection<CommandHandler> commandHandlers) {
+    public TelegramBotUpdateListener(TelegramBot telegramBot,
+                                     Collection<CommandHandler> commandHandlers,
+                                     TelegramMessageService telegramMessageService, PropertyMessageService propertyMessageService, UserService userService) {
         this.telegramBot = telegramBot;
-        this.shelterMessageService = shelterMessageService;
-        this.userService = userService;
-        this.answerService = answerService;
         this.commandHandlers = commandHandlers;
+        this.telegramMessageService = telegramMessageService;
+        this.propertyMessageService = propertyMessageService;
+        this.userService = userService;
     }
 
     @PostConstruct
@@ -41,45 +44,53 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
+    /**
+     * Обработка запросов
+     * Если пользователь первый раз обращается к боту, то создаётся аккаунт и сессия
+     */
     @Override
     public int process(List<Update> list) {
-        try {
-            list.forEach(update -> {
-                for (CommandHandler commandHandler : commandHandlers) {
-                    if (commandHandler.apply(update)) {
-                        commandHandler.process(update);
-                        break;
-                    }
+
+        list.forEach(update -> {
+            try {
+                final long chatId;
+                if (update.message() != null) {
+                    chatId = update.message().chat().id();
+                } else {
+                    chatId = update.callbackQuery().from().id();
                 }
-            });
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
+                if (!userService.existUser(chatId)) {
+                    userService.createUser(chatId);
+                    logger.info(String.format("User(chatId=%d) was be created", chatId));
+                }
+                executeHandler(update, chatId);
+
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
+
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
-/*
-    private void send(SendMessage sendMessage) {
-        SendResponse sendResponse = telegramBot.execute(sendMessage);
-        if (!sendResponse.isOk()) {
-            logger.error("Error during sending message: {}", sendResponse.description());
+
+    /**
+     * Найти и выполнить обработчик из цепочки, в случае когда не был найден обработчик отправляется сообщение пользователю
+     */
+    private void executeHandler(Update update, long chatId) {
+        boolean hasFoundHandler = false;
+        for (CommandHandler commandHandler : commandHandlers) {
+            if (commandHandler.apply(update)) {
+                commandHandler.process(update);
+                hasFoundHandler = true;
+                break;
+            }
+        }
+        if (!hasFoundHandler) {
+            if (update.message() != null) {
+                SendMessage sendMessage = new SendMessage(chatId,
+                        propertyMessageService.getMessage("command.notFound"));
+                telegramMessageService.execute(sendMessage);
+            }
         }
     }
-
-    private void sendReport(User user, PhotoSize[] photo, String caption) {
-        //to do something... SELECT * FROM users INNER JOIN session ON users.session_id=session.id;
-
-        String fileId = photo[photo.length - 1].fileId();//самая крупная фотка лежит в конце массива
-        GetFileResponse getFileResponse = telegramBot.execute(new GetFile(fileId));
-        File file = getFileResponse.file();
-        try {
-            byte[] photoFile = telegramBot.getFileContent(file);
-            reportService.CreateReport(user, caption, photoFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        userService.turnOffReportSending(user);
-    }
-*/
 }

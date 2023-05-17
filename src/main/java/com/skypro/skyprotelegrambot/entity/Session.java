@@ -1,9 +1,11 @@
 package com.skypro.skyprotelegrambot.entity;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
 @Entity
-@Table (name = "session")
+@Table(name = "session")
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,13 +14,17 @@ public class Session {
     @ManyToOne
     @JoinColumn(name = "selected_shelter_id")
     private Shelter selectedShelter;
-    @Column(name = "is_waiting_contact",nullable = false,columnDefinition = "false")
-    private boolean isWaitingContact;
-
-    @Column(name = "is_report_sending")
+    @ColumnDefault("false")
+    @Column(name = "has_waiting_contact", nullable = false)
+    private boolean hasWaitingContact;
+    @ColumnDefault("false")
+    @Column(name = "is_report_sending", nullable = false)
     boolean isReportSending;
+    @ColumnDefault("true")
+    @Column(name = "is_first_request", nullable = false)
+    boolean isFirstRequest;
 
-    public Session(){
+    public Session() {
         isReportSending = false;
     }
 
@@ -38,12 +44,12 @@ public class Session {
         this.selectedShelter = selectedShelter;
     }
 
-    public boolean isWaitingContact() {
-        return isWaitingContact;
+    public boolean hasWaitingContact() {
+        return hasWaitingContact;
     }
 
-    public void setWaitingContact(boolean waitingContact) {
-        isWaitingContact = waitingContact;
+    public void setHasWaitingContact(boolean hasWaitingContact) {
+        this.hasWaitingContact = hasWaitingContact;
     }
 
     public boolean isReportSending() {
@@ -52,5 +58,13 @@ public class Session {
 
     public void setReportSending(boolean reportSending) {
         isReportSending = reportSending;
+    }
+
+    public boolean isFirstRequest() {
+        return isFirstRequest;
+    }
+
+    public void setFirstRequest(boolean firstRequest) {
+        isFirstRequest = firstRequest;
     }
 }

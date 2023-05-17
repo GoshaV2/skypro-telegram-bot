@@ -4,7 +4,7 @@ import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
+import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.listener.TelegramBotUpdateListener;
 import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.UserService;
@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
 /**
  * Обработка стартовой точки
  */
@@ -48,16 +49,11 @@ public class StartHandler implements CommandHandler {
         Message message = update.message();
         CallbackQuery callbackQuery = update.callbackQuery();
 
-        Long chatId = message != null ? message.chat().id() : callbackQuery.from().id();
-        boolean isFirstRequest=false;
-        try {
-            userService.findUserByChatId(chatId);
-        } catch (UserNotFoundException e) {
-            isFirstRequest = true;
-            userService.createUser(chatId);
-            logger.info("New user success created");
-        }
-        SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId);
+        final Long chatId = message != null ? message.chat().id() : callbackQuery.from().id();
+        final User user = userService.findUserByChatId(chatId);
+        final boolean isFirstRequest = user.getSession().isFirstRequest();
+
+        SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId, isFirstRequest);
         telegramMessageService.execute(sendMessage);
     }
 }

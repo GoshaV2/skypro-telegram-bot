@@ -25,7 +25,7 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
     }
 
     @Override
-    public Keyboard getInfoMenu(long shelterId) {
+    public Keyboard getInfoMenu() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(
                 new InlineKeyboardButton(propertyMessageService.getMessage("shelter.info"))
@@ -53,7 +53,7 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
     }
 
     @Override
-    public Keyboard getBaseInformationMenu(Shelter shelter,long shelterId) {
+    public Keyboard getBaseInformationMenu(Shelter shelter, long shelterId) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         answerService.getAnswersByCategory(Category.INFORMATION, shelter).forEach(answer -> {
             inlineKeyboardMarkup.addRow(new InlineKeyboardButton(answer.getTitle())
@@ -65,6 +65,7 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
         );
         return inlineKeyboardMarkup;
     }
+
     @Override
     public Keyboard getTakePetInformationMenu(Shelter shelter) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -74,10 +75,11 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
         });
         return inlineKeyboardMarkup;
     }
+
     @Override
-    public Keyboard backFromReport(Shelter shelter){
+    public Keyboard backFromReport(Shelter shelter) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(propertyMessageService.getMessage("back"))
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(propertyMessageService.getMessage("button.back"))
                 .callbackData(ShelterCommand.CHOOSE_SHELTER.getStartPath() + shelter.getId()));
         return inlineKeyboardMarkup;
     }

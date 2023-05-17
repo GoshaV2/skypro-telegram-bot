@@ -6,6 +6,7 @@ import com.skypro.skyprotelegrambot.service.ShelterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/shelters")
 public class ShelterController {
@@ -27,7 +28,7 @@ public class ShelterController {
     @Operation(
             summary = "Изменение параметров приюта"
     )
-    public Shelter update(@RequestBody ShelterDto shelterDto, @PathVariable (name = "id") Long id) {
+    public Shelter update(@RequestBody ShelterDto shelterDto, @PathVariable(name = "id") Long id) {
         return shelterService.updateShelter(shelterDto, id);
     }
 

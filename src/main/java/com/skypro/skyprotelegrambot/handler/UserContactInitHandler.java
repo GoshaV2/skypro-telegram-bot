@@ -40,6 +40,7 @@ public class UserContactInitHandler implements CommandHandler {
 
     /**
      * Обработка команды, добавление в сессию юзера параметра, что мы ожидаем контакты
+     *
      * @param update
      */
     @Override
@@ -48,9 +49,9 @@ public class UserContactInitHandler implements CommandHandler {
         long chatId = callbackQuery.from().id();
         User user = userService.findUserByChatId(chatId);
         Session session = user.getSession();
-        session.setWaitingContact(true);
+        session.setHasWaitingContact(true);
         userService.saveUser(user);
         SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("contact.init"));
-        telegramMessageService.sendMessage(sendMessage);
+        telegramMessageService.execute(sendMessage);
     }
 }

@@ -31,7 +31,7 @@ public class UserSendContactHandler implements CommandHandler {
         long chatId = message.chat().id();
         User user = userService.findUserByChatId(chatId);
         Session session = user.getSession();
-        return session.isWaitingContact();
+        return session.hasWaitingContact();
     }
 
     @Override
@@ -43,6 +43,6 @@ public class UserSendContactHandler implements CommandHandler {
         user.setContact(contact);
         userService.saveUser(user);
         SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("contact.sent"));
-        telegramMessageService.sendMessage(sendMessage);
+        telegramMessageService.execute(sendMessage);
     }
 }
