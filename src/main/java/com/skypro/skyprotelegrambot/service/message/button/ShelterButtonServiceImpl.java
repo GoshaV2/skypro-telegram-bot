@@ -32,7 +32,14 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
                         .callbackData(ShelterCommand.GET_INFO_MENU.getStartPath()));
         inlineKeyboardMarkup.addRow(
                 new InlineKeyboardButton(propertyMessageService.getMessage("shelter.howGetAnimal"))
-                        .callbackData("/3"));
+                        .callbackData("/3"));//это что за дробь три??
+        inlineKeyboardMarkup.addRow(
+                new InlineKeyboardButton(propertyMessageService.getMessage("shelter.send.report"))
+                        .callbackData(ShelterCommand.SEND_REPORT.getStartPath())
+        );
+        inlineKeyboardMarkup.addRow(
+                new InlineKeyboardButton(propertyMessageService.getMessage("back")).callbackData("/start")
+        );
         return inlineKeyboardMarkup;
     }
 
@@ -55,4 +62,22 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
         });
         return inlineKeyboardMarkup;
     }
+    @Override
+    public Keyboard getTakePetInformationMenu(Shelter shelter) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        answerService.getAnswersByCategory(Category.GETTING_ANIMAL, shelter).forEach(answer -> {
+            inlineKeyboardMarkup.addRow(new InlineKeyboardButton(answer.getTitle())
+                    .callbackData(answer.getCommand()));
+        });
+        return inlineKeyboardMarkup;
+    }
+    @Override
+    public Keyboard backFromReport(Shelter shelter){
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(propertyMessageService.getMessage("back"))
+                .callbackData(ShelterCommand.CHOOSE_SHELTER.getStartPath() + shelter.getId()));
+        return inlineKeyboardMarkup;
+    }
+
+
 }

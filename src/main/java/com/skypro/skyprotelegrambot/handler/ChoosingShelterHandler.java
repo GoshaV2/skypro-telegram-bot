@@ -12,6 +12,9 @@ import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
 import org.springframework.stereotype.Component;
 
+/**
+ * Обработка выбора приюта
+ */
 @Component
 public class ChoosingShelterHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;
@@ -42,6 +45,6 @@ public class ChoosingShelterHandler implements CommandHandler {
         Long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
         userService.chooseShelterForUser(chatId, shelterId);
         SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
-        telegramMessageService.sendMessage(sendMessage);
+        telegramMessageService.execute(sendMessage);
     }
 }

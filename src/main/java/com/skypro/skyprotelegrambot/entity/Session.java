@@ -13,6 +13,13 @@ public class Session {
     @JoinColumn(name = "selected_shelter_id")
     private Shelter selectedShelter;
 
+    @Column(name = "is_report_sending")
+    boolean isReportSending;
+
+    public Session(){
+        isReportSending = false;
+    }
+
     public Long getId() {
         return id;
     }
@@ -27,5 +34,13 @@ public class Session {
 
     public void setSelectedShelter(Shelter selectedShelter) {
         this.selectedShelter = selectedShelter;
+    }
+
+    public boolean isReportSending() {
+        return isReportSending;
+    }
+
+    public void setReportSending(boolean reportSending) {
+        isReportSending = reportSending;
     }
 }

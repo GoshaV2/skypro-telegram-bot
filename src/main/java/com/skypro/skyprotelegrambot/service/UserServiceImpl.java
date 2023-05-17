@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
      */
 
     public User findUserByChatId(Long chatId) {
-       return userRepository.findUserByChatId(chatId).orElseThrow(()
+        return userRepository.findUserByChatId(chatId).orElseThrow(()
                 -> new UserNotFoundException("Пользователь не найден"));
     }
 
@@ -67,6 +67,22 @@ public class UserServiceImpl implements UserService {
         user.setSession(session);
         sessionRepository.save(session);
         userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User turnOnReportSending(User user) {
+        Session session = user.getSession();
+        session.setReportSending(true);
+        sessionRepository.save(session);
+        return user;
+    }
+
+    @Override
+    public User turnOffReportSending(User user) {
+        Session session = user.getSession();
+        session.setReportSending(false);
+        sessionRepository.save(session);
         return user;
     }
 }
