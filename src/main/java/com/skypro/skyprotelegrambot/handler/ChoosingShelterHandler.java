@@ -10,8 +10,10 @@ import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 public class ChoosingShelterHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;
@@ -39,9 +41,9 @@ public class ChoosingShelterHandler implements CommandHandler {
         CallbackQuery callbackQuery = update.callbackQuery();
         Long chatId = callbackQuery.from().id();
         String text = callbackQuery.data();
-        Long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
+        long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
         userService.chooseShelterForUser(chatId, shelterId);
-        SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
+        SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId,shelterId);
         telegramMessageService.sendMessage(sendMessage);
     }
 }

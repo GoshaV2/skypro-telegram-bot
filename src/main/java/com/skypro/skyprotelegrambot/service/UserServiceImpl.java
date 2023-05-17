@@ -5,8 +5,8 @@ import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
 import com.skypro.skyprotelegrambot.repository.SessionRepository;
-import org.springframework.stereotype.Service;
 import com.skypro.skyprotelegrambot.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) { //поменять передаваемое значение
+        sessionRepository.save(user.getSession());
         return userRepository.save(user);
     }
 
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
      */
 
     public User findUserByChatId(Long chatId) {
-       return userRepository.findUserByChatId(chatId).orElseThrow(()
+        return userRepository.findUserByChatId(chatId).orElseThrow(()
                 -> new UserNotFoundException("Пользователь не найден"));
     }
 

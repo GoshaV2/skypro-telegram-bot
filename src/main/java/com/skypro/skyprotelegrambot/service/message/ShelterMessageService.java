@@ -4,9 +4,9 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 
 public interface ShelterMessageService {
-    SendMessage getMessageForChoosingShelter(long chatId);
+    SendMessage getMessageForChoosingShelter(long chatId, boolean isFirstRequest);
 
-    SendMessage getMessageAfterChosenShelter(long chatId);
+    SendMessage getMessageAfterChosenShelter(long chatId,long shelterId);
 
     SendMessage getMessageWithInfo(long chatId, Shelter shelter);
 

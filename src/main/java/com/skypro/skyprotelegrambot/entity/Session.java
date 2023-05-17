@@ -12,6 +12,8 @@ public class Session {
     @ManyToOne
     @JoinColumn(name = "selected_shelter_id")
     private Shelter selectedShelter;
+    @Column(name = "is_waiting_contact",nullable = false,columnDefinition = "false")
+    private boolean isWaitingContact;
 
     public Long getId() {
         return id;
@@ -27,5 +29,13 @@ public class Session {
 
     public void setSelectedShelter(Shelter selectedShelter) {
         this.selectedShelter = selectedShelter;
+    }
+
+    public boolean isWaitingContact() {
+        return isWaitingContact;
+    }
+
+    public void setWaitingContact(boolean waitingContact) {
+        isWaitingContact = waitingContact;
     }
 }

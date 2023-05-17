@@ -5,10 +5,10 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.Keyboard;
 import com.skypro.skyprotelegrambot.entity.Category;
 import com.skypro.skyprotelegrambot.entity.Shelter;
+import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.service.AnswerService;
 import com.skypro.skyprotelegrambot.service.PropertyMessageService;
 import com.skypro.skyprotelegrambot.service.ShelterService;
-import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +25,7 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
     }
 
     @Override
-    public Keyboard getInfoMenu() {
+    public Keyboard getInfoMenu(long shelterId) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(
                 new InlineKeyboardButton(propertyMessageService.getMessage("shelter.info"))
@@ -33,6 +33,8 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
         inlineKeyboardMarkup.addRow(
                 new InlineKeyboardButton(propertyMessageService.getMessage("shelter.howGetAnimal"))
                         .callbackData("/3"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton(propertyMessageService.getMessage("button.back"))
+                .callbackData("/start"));
         return inlineKeyboardMarkup;
     }
 
@@ -47,12 +49,16 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
     }
 
     @Override
-    public Keyboard getBaseInformationMenu(Shelter shelter) {
+    public Keyboard getBaseInformationMenu(Shelter shelter,long shelterId) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         answerService.getAnswersByCategory(Category.INFORMATION, shelter).forEach(answer -> {
             inlineKeyboardMarkup.addRow(new InlineKeyboardButton(answer.getTitle())
                     .callbackData(answer.getCommand()));
         });
+        inlineKeyboardMarkup.addRow(
+                new InlineKeyboardButton(propertyMessageService.getMessage("button.back"))
+                        .callbackData(ShelterCommand.CHOOSE_SHELTER.getStartPath() + shelterId)
+        );
         return inlineKeyboardMarkup;
     }
 }

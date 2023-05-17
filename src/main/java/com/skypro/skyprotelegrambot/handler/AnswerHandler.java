@@ -9,8 +9,11 @@ import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 public class AnswerHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;

@@ -22,24 +22,30 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
     }
 
     @Override
-    public SendMessage getMessageForChoosingShelter(long chatId) {
-        SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.menu.choose"));
+    public SendMessage getMessageForChoosingShelter(long chatId, boolean isFirstRequest) {
+        String greeting;
+        if (isFirstRequest) {
+            greeting = propertyMessageService.getMessage("shelter.menu.choose.greeting");
+        } else {
+            greeting = propertyMessageService.getMessage("shelter.menu.choose");
+        }
+        SendMessage sendMessage = new SendMessage(chatId, greeting);
         sendMessage.replyMarkup(shelterButtonService.getChooseSheltersMenu());
         return sendMessage;
     }
 
     @Override
-    public SendMessage getMessageAfterChosenShelter(long chatId) {
+    public SendMessage getMessageAfterChosenShelter(long chatId, long shelterId) {
         SendMessage sendMessage = new SendMessage(chatId,
                 propertyMessageService.getMessage("shelter.menu.chosen.getInfo"));
-        sendMessage.replyMarkup(shelterButtonService.getInfoMenu());
+        sendMessage.replyMarkup(shelterButtonService.getInfoMenu(shelterId));
         return sendMessage;
     }
 
     @Override
     public SendMessage getMessageWithInfo(long chatId, Shelter shelter) {
         SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.selectFromList"));
-        sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(shelter));
+        sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(shelter, shelter.getId()));
         return sendMessage;
     }
 
@@ -47,7 +53,7 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
     public SendMessage getAnswer(Long chatId, String command) {
         Answer answer = answerService.getAnswer(command);
         SendMessage sendMessage = new SendMessage(chatId, answer.getText());
-        sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(answer.getShelter()));
+        sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(answer.getShelter(), answer.getShelter().getId()));
         return sendMessage;
     }
 }
