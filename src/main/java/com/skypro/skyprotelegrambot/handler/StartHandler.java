@@ -51,6 +51,6 @@ public class StartHandler implements CommandHandler {
             logger.info("New user success created");
         }
         SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId);
-        telegramMessageService.sendMessage(sendMessage);
+        telegramMessageService.execute(sendMessage);
     }
 }

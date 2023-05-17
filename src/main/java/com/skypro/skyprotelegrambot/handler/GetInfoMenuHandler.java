@@ -70,6 +70,6 @@ public class GetInfoMenuHandler implements CommandHandler {
         Long chatId = callbackQuery.from().id();
         SendMessage sendMessage = shelterMessageService.getMessageWithBaseInfo(chatId,
                 userService.findUserByChatId(chatId).getSession().getSelectedShelter());
-        telegramMessageService.sendMessage(sendMessage);
+        telegramMessageService.execute(sendMessage);
     }
 }
