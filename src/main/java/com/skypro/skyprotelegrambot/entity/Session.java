@@ -15,6 +15,13 @@ public class Session {
     @Column(name = "is_waiting_contact",nullable = false,columnDefinition = "false")
     private boolean isWaitingContact;
 
+    @Column(name = "is_report_sending")
+    boolean isReportSending;
+
+    public Session(){
+        isReportSending = false;
+    }
+
     public Long getId() {
         return id;
     }
@@ -37,5 +44,13 @@ public class Session {
 
     public void setWaitingContact(boolean waitingContact) {
         isWaitingContact = waitingContact;
+    }
+
+    public boolean isReportSending() {
+        return isReportSending;
+    }
+
+    public void setReportSending(boolean reportSending) {
+        isReportSending = reportSending;
     }
 }

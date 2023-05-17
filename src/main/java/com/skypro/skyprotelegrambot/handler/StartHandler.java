@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+/**
+ * Обработка стартовой точки
+ */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 public class StartHandler implements CommandHandler {
@@ -54,7 +57,7 @@ public class StartHandler implements CommandHandler {
             userService.createUser(chatId);
             logger.info("New user success created");
         }
-        SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId,isFirstRequest);
-        telegramMessageService.sendMessage(sendMessage);
+        SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId);
+        telegramMessageService.execute(sendMessage);
     }
 }

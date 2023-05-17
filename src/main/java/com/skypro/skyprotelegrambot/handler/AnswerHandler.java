@@ -44,6 +44,6 @@ public class AnswerHandler implements CommandHandler {
         Long chatId = callbackQuery.from().id();
         String command = callbackQuery.data();
         SendMessage sendMessage = shelterMessageService.getAnswer(chatId, command);
-        telegramMessageService.sendMessage(sendMessage);
+        telegramMessageService.execute(sendMessage);
     }
 }

@@ -70,5 +70,21 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return user;
     }
+
+    @Override
+    public User turnOnReportSending(User user) {
+        Session session = user.getSession();
+        session.setReportSending(true);
+        sessionRepository.save(session);
+        return user;
+    }
+
+    @Override
+    public User turnOffReportSending(User user) {
+        Session session = user.getSession();
+        session.setReportSending(false);
+        sessionRepository.save(session);
+        return user;
+    }
 }
 

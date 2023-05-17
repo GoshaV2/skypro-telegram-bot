@@ -14,4 +14,8 @@ public interface UserService {
     User chooseShelterForUser(Long chatId, Long shelterId);
 
     User createUser(Long chatId);
+
+    User turnOnReportSending(User user);
+
+    User turnOffReportSending(User user);
 }

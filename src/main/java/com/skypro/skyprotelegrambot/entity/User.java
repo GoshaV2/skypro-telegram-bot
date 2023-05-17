@@ -1,6 +1,7 @@
 package com.skypro.skyprotelegrambot.entity;
 
 import javax.persistence.*;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -15,7 +16,7 @@ public class User {
     @Column(name = "contact")
     private String contact;
     @OneToOne
-    @JoinColumn(name = "session_id",nullable = false)
+    @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 
     public User() {
@@ -26,6 +27,7 @@ public class User {
     }
 
     public Long getChatId() {
+        // оно нужно?
         return chatId;
     }
 

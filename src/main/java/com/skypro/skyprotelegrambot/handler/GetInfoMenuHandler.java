@@ -14,6 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+/**
+ * Обработчик базовой информации о приюте (Этап 1 по ТЗ)
+ */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 public class GetInfoMenuHandler implements CommandHandler {
@@ -47,8 +51,8 @@ public class GetInfoMenuHandler implements CommandHandler {
     public void process(Update update) {
         CallbackQuery callbackQuery=update.callbackQuery();
         Long chatId = callbackQuery.from().id();
-        SendMessage sendMessage = shelterMessageService.getMessageWithInfo(chatId,
+        SendMessage sendMessage = shelterMessageService.getMessageWithBaseInfo(chatId,
                 userService.findUserByChatId(chatId).getSession().getSelectedShelter());
-        telegramMessageService.sendMessage(sendMessage);
+        telegramMessageService.execute(sendMessage);
     }
 }

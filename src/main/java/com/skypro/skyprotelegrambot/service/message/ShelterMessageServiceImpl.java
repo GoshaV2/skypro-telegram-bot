@@ -6,7 +6,6 @@ import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.service.AnswerService;
 import com.skypro.skyprotelegrambot.service.PropertyMessageService;
 import com.skypro.skyprotelegrambot.service.message.button.ShelterButtonService;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +14,8 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
     private final PropertyMessageService propertyMessageService;
     private final AnswerService answerService;
 
-    public ShelterMessageServiceImpl(ShelterButtonService shelterButtonService, MessageSource messageSource, PropertyMessageService propertyMessageService, AnswerService answerService) {
+    public ShelterMessageServiceImpl(ShelterButtonService shelterButtonService,
+                                     PropertyMessageService propertyMessageService, AnswerService answerService) {
         this.shelterButtonService = shelterButtonService;
         this.propertyMessageService = propertyMessageService;
         this.answerService = answerService;
@@ -43,9 +43,16 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
     }
 
     @Override
-    public SendMessage getMessageWithInfo(long chatId, Shelter shelter) {
+    public SendMessage getMessageWithBaseInfo(long chatId, Shelter shelter) {
         SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.selectFromList"));
         sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(shelter, shelter.getId()));
+        return sendMessage;
+    }
+
+    @Override
+    public SendMessage getMessageWithTakePetInfo(long chatId, Shelter shelter) {
+        SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.selectFromList"));
+        sendMessage.replyMarkup(shelterButtonService.getTakePetInformationMenu(shelter));
         return sendMessage;
     }
 
@@ -54,6 +61,13 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
         Answer answer = answerService.getAnswer(command);
         SendMessage sendMessage = new SendMessage(chatId, answer.getText());
         sendMessage.replyMarkup(shelterButtonService.getBaseInformationMenu(answer.getShelter(), answer.getShelter().getId()));
+        return sendMessage;
+    }
+
+    @Override
+    public SendMessage getMessageBeforeReport(long chatId, Shelter shelter) {
+        SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.send.report.info"));
+        sendMessage.replyMarkup(shelterButtonService.backFromReport(shelter));
         return sendMessage;
     }
 }

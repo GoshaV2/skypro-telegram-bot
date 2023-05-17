@@ -13,6 +13,10 @@ import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+/**
+ * Обработка выбора приюта
+ */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 public class ChoosingShelterHandler implements CommandHandler {
@@ -43,7 +47,7 @@ public class ChoosingShelterHandler implements CommandHandler {
         String text = callbackQuery.data();
         long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
         userService.chooseShelterForUser(chatId, shelterId);
-        SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId,shelterId);
-        telegramMessageService.sendMessage(sendMessage);
+        SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
+        telegramMessageService.execute(sendMessage);
     }
 }
