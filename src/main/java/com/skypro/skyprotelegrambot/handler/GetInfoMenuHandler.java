@@ -3,6 +3,8 @@ package com.skypro.skyprotelegrambot.handler;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.skypro.skyprotelegrambot.entity.Category;
+import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.listener.TelegramBotUpdateListener;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.service.TelegramMessageService;
@@ -43,15 +45,20 @@ public class GetInfoMenuHandler implements CommandHandler {
         if (chatId == null && command == null) {
             return false;
         }
-        return ShelterCommand.GET_INFO_MENU.getStartPath().equals(command);
+        return command.matches(ShelterCommand.GET_INFO_MENU.getStartPathPattern());
     }
 
     @Override
     public void process(Update update) {
         CallbackQuery callbackQuery = update.callbackQuery();
         Long chatId = callbackQuery.from().id();
-        SendMessage sendMessage = shelterMessageService.getMessageWithBaseInfo(chatId,
-                userService.findUserByChatId(chatId).getSession().getSelectedShelter());
+        String command = callbackQuery.data();
+        Category category = Category.valueOf(command
+                .replace(ShelterCommand.GET_INFO_MENU.getStartPath(), ""));
+        User user = userService.findUserByChatId(chatId);
+        SendMessage sendMessage = shelterMessageService.getMessageWithAnswerMenuInfo(chatId,
+                user.getSession().getSelectedShelter(), category
+        );
         telegramMessageService.execute(sendMessage);
     }
 }
