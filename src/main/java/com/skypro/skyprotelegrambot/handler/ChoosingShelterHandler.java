@@ -1,20 +1,21 @@
 package com.skypro.skyprotelegrambot.handler;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.skyprotelegrambot.listener.TelegramBotUpdateListener;
+import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
  * Обработка выбора приюта
  */
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 public class ChoosingShelterHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;
@@ -42,9 +43,9 @@ public class ChoosingShelterHandler implements CommandHandler {
         CallbackQuery callbackQuery = update.callbackQuery();
         Long chatId = callbackQuery.from().id();
         String text = callbackQuery.data();
-        Long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
-        userService.chooseShelterForUser(chatId, shelterId);
-        SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId);
+        long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
+        User user=userService.chooseShelterForUser(chatId, shelterId);
+        SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId, user.getSession().getSelectedShelter());
         telegramMessageService.execute(sendMessage);
     }
 }

@@ -15,7 +15,7 @@ public class VolunteerContact {
     private String telegramTag;
     @Column(name = "email")
     private String email;
-    @Column(name = "full_name",nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
     @ManyToOne
     @JoinColumn(name = "shelter_id")
