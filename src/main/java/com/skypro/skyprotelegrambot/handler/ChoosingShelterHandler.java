@@ -44,7 +44,7 @@ public class ChoosingShelterHandler implements CommandHandler {
         Long chatId = callbackQuery.from().id();
         String text = callbackQuery.data();
         long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
-        User user=userService.chooseShelterForUser(chatId, shelterId);
+        User user = userService.chooseShelterForUser(chatId, shelterId);
         SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId, user.getSession().getSelectedShelter());
         telegramMessageService.execute(sendMessage);
     }
