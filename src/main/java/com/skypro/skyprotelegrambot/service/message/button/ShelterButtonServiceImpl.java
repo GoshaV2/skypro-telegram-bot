@@ -45,7 +45,7 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
                         .callbackData(UserCommand.SEND_CONTACT.getCommand())
         );
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton(propertyMessageService.getMessage("button.back"))
-                .callbackData("/start"));
+                .callbackData(UserCommand.START.getCommand()));
         return inlineKeyboardMarkup;
     }
 
