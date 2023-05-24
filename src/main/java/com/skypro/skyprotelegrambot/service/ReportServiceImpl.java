@@ -18,8 +18,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report createReport(User user, String text, byte[] photo) {
-        return reportRepository.save(new Report(text, photo,
+    public Report createReport(User user, String text, String photoPath) {
+        return reportRepository.save(new Report(text, photoPath,
                 user, user.getSession().getSelectedShelter()));
     }
 
@@ -36,9 +36,10 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void updatePhoto(byte[] photo, Long id) {
+    public void updatePhoto(String photoPath, Long id) {
+        //надо подумать как менять фото в новой реализации
         Report edited = getById(id);
-        edited.setPhoto(photo);
+        edited.setPhotoPath(photoPath);
         reportRepository.save(edited);
     }
 

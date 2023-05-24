@@ -25,7 +25,6 @@ public class GetInfoMenuHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;
     private final UserService userService;
     private final TelegramMessageService telegramMessageService;
-    private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
 
     public GetInfoMenuHandler(ShelterMessageService shelterMessageService, UserService userService, TelegramMessageService telegramMessageService) {
         this.shelterMessageService = shelterMessageService;

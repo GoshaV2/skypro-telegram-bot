@@ -7,7 +7,8 @@ import com.skypro.skyprotelegrambot.entity.Shelter;
 public interface ShelterMessageService {
     /**
      * Сообщение выбора приюта
-     * @param chatId чат куда шлем сообщение
+     *
+     * @param chatId         чат куда шлем сообщение
      * @param isFirstRequest флаг первый раз ли пользователь обращется к боту или нет
      * @return сообщение с кнопками приютов
      */
@@ -21,6 +22,7 @@ public interface ShelterMessageService {
 
     /**
      * Сообщение с выбором вопроса по приюту и категории
+     *
      * @param chatId   чат куда шлем сообщение
      * @param shelter  выбранный пользователем приют
      * @param category категория, по которой будет выбираться подменю с различной информацией о приюте
@@ -48,4 +50,11 @@ public interface ShelterMessageService {
      * @return сообщение с указаниями по отчету
      */
     SendMessage getMessageBeforeReport(long chatId, Shelter shelter);
+
+    /**
+     * @param chatId  чат куда шлем сообщение
+     * @param shelter выбранный пользователем приют
+     * @return сообщение об успешном принятии отчета + кнопки после выбора приюта.
+     */
+    SendMessage getMessageAfterReport(long chatId, Shelter shelter);
 }

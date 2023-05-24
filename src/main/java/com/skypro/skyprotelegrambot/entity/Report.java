@@ -1,6 +1,5 @@
 package com.skypro.skyprotelegrambot.entity;
 
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,10 +16,8 @@ public class Report {
     @Column(name = "report")
     private String report;
 
-    @Lob
-    @Type(type = "org.hibernate.type.ImageType")
-    @Column(name = "photo")
-    private byte[] photo;
+    @Column(name = "photo_path")
+    private String photoPath;
 
     @Column(name = "date")
     private final LocalDate date;
@@ -37,10 +34,10 @@ public class Report {
         date = LocalDate.now();
     }
 
-    public Report(String report, byte[] photo, User user, Shelter shelter) {
+    public Report(String report, String photoPath, User user, Shelter shelter) {
         date = LocalDate.now();
         setReport(report);
-        setPhoto(photo);
+        setPhotoPath(photoPath);
         setUser(user);
         setShelter(shelter);
     }
@@ -57,12 +54,12 @@ public class Report {
         this.report = report;
     }
 
-    public byte[] getPhoto() {
-        return photo;
+    public String getPhotoPath() {
+        return photoPath;
     }
 
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 
     public LocalDate getDate() {

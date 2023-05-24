@@ -7,13 +7,14 @@ import com.skypro.skyprotelegrambot.entity.User;
 import java.util.List;
 
 public interface ReportService {
-    Report createReport(User user, String text, byte[] photo);
+
+    Report createReport(User user, String text, String photoPath);
 
     Report getById(Long id);
 
     List<Report> getAllByUserAndShelter(User user, Shelter shelter);
 
-    void updatePhoto(byte[] photo, Long id);
+    void updatePhoto(String photoPath, Long id);
 
     void updateText(String text, Long id);
 
