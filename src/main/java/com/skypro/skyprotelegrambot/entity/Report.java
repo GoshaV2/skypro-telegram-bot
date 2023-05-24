@@ -36,10 +36,10 @@ public class Report {
 
     public Report(String report, String photoPath, User user, Shelter shelter) {
         date = LocalDate.now();
-        setReport(report);
-        setPhotoPath(photoPath);
-        setUser(user);
-        setShelter(shelter);
+        this.report = report;
+        this.photoPath = photoPath;
+        this.user = user;
+        this.shelter = shelter;
     }
 
     public Long getId() {

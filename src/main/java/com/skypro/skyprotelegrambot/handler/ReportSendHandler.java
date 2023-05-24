@@ -18,7 +18,7 @@ import java.nio.file.Path;
 @Component
 public class ReportSendHandler implements CommandHandler {
     private final Path DIRECTORY_PATH =
-            Path.of("C:\\Users\\offic\\IdeaProjects\\skypro-telegram-bot\\src\\main\\resources\\photos");
+            Path.of("/photos");
     private final UserService userService;
     private final ShelterMessageService shelterMessageService;
     private final TelegramMessageService telegramMessageService;
