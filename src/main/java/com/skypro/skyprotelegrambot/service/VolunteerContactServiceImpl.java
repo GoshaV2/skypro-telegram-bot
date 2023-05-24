@@ -1,10 +1,13 @@
 package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.dto.request.VolunteerContactDto;
+import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.VolunteerContact;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.repository.VolunteerContactRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class VolunteerContactServiceImpl implements VolunteerContactService {
@@ -46,5 +49,10 @@ public class VolunteerContactServiceImpl implements VolunteerContactService {
     @Override
     public void deleteVolunteerContactById(Long id) {
         volunteerContactRepository.delete(findVolunteerContactById(id));
+    }
+
+    @Override
+    public List<VolunteerContact> findAllByShelter(Shelter shelter) {
+        return volunteerContactRepository.findAllByShelter(shelter);
     }
 }
