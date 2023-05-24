@@ -2,23 +2,27 @@ package com.skypro.skyprotelegrambot.handler;
 
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.skypro.skyprotelegrambot.entity.Session;
-import com.skypro.skyprotelegrambot.entity.Shelter;
+import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.skyprotelegrambot.entity.User;
-import com.skypro.skyprotelegrambot.entity.VolunteerContact;
 import com.skypro.skyprotelegrambot.model.command.VolunteerCommand;
-import com.skypro.skyprotelegrambot.repository.UserRepository;
-import com.skypro.skyprotelegrambot.service.VolunteerContactService;
+import com.skypro.skyprotelegrambot.service.TelegramMessageService;
+import com.skypro.skyprotelegrambot.service.UserService;
+import com.skypro.skyprotelegrambot.service.message.VolunteerMessageService;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+@Order(Ordered.HIGHEST_PRECEDENCE)
+@Component
 public class GetVolunteerContactHandler implements CommandHandler {
-    private final VolunteerContactService volunteerContactService;
-    private final UserRepository userRepository;
+    private final VolunteerMessageService volunteerMessageService;
+    private final TelegramMessageService telegramMessageService;
+    private final UserService userService;
 
-    public GetVolunteerContactHandler(VolunteerContactService volunteerContactService, UserRepository userRepository) {
-        this.volunteerContactService = volunteerContactService;
-        this.userRepository = userRepository;
+    public GetVolunteerContactHandler(VolunteerMessageService volunteerMessageService, TelegramMessageService telegramMessageService, UserService userService) {
+        this.volunteerMessageService = volunteerMessageService;
+        this.telegramMessageService = telegramMessageService;
+        this.userService = userService;
     }
 
     @Override
@@ -33,16 +37,10 @@ public class GetVolunteerContactHandler implements CommandHandler {
     @Override
     public void process(Update update) {
         CallbackQuery callbackQuery = update.callbackQuery();
-//        StringBuilder stringBuilder = new StringBuilder();
-//        stringBuilder.append(stringBuilder);
-        long id = callbackQuery.from().id();
-        VolunteerContact volunteerContact = volunteerContactService.findVolunteerContactById(id);
-        Session session = new Session();
-        session.getSelectedShelter();
-
-    }
-
-    public List<User> getAll(Shelter shelter) {
-        return userRepository.getAll(shelter);
+        long chatId = callbackQuery.from().id();
+        User user = userService.findUserByChatId(chatId);
+        SendMessage sendMessage = volunteerMessageService.getMessageAfterSentVolunteerContact(chatId,
+                user.getSession().getSelectedShelter());
+        telegramMessageService.execute(sendMessage);
     }
 }
