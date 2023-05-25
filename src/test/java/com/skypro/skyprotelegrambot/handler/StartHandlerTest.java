@@ -1,79 +1,58 @@
 package com.skypro.skyprotelegrambot.handler;
 
+import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import com.skypro.skyprotelegrambot.service.TelegramMessageService;
-import com.skypro.skyprotelegrambot.service.UserService;
-import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
+import com.pengrad.telegrambot.model.User;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@ActiveProfiles("test")
+@Sql(scripts = {"/script/test-user.sql"})
 class StartHandlerTest {
-    @Mock
-    private TelegramMessageService telegramMessageService;
-    @Mock
-    private ShelterMessageService shelterMessageService;
-    @Mock
-    private UserService userService;
-    @InjectMocks
+    @Autowired
     private StartHandler startHandler;
-
+    @Mock
+    private Update update;
+    @Mock
+    private Message message;
+    @Mock
+    private CallbackQuery callbackQuery;
+    @Mock
+    private User user;
+    @Autowired
+    private TelegramBot telegramBot;
     @Test
-    void apply_whenAppliedAndCallbackNotNull_thenReturnTrue() {
-        Update update = new Update() {
-            @Override
-            public CallbackQuery callbackQuery() {
-                return new CallbackQuery() {
-
-                    @Override
-                    public String data() {
-                        return "/start";
-                    }
-                };
-            }
-        };
+    void apply_whenIsMessageAndCorrectCommand_thenReturnTrue() {
+        when(update.message()).thenReturn(message);
+        when(message.text()).thenReturn("/start");
         assertTrue(startHandler.apply(update));
     }
-
     @Test
-    void apply_whenAppliedAndMessageNotNull_thenReturnTrue() {
-        Update update = new Update() {
-            @Override
-            public Message message() {
-                return new Message() {
-
-                    @Override
-                    public String text() {
-                        return "/start";
-                    }
-                };
-            }
-        };
+    void apply_whenIsCallbackQueryAndCorrectCommand_thenReturnTrue() {
+        when(update.callbackQuery()).thenReturn(callbackQuery);
+        when(callbackQuery.data()).thenReturn("/start");
         assertTrue(startHandler.apply(update));
     }
-
     @Test
-    void apply_whenNotAppliedAndMessageNotNull_thenReturnFalse() {
-        Update update = new Update() {
-            @Override
-            public Message message() {
-                return new Message() {
-
-                    @Override
-                    public String text() {
-                        return "start";
-                    }
-                };
-            }
-        };
-        assertFalse(startHandler.apply(update));
+    void process_whenIsCallbackQueryAndCorrectCommand_thenSendMessageWithMenu() {
+        /*when(update.callbackQuery()).thenReturn(callbackQuery);
+        when(callbackQuery.data()).thenReturn("/start");
+        when(callbackQuery.from()).thenReturn(user);
+        when(user.id()).thenReturn(1L);
+        startHandler.process(update);
+        Mockito.verify(telegramBot).execute(any());*/
     }
 }

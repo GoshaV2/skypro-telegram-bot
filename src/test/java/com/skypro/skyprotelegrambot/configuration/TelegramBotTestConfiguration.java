@@ -1,18 +1,19 @@
 package com.skypro.skyprotelegrambot.configuration;
 
 import com.pengrad.telegrambot.TelegramBot;
-import org.springframework.beans.factory.annotation.Value;
+import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("production")
-public class TelegramBotConfiguration {
+@Profile("test")
+public class TelegramBotTestConfiguration {
 
     @Bean
-    public TelegramBot telegramBot(@Value("${telegram.bot.token}") String token) {
-        return new TelegramBot(token);
+    @Primary
+    public TelegramBot telegramBotTest() {
+        return Mockito.mock(TelegramBot.class);
     }
-
 }
