@@ -47,6 +47,7 @@ public class ReportController {
     }
 
     @GetMapping("/today{shelterId}")
+    @Operation(summary = "список всех сегодняшних отчетов для приюта")
     public List<Report> getAllTodayReportToShelter(@PathVariable(name = "shelterId") Long shelterId) {
         List<Report> all = reportService.getAll();
         return all.stream()
