@@ -16,6 +16,10 @@ public class ReportServiceImpl implements ReportService {
     public ReportServiceImpl(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
+    @Override
+    public List<Report> getAll(){
+        return  reportRepository.findAll();
+    }
 
     @Override
     public Report createReport(User user, String text, String photoPath) {

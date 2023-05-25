@@ -5,7 +5,7 @@ import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.GetFileResponse;
 import com.skypro.skyprotelegrambot.entity.User;
-import com.skypro.skyprotelegrambot.service.FileServise;
+import com.skypro.skyprotelegrambot.service.FileService;
 import com.skypro.skyprotelegrambot.service.ReportService;
 import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.UserService;
@@ -18,16 +18,16 @@ import java.nio.file.Path;
 @Component
 public class ReportSendHandler implements CommandHandler {
     private final Path DIRECTORY_PATH =
-            Path.of("/photos");
+            Path.of("photos/");
     private final UserService userService;
     private final ShelterMessageService shelterMessageService;
     private final TelegramMessageService telegramMessageService;
     private final ReportService reportService;
-    private final FileServise fileService;
+    private final FileService fileService;
 
     public ReportSendHandler(UserService userService, ShelterMessageService shelterMessageService,
                              TelegramMessageService telegramMessageService, ReportService reportService,
-                             FileServise fileService) {
+                             FileService fileService) {
         this.userService = userService;
         this.shelterMessageService = shelterMessageService;
         this.telegramMessageService = telegramMessageService;
@@ -48,58 +48,40 @@ public class ReportSendHandler implements CommandHandler {
     @Override
     public void process(Update update) {
         Message message = update.message();
-        CallbackQuery callbackQuery = update.callbackQuery();
-
-        if (callbackQuery != null) {
-            User user = userService.findUserByChatId(callbackQuery.from().id());
-            userService.turnOffReportSending(user);
-            //отправить сообщение предыдущего меню.
-            SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(callbackQuery.from().id(),
-                    user.getSession().getSelectedShelter());
-            telegramMessageService.execute(sendMessage);
-            return;
-        }
-
         Long id = message.from().id();
         PhotoSize[] photoSizes = message.photo();
-
-        if (photoSizes != null){
-            for (PhotoSize ps:photoSizes) {
-                System.out.println(ps);
-            }
-            System.out.println("***");
-        }
-
         String caption = message.caption();
         User user = userService.findUserByChatId(id);
 
         if (photoSizes == null || caption == null) {
+            telegramMessageService.execute(new SendMessage(id, "Неверный формат сообщения! Попробуйте снова."));
             SendMessage sendMessage =
                     shelterMessageService.getMessageBeforeReport(id, user.getSession().getSelectedShelter());
             telegramMessageService.execute(sendMessage);
             return;
         }
 
-        GetFile getfile = new GetFile(photoSizes[0].fileId());
-        GetFileResponse getFileResponse = telegramMessageService.execute(getfile);
-        File file = getFileResponse.file();
-        String fileName = photoSizes[photoSizes.length-1].fileId()+"."+getFileExtension(file.filePath());
-        Path filePath = DIRECTORY_PATH.resolve(fileName);
-//добавление отчета в базу и сохранение фото
         try {
-            byte[] photoFile = telegramMessageService.getFileContent(file);
-            fileService.saveFile(filePath,photoFile);
-            reportService.createReport(user, caption, filePath.toString());
+            createReport(user, caption, photoSizes);
         } catch (IOException e) {
+            telegramMessageService.execute(new SendMessage(id, "Что-то пошло не так! Попробуйте снова чуть позже."));
             e.printStackTrace();
         }
- //отправка сообщения пользователю что отчет принят
+        //отправка сообщения пользователю что отчет принят
         SendMessage sendMessage = shelterMessageService.getMessageAfterReport(id,
                 user.getSession().getSelectedShelter());
         telegramMessageService.execute(sendMessage);
     }
-    private String getFileExtension(String filePath){
-        String[] array = filePath.split("\\.");
-        return array[array.length-1];
+
+    //добавление отчета в базу и сохранение фото
+    private void createReport(User user, String text, PhotoSize[] photos) throws IOException{
+        GetFile getfile = new GetFile(photos[photos.length - 1].fileId());
+        GetFileResponse getFileResponse = telegramMessageService.execute(getfile);
+        File file = getFileResponse.file();
+        String fileName = photos[photos.length - 1].fileUniqueId() + ".jpg"; //опытным путем установлено что фотки всегда приходят .jpg
+        Path filePath = DIRECTORY_PATH.resolve(fileName);
+        byte[] photoFile = telegramMessageService.getFileContent(file);
+        fileService.saveFile(filePath, photoFile);
+        reportService.createReport(user, text, filePath.toString());
     }
 }

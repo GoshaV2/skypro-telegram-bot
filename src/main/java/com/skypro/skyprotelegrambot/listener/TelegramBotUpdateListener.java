@@ -53,6 +53,7 @@ public class TelegramBotUpdateListener implements UpdatesListener {
 
         list.forEach(update -> {
             try {
+                logger.info("New update: {}", update);
                 final long chatId;
                 if (update.message() != null) {
                     chatId = update.message().chat().id();
@@ -81,12 +82,16 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         for (CommandHandler commandHandler : commandHandlers) {
             if (commandHandler.apply(update)) {
                 commandHandler.process(update);
+                logger.info(String.format("Update %d has processed with %s",
+                        update.updateId(), commandHandler.getClass().getSimpleName()));
                 hasFoundHandler = true;
                 break;
+
             }
         }
         if (!hasFoundHandler) {
             if (update.message() != null) {
+                logger.info(String.format("Update %d has not processed with handler", update.updateId()));
                 SendMessage sendMessage = new SendMessage(chatId,
                         propertyMessageService.getMessage("command.notFound"));
                 telegramMessageService.execute(sendMessage);

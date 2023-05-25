@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(User user) { //поменять передаваемое значение
+    public User saveUser(User user) {
         sessionRepository.save(user.getSession());
         return userRepository.save(user);
     }

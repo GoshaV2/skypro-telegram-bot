@@ -7,7 +7,7 @@ import java.io.*;
 import java.nio.file.Path;
 
 @Service
-public class FileServiceImpl implements FileServise {
+public class FileServiceImpl implements FileService {
 
     @Override
     public void saveFile(Path path, byte[] source) throws IOException {
