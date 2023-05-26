@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public interface ShelterButtonService {
     /**
      * Получение стартового меню
+     *
      * @return кнопки по разделам приюта. Нужны после выбора приюта.
      */
     Keyboard getInfoMenu();
@@ -19,6 +20,7 @@ public interface ShelterButtonService {
 
     /**
      * Получение меню с выбором вопросов о приюте по категории
+     *
      * @param shelter  выбранный пользователем приют
      * @param category категория, по которой будет выбираться подменю с различной информацией о приюте
      * @return возвращает пару из флага о том есть ли инфорация или нет и

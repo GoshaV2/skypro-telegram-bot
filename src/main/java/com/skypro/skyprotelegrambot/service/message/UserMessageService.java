@@ -10,4 +10,8 @@ public interface UserMessageService {
      * Получение сообщения после сохранения контактов пользователя
      */
     SendMessage getMessageAfterSentContact(long chatId);
+
+    SendMessage getMessageForOverdueReportToUser(long chatId, String shelterName);
+
+    SendMessage getMessageForOverdueReportToVolunteer(long chatId, String userName, long userChatId);
 }

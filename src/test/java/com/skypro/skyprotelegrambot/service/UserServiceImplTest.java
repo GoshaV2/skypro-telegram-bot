@@ -26,7 +26,7 @@ class UserServiceImplTest {
     @Test
     void createUser_whenSuccessCreated_thenReturnUserWithNotNullSession() {
         final long chatId = 1;
-        User userCreate = userService.createUser(chatId);
+        User userCreate = userService.createUser(chatId,"test");
         assertNotNull(userCreate.getSession());
         assertEquals(chatId, userCreate.getChatId());
         verify(userRepository).save(any());

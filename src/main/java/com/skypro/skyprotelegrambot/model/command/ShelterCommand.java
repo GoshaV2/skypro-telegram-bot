@@ -2,7 +2,7 @@ package com.skypro.skyprotelegrambot.model.command;
 
 public enum ShelterCommand {
     CHOOSE_SHELTER("/chooseShelter/", "\\/chooseShelter\\/\\d*"),
-    GET_INFO_MENU("/getInfoMenu/","\\/getInfoMenu\\/[a-zA-Z_]+"),
+    GET_INFO_MENU("/getInfoMenu/", "\\/getInfoMenu\\/[a-zA-Z_]+"),
     SEND_REPORT("/sendReport");
 
 
