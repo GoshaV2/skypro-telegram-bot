@@ -4,7 +4,6 @@ import com.skypro.skyprotelegrambot.dto.request.ShelterDto;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.service.ShelterService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +35,7 @@ public class ShelterController {
     @Operation(
             summary = "Поиск приюта по id"
     )
-    public Shelter findShelterById(@PathVariable (name = "id") Long id) {
+    public Shelter findShelterById(@PathVariable(name = "id") Long id) {
         return shelterService.findShelterById(id);
     }
 }
