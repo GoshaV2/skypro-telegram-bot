@@ -16,23 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
-@Sql(scripts = "/script/test-data-report.sql")
+@Sql(scripts = "/script/test-data-for-reportRepository.sql")
 class ReportRepositoryTest {
 
     @Autowired
     private ReportRepository reportRepository;
 
     @Test
-    void getDataOfOverdueDays_whenDataListSizeIsOne() {
-        LocalDate localDate = LocalDate.of(2022, 1, 16);
-        List<OverdueDayData> overdueDayDataList = reportRepository.getDataOfOverdueDays(localDate);
-        assertEquals(1, overdueDayDataList.size());
-        OverdueDayData overdueDayData = overdueDayDataList.get(0);
-        long overdueDays = ChronoUnit.DAYS.between(overdueDayData.getLastLoadDate(), localDate);
-        assertEquals(overdueDays, 2);
-    }
-    @Test
-    void getDataOfOverdueDays_whenDataListSizeIsMoreThanOne() {
+    void getDataOfOverdueDays_whenListSizeIsTwo() {
         LocalDate localDate = LocalDate.of(2022, 1, 16);
         List<OverdueDayData> overdueDayDataList = reportRepository.getDataOfOverdueDays(localDate);
         assertEquals(2, overdueDayDataList.size());
