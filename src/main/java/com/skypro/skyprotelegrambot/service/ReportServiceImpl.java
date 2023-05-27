@@ -7,6 +7,7 @@ import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.repository.ReportRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -37,6 +38,10 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<Report> getAllByUserAndShelter(User user, Shelter shelter) {
         return reportRepository.findAllByUserAndShelter(user, shelter);
+    }
+    @Override
+    public List<Report> getAllByDateAndShelter(LocalDate date, Shelter shelter) {
+        return reportRepository.findAllByDateAndShelter(date, shelter);
     }
 
     @Override

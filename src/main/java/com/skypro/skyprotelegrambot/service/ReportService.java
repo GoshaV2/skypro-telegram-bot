@@ -4,6 +4,7 @@ import com.skypro.skyprotelegrambot.entity.Report;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ReportService {
@@ -27,11 +28,19 @@ public interface ReportService {
 
     /**
      * Формирование списка отчетов пользователя по заданному приюту
-     * @param user пользователь
-     * @param shelter приют
+     * @param user пользователь для формирования списка
+     * @param shelter приют для формирования списка
      * @return Список отчетов пользователя по заданному приюту
      */
     List<Report> getAllByUserAndShelter(User user, Shelter shelter);
+
+    /**
+     * Формирут список отчетов по дате и приюту
+     * @param date дата для формирования списка
+     * @param shelter приют для формирования списка
+     * @return список отчетов для заданного приют на заданную дату
+     */
+    List<Report> getAllByDateAndShelter(LocalDate date, Shelter shelter);
 
     /**
      * Обновление фото для данного отчета. Потенциальный функционал...
