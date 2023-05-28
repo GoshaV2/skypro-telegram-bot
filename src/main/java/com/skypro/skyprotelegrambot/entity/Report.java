@@ -22,7 +22,7 @@ public class Report {
     @Column(name = "photo")
     private byte[] photo;
 
-    @Column(name = "date")
+    @Column(name = "dates")
     private final LocalDate date;
 
     @ManyToOne

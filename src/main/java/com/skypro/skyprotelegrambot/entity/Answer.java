@@ -11,7 +11,7 @@ public class Answer {
     private Long id;
     @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "text", nullable = false)
+    @Column(name = "texts", nullable = false)
     private String text;
     @Column(name = "command", nullable = false, unique = true)
     private String command;
