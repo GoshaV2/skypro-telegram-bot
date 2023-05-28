@@ -27,7 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {TelegramBotTestConfiguration.class})
-@Sql(scripts = {"/script/test-data-for-get-info-menu-handler.sql"})
+@Sql(scripts = {"/script/handler/test-data-for-get-info-menu-handler.sql"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GetInfoMenuHandlerTest {
     @Autowired

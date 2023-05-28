@@ -2,7 +2,6 @@ package com.skypro.skyprotelegrambot.handler;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
@@ -10,9 +9,7 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.BaseResponse;
 import com.skypro.skyprotelegrambot.configuration.TelegramBotTestConfiguration;
-import com.skypro.skyprotelegrambot.service.PropertyMessageService;
 import org.assertj.core.internal.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {TelegramBotTestConfiguration.class})
-@Sql(scripts = {"/script/test-data-for-answer-handler.sql"})
+@Sql(scripts = {"/script/handler/test-data-for-answer-handler.sql"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AnswerHandlerTest {
     @Autowired

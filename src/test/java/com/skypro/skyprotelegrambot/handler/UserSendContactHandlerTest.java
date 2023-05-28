@@ -1,7 +1,6 @@
 package com.skypro.skyprotelegrambot.handler;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
@@ -29,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {TelegramBotTestConfiguration.class})
-@Sql(scripts = {"/script/test-data-for-send-contact-handler.sql"})
+@Sql(scripts = {"/script/handler/test-data-for-send-contact-handler.sql"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserSendContactHandlerTest {
     @Autowired
