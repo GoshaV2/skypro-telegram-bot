@@ -8,6 +8,7 @@ import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.model.command.AnswerCommand;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.model.command.UserCommand;
+import com.skypro.skyprotelegrambot.model.command.VolunteerCommand;
 import com.skypro.skyprotelegrambot.service.AnswerService;
 import com.skypro.skyprotelegrambot.service.PropertyMessageService;
 import com.skypro.skyprotelegrambot.service.ShelterService;
@@ -44,6 +45,10 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
         inlineKeyboardMarkup.addRow(
                 new InlineKeyboardButton(propertyMessageService.getMessage("contact.startMessage"))
                         .callbackData(UserCommand.SEND_CONTACT.getCommand())
+        );
+        inlineKeyboardMarkup.addRow(
+                new InlineKeyboardButton(propertyMessageService.getMessage("send.volunteer.contact"))
+                        .callbackData(VolunteerCommand.SEND_VOLUNTEER_CONTACT.getCommand())
         );
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton(propertyMessageService.getMessage("button.back"))
                 .callbackData(UserCommand.START.getCommand()));
