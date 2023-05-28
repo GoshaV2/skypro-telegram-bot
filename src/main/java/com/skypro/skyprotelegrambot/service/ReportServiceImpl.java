@@ -1,5 +1,6 @@
 package com.skypro.skyprotelegrambot.service;
 
+import com.skypro.skyprotelegrambot.entity.Probation;
 import com.skypro.skyprotelegrambot.entity.Report;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
@@ -24,9 +25,9 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report createReport(User user, String text, String photoPath) {
+    public Report createReport(Probation probation, String text, String photoPath) {
         return reportRepository.save(new Report(text, photoPath,
-                user, user.getSession().getSelectedShelter()));
+                probation));
     }
 
     @Override
@@ -37,36 +38,24 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<Report> getAllByUserAndShelter(User user, Shelter shelter) {
-        return reportRepository.findAllByUserAndShelter(user, shelter);
-    }
-    @Override
-    public List<Report> getAllByDateAndShelter(LocalDate date, Shelter shelter) {
-        return reportRepository.findAllByDateAndShelter(date, shelter);
+    public List<Report> getAllByProbation(Probation probation) {
+        return reportRepository.findAllByProbation(probation);
     }
 
     @Override
-    public void updatePhoto(String photoPath, Long id) {
-        //надо подумать как менять фото в новой реализации
-        Report edited = getById(id);
-        edited.setPhotoPath(photoPath);
-        reportRepository.save(edited);
+    public List<Report> getAllByDateAndProbation(LocalDate date, Probation probation) {
+        return reportRepository.findAllByDateAndProbation(date, probation);
     }
 
-    @Override
-    public void updateText(String text, Long id) {
-        Report edited = getById(id);
-        edited.setReport(text);
-        reportRepository.save(edited);
-    }
 
     @Override
     public void deleteReport(Report report) {
         reportRepository.delete(report);
     }
-
+/*
     @Override
     public List<OverdueDayData> getOverdueDayData(LocalDate to) {
         return reportRepository.getDataOfOverdueDays(to);
     }
+ */
 }

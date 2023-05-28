@@ -23,23 +23,19 @@ public class Report {
     private final LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "probation_id", nullable = false)
+    private Probation probation;
 
-    @ManyToOne
-    @JoinColumn(name = "shelter_id", nullable = false)
-    private Shelter shelter;
 
     public Report() {
         date = LocalDate.now();
     }
 
-    public Report(String report, String photoPath, User user, Shelter shelter) {
+    public Report(String report, String photoPath, Probation probation) {
         date = LocalDate.now();
         this.report = report;
         this.photoPath = photoPath;
-        this.user = user;
-        this.shelter = shelter;
+        this.probation = probation;
     }
 
     public Long getId() {
@@ -66,19 +62,11 @@ public class Report {
         return date;
     }
 
-    public User getUser() {
-        return user;
+    public Probation getProbation() {
+        return probation;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Shelter getShelter() {
-        return shelter;
-    }
-
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
+    public void setProbation(Probation probation) {
+        this.probation = probation;
     }
 }
