@@ -87,11 +87,12 @@ class ChoosingShelterHandlerTest {
                 String.format(propertyMessageService.getMessage("shelter.menu.chosen.getInfo"),
                         "test1"));
         assertEquals(chatId, 1);
-        assertEquals(inlineKeyboardButtons.length, 5);
+        assertEquals(inlineKeyboardButtons.length, 6);
         assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/getInfoMenu/INFORMATION");
         assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/getInfoMenu/GETTING_ANIMAL");
         assertEquals(inlineKeyboardButtons[2][0].callbackData(), "/sendReport");
         assertEquals(inlineKeyboardButtons[3][0].callbackData(), "/sendContact");
-        assertEquals(inlineKeyboardButtons[4][0].callbackData(), "/start");
+        assertEquals(inlineKeyboardButtons[4][0].callbackData(), "/sendVolunteerContact");
+        assertEquals(inlineKeyboardButtons[5][0].callbackData(), "/start");
     }
 }
