@@ -10,6 +10,9 @@ public class Shelter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    /**
+     * Название приюта
+     */
     @Column(name = "name")
     private String name;
     @ManyToMany

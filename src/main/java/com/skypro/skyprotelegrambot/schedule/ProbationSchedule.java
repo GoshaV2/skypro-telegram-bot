@@ -14,7 +14,7 @@ public class ProbationSchedule {
         this.probationService = probationService;
     }
 
-    @Scheduled(fixedRate = 10,timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedRate = 10, timeUnit = TimeUnit.SECONDS)
     public void checkReportSending() {
         probationService.sendNotificationAboutReport();
     }

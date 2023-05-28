@@ -13,11 +13,23 @@ public class Probation {
     private Shelter shelter;
     @ManyToOne
     private User user;
+    /**
+     * Имя животного
+     */
     private String petName;
+    /**
+     * Дата начала
+     */
     private LocalDate startDate;
+    /**
+     * Статус отчёта
+     */
     @Column(name = "probation_status")
     @Enumerated(EnumType.STRING)
     private ProbationStatus probationStatus;
+    /**
+     * Контакты отвественного волонтёра за этот испытательный срок
+     */
     @ManyToOne
     @JoinColumn(name = "volunteer_contact_id")
     private VolunteerContact volunteerContact;

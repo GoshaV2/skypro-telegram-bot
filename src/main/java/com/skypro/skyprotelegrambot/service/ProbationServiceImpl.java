@@ -1,5 +1,7 @@
 package com.skypro.skyprotelegrambot.service;
 
+import com.skypro.skyprotelegrambot.dto.request.ProbationAddAdditionalDaysDto;
+import com.skypro.skyprotelegrambot.dto.request.ProbationChangeStatusDto;
 import com.skypro.skyprotelegrambot.dto.request.ProbationDto;
 import com.skypro.skyprotelegrambot.dto.response.ProbationResponse;
 import com.skypro.skyprotelegrambot.entity.Probation;
@@ -73,6 +75,31 @@ public class ProbationServiceImpl implements ProbationService {
                         overdueDayData.getShelter().getName());
             }
         });
+    }
+
+    @Override
+    public ProbationResponse changeProbationStatus(ProbationChangeStatusDto probationDto, long probationId) {
+        Probation probation = getProbation(probationId);
+        probation.setProbationStatus(probationDto.getProbationStatus());
+        return ProbationResponse.from(probationRepository.save(probation));
+    }
+
+    @Override
+    public List<ProbationResponse> getUserProbationByShelter(long chatId, long shelterId) {
+        return ProbationResponse.from(probationRepository.findAllByUserChatIdAndShelterId(chatId, shelterId));
+    }
+
+    @Override
+    public ProbationResponse addAdditionalDays(ProbationAddAdditionalDaysDto probationDto, long probationId) {
+        Probation probation = getProbation(probationId);
+        int newCountDays = probation.getCountProbationDays() + probationDto.getDays();
+        probation.setCountProbationDays(newCountDays);
+        return ProbationResponse.from(probationRepository.save(probation));
+    }
+
+    private Probation getProbation(long id) {
+        return probationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundElement(id, Probation.class));
     }
 
     private Probation getProbation(User user, Shelter shelter) {

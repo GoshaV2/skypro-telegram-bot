@@ -9,12 +9,24 @@ public class User {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
+    /**
+     * Индентификатор пользователя в телеграмм
+     */
     @Column(name = "chat_id")
     private Long chatId;
+    /**
+     * Полное имя пользователя
+     */
     @Column(name = "name")
     private String name;
+    /**
+     * Контакты пользователя
+     */
     @Column(name = "contact")
     private String contact;
+    /**
+     * Сессия пользователя
+     */
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;

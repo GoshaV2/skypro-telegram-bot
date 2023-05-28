@@ -11,15 +11,27 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    /**
+     * Выбранный пользователем приют
+     */
     @ManyToOne
     @JoinColumn(name = "selected_shelter_id")
     private Shelter selectedShelter;
+    /**
+     * Флаг должен ли пользователь отправить контакты
+     */
     @ColumnDefault("false")
     @Column(name = "has_waiting_contact", nullable = false)
     private boolean hasWaitingContact;
+    /**
+     * Флаг должен ли пользователь отправить отчёт
+     */
     @ColumnDefault("false")
     @Column(name = "is_report_sending", nullable = false)
     boolean isReportSending;
+    /**
+     * Первый или нет запрос к боту пользователя
+     */
     @ColumnDefault("true")
     @Column(name = "is_first_request", nullable = false)
     boolean isFirstRequest;
