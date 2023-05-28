@@ -13,6 +13,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     Optional<Report> findById(Long id);
 
     List<Report> findAllByUserAndShelter(User user, Shelter shelter);
-    
+
     List<Report> findAllByDateAndShelter(LocalDate date, Shelter shelter);
 }
