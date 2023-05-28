@@ -50,10 +50,14 @@ public class StartHandler implements CommandHandler {
         Message message = update.message();
         CallbackQuery callbackQuery = update.callbackQuery();
 
-        final Long chatId = message != null ? message.chat().id() : callbackQuery.from().id();
+        final Long chatId = message != null ? message.from().id() : callbackQuery.from().id();
         final User user = userService.findUserByChatId(chatId);
-        final boolean isFirstRequest = user.getSession().isFirstRequest();
-
+        final boolean isFirstRequest;
+        if (callbackQuery != null) {
+            isFirstRequest = false;
+        } else {
+            isFirstRequest = user.getSession().isFirstRequest();
+        }
         SendMessage sendMessage = shelterMessageService.getMessageForChoosingShelter(chatId, isFirstRequest);
         telegramMessageService.execute(sendMessage);
     }

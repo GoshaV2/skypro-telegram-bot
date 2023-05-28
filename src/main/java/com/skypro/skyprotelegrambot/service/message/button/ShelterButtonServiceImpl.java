@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.Keyboard;
 import com.skypro.skyprotelegrambot.entity.Category;
 import com.skypro.skyprotelegrambot.entity.Shelter;
+import com.skypro.skyprotelegrambot.model.command.AnswerCommand;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
 import com.skypro.skyprotelegrambot.model.command.UserCommand;
 import com.skypro.skyprotelegrambot.service.AnswerService;
@@ -66,7 +67,7 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         answerService.getAnswersByCategory(category, shelter).forEach(answer -> {
             inlineKeyboardMarkup.addRow(new InlineKeyboardButton(answer.getTitle())
-                    .callbackData(answer.getCommand()));
+                    .callbackData(AnswerCommand.CHOOSE_ANSWER.getStartPath() + answer.getId()));
             wrapper.hasInformation = true;
         });
         inlineKeyboardMarkup.addRow(
@@ -76,15 +77,6 @@ public class ShelterButtonServiceImpl implements ShelterButtonService {
         return new ImmutablePair<>(wrapper.hasInformation, inlineKeyboardMarkup);
     }
 
-    @Override
-    public Keyboard getTakePetInformationMenu(Shelter shelter) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        answerService.getAnswersByCategory(Category.GETTING_ANIMAL, shelter).forEach(answer ->
-                inlineKeyboardMarkup.addRow(new InlineKeyboardButton(answer.getTitle())
-                        .callbackData(answer.getCommand()))
-        );
-        return inlineKeyboardMarkup;
-    }
 
     @Override
     public Keyboard backFromReport(Shelter shelter) {

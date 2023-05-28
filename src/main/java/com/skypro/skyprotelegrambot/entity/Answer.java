@@ -13,8 +13,6 @@ public class Answer {
     private String title;
     @Column(name = "text", nullable = false)
     private String text;
-    @Column(name = "command", nullable = false, unique = true)
-    private String command;
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private Category category;
@@ -22,9 +20,8 @@ public class Answer {
     @JoinColumn(name = "shelter_id", nullable = false)
     private Shelter shelter;
 
-    public Answer(String text, String command, Category category, Shelter shelter) {
+    public Answer(String text, Category category, Shelter shelter) {
         this.text = text;
-        this.command = command;
         this.category = category;
         this.shelter = shelter;
     }
@@ -51,14 +48,6 @@ public class Answer {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
     }
 
     public Category getCategory() {

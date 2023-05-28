@@ -9,6 +9,9 @@ import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.UserMessageService;
 import org.springframework.stereotype.Component;
 
+/**
+ * Обработка получения контактов и сохранение
+ */
 @Component
 public class UserSendContactHandler implements CommandHandler {
     private final UserService userService;
@@ -28,7 +31,7 @@ public class UserSendContactHandler implements CommandHandler {
         if (message == null) {
             return false;
         }
-        long chatId = message.chat().id();
+        long chatId = message.from().id();
         User user = userService.findUserByChatId(chatId);
         Session session = user.getSession();
         return session.hasWaitingContact();
@@ -38,7 +41,7 @@ public class UserSendContactHandler implements CommandHandler {
     public void process(Update update) {
         Message message = update.message();
         String contact = message.text();
-        long chatId = message.chat().id();
+        long chatId = message.from().id();
         User user = userService.findUserByChatId(chatId);
         user.setContact(contact);
         userService.saveUser(user);

@@ -26,9 +26,9 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public Answer getAnswer(String command) {
-        return answerRepository.findByCommand(command)
-                .orElseThrow(() -> new NotFoundElement(command, Answer.class));
+    public Answer getAnswer(long id) {
+        return answerRepository.findAnswerById(id)
+                .orElseThrow(() -> new NotFoundElement(id, Answer.class));
     }
 
     @Override
@@ -48,7 +48,6 @@ public class AnswerServiceImpl implements AnswerService {
         answer.setTitle(answerDto.getTitle());
         answer.setText(answerDto.getText());
         answer.setCategory(answerDto.getCategory());
-        answer.setCommand(answerDto.getCommand());
         answer.setShelter(shelterService.findShelterById(answerDto.getShelterId()));
         return answerRepository.save(answer);
     }
@@ -59,7 +58,6 @@ public class AnswerServiceImpl implements AnswerService {
         answer.setTitle(answerDto.getTitle());
         answer.setText(answerDto.getText());
         answer.setCategory(answerDto.getCategory());
-        answer.setCommand(answerDto.getCommand());
         return answerRepository.save(answer);
     }
 
@@ -69,8 +67,4 @@ public class AnswerServiceImpl implements AnswerService {
         answerRepository.delete(findAnswerById(id));
     }
 
-    @Override
-    public boolean hasCommand(String command) {
-        return answerRepository.existsByCommand(command);
-    }
 }

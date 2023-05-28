@@ -8,7 +8,7 @@ import com.skypro.skyprotelegrambot.entity.Shelter;
 import java.util.List;
 
 public interface AnswerService {
-    Answer getAnswer(String command);
+    Answer getAnswer(long id);
 
     List<Answer> getAnswersByCategory(Category category, Shelter shelter);
 
@@ -19,6 +19,4 @@ public interface AnswerService {
     Answer updateAnswer(AnswerDto answerDto, Long id);
 
     void deleteAnswerById(Long id);
-
-    boolean hasCommand(String command);
 }

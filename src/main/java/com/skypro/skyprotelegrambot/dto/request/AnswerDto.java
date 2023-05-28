@@ -5,14 +5,12 @@ import com.skypro.skyprotelegrambot.entity.Category;
 public class AnswerDto {
     private String title;
     private String text;
-    private String command;
     private Category category;
     private Long shelterId;
 
     public AnswerDto(String title, String text, String command, Category category, Long shelterId) {
         this.title = title;
         this.text = text;
-        this.command = command;
         this.category = category;
         this.shelterId = shelterId;
     }
@@ -34,14 +32,6 @@ public class AnswerDto {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
     }
 
     public Category getCategory() {

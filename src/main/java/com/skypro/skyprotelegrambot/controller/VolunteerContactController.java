@@ -37,7 +37,7 @@ public class VolunteerContactController {
     @Operation(
             summary = "Поиск контакта волонтера по id"
     )
-    public VolunteerContact findVolunteerContactById(@PathVariable (name = "id") Long id) {
+    public VolunteerContact findVolunteerContactById(@PathVariable(name = "id") Long id) {
         return volunteerContactService.findVolunteerContactById(id);
     }
 

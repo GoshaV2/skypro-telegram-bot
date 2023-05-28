@@ -64,15 +64,8 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
     }
 
     @Override
-    public SendMessage getMessageWithTakePetInfo(long chatId, Shelter shelter) {
-        SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("shelter.selectFromList"));
-        sendMessage.replyMarkup(shelterButtonService.getTakePetInformationMenu(shelter));
-        return sendMessage;
-    }
-
-    @Override
-    public SendMessage getAnswer(Long chatId, String command) {
-        Answer answer = answerService.getAnswer(command);
+    public SendMessage getAnswerMessage(Long chatId, long answerId) {
+        Answer answer = answerService.getAnswer(answerId);
         SendMessage sendMessage = new SendMessage(chatId, answer.getText());
         sendMessage.replyMarkup(shelterButtonService.getAnswerMenu(
                 answer.getShelter(),
