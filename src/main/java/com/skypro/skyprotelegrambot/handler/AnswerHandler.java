@@ -3,6 +3,7 @@ package com.skypro.skyprotelegrambot.handler;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.skypro.skyprotelegrambot.model.command.AnswerCommand;
 import com.skypro.skyprotelegrambot.service.AnswerService;
 import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
@@ -10,6 +11,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/**
+ * Обработка получение ответа на вопрос
+ */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 public class AnswerHandler implements CommandHandler {
@@ -31,7 +35,7 @@ public class AnswerHandler implements CommandHandler {
             return false;
         }
         String command = callbackQuery.data();
-        return answerService.hasCommand(command);
+        return command.matches(AnswerCommand.CHOOSE_ANSWER.getStartPathPattern());
     }
 
     @Override
@@ -39,7 +43,8 @@ public class AnswerHandler implements CommandHandler {
         CallbackQuery callbackQuery = update.callbackQuery();
         Long chatId = callbackQuery.from().id();
         String command = callbackQuery.data();
-        SendMessage sendMessage = shelterMessageService.getAnswer(chatId, command);
+        long answerId = Long.parseLong(command.replace(AnswerCommand.CHOOSE_ANSWER.getStartPath(), ""));
+        SendMessage sendMessage = shelterMessageService.getAnswerMessage(chatId, answerId);
         telegramMessageService.execute(sendMessage);
     }
 }

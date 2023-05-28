@@ -30,19 +30,12 @@ public interface ShelterMessageService {
      */
     SendMessage getMessageWithAnswerMenuInfo(long chatId, Shelter shelter, Category category);
 
-    /**
-     * @param chatId  чат куда шлем сообщение
-     * @param shelter выбранный пользователем приют
-     * @return сообщение с кнопками по информации о том как взять питомца
-     */
-    SendMessage getMessageWithTakePetInfo(long chatId, Shelter shelter);
 
     /**
-     * @param chatId  чат куда шлем сообщение
-     * @param command идентификатор ответа по кнопке
+     * @param chatId чат куда шлем сообщение
      * @return текстовое сообщение из БД
      */
-    SendMessage getAnswer(Long chatId, String command);
+    SendMessage getAnswerMessage(Long chatId, long answerId);
 
     /**
      * @param chatId  чат куда шлем сообщение

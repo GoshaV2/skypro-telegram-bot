@@ -39,8 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(User user) { //поменять передаваемое значение
-        sessionRepository.save(user.getSession());
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
 
@@ -78,7 +77,6 @@ public class UserServiceImpl implements UserService {
         user.setName(name);
         Session session = new Session();
         user.setSession(session);
-        sessionRepository.save(session);
         userRepository.save(user);
         return user;
     }

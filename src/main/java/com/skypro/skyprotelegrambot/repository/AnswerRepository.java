@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-    Optional<Answer> findByCommand(String command);
 
     List<Answer> findAllByCategoryAndShelter(Category category, Shelter shelter);
 
@@ -17,5 +16,4 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     Optional<Answer> findAnswerById(Long id);
 
-    boolean existsByCommand(String command);
 }

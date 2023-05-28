@@ -30,6 +30,5 @@ class UserServiceImplTest {
         assertNotNull(userCreate.getSession());
         assertEquals(chatId, userCreate.getChatId());
         verify(userRepository).save(any());
-        verify(sessionRepository).save(any());
     }
 }

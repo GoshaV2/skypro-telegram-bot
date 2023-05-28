@@ -18,12 +18,12 @@ public class AnswerController {
         this.answerService = answerService;
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     @Operation(
             summary = "Получение ответа"
     )
-    public Answer getAnswer(String command) {
-        return answerService.getAnswer(command);
+    public Answer getAnswer(@PathVariable("id") long id) {
+        return answerService.getAnswer(id);
     }
 
     /*@GetMapping

@@ -30,12 +30,6 @@ public interface ShelterButtonService {
 
     /**
      * @param shelter выбранный пользователем приют
-     * @return возвращаем кнопки по информации о том как взять питомца из приюта в аргументах метода
-     */
-    Keyboard getTakePetInformationMenu(Shelter shelter);
-
-    /**
-     * @param shelter выбранный пользователем приют
      * @return Кнопка "назад" при выборе отправки отчета
      */
     Keyboard backFromReport(Shelter shelter);
