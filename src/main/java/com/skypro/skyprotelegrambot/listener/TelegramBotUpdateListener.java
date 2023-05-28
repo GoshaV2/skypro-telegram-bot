@@ -3,6 +3,7 @@ package com.skypro.skyprotelegrambot.listener;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.skyprotelegrambot.handler.CommandHandler;
 import com.skypro.skyprotelegrambot.service.PropertyMessageService;
@@ -54,13 +55,18 @@ public class TelegramBotUpdateListener implements UpdatesListener {
         list.forEach(update -> {
             try {
                 final long chatId;
+                final User user;
+                final String name;
                 if (update.message() != null) {
                     chatId = update.message().chat().id();
+                    user = update.message().from();
                 } else {
                     chatId = update.callbackQuery().from().id();
+                    user = update.callbackQuery().message().from();
                 }
+                name = String.format("%s %s", user.lastName(), user.firstName());
                 if (!userService.existUser(chatId)) {
-                    userService.createUser(chatId);
+                    userService.createUser(chatId, name);
                     logger.info(String.format("User(chatId=%d) was be created", chatId));
                 }
                 executeHandler(update, chatId);

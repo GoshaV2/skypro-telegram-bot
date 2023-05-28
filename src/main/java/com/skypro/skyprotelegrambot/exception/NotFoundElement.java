@@ -8,4 +8,8 @@ public class NotFoundElement extends RuntimeException {
     public NotFoundElement(String UUID, Class<?> clazz) {
         super(String.format("%s not found by UUID=%s", clazz.getName(), UUID));
     }
+
+    public NotFoundElement(String message) {
+        super(message);
+    }
 }

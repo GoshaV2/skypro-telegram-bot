@@ -33,6 +33,7 @@ public class VolunteerContactServiceImpl implements VolunteerContactService {
         volunteerContact.setEmail(volunteerContactDto.getEmail());
         volunteerContact.setFullName(volunteerContactDto.getFullName());
         volunteerContact.setShelter(shelterService.findShelterById(volunteerContactDto.getShelterId()));
+        volunteerContact.setChatId(volunteerContact.getChatId());
         return volunteerContactRepository.save(volunteerContact);
     }
 
@@ -43,6 +44,7 @@ public class VolunteerContactServiceImpl implements VolunteerContactService {
         volunteerContact.setTelegramTag(volunteerContactDto.getTelegramTag());
         volunteerContact.setEmail(volunteerContactDto.getEmail());
         volunteerContact.setFullName(volunteerContactDto.getFullName());
+        volunteerContact.setChatId(volunteerContact.getChatId());
         return volunteerContactRepository.save(volunteerContact);
     }
 

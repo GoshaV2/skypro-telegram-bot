@@ -4,9 +4,11 @@ import com.skypro.skyprotelegrambot.entity.Report;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
+import com.skypro.skyprotelegrambot.model.OverdueDayData;
 import com.skypro.skyprotelegrambot.repository.ReportRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -52,5 +54,10 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public void deleteReport(Report report) {
         reportRepository.delete(report);
+    }
+
+    @Override
+    public List<OverdueDayData> getOverdueDayData(LocalDate to) {
+        return reportRepository.getDataOfOverdueDays(to);
     }
 }
