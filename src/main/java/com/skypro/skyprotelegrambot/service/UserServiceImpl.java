@@ -96,5 +96,13 @@ public class UserServiceImpl implements UserService {
         sessionRepository.save(session);
         return user;
     }
+
+    @Override
+    public User clearSessionAdditionalFlags(User user) {
+        Session session = user.getSession();
+        session.setReportSending(false);
+        session.setHasWaitingContact(false);
+        return userRepository.save(user);
+    }
 }
 

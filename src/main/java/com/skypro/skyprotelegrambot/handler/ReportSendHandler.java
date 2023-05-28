@@ -45,7 +45,7 @@ public class ReportSendHandler implements CommandHandler {
 
         if (callbackQuery != null) {
             User user = userService.findUserByChatId(callbackQuery.from().id());
-            userService.turnOffReportSending(user);
+            userService.clearSessionAdditionalFlags(user);
             return;
         }
 

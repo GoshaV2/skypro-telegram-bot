@@ -13,7 +13,7 @@ public interface UserService {
 
     User saveUser(User user);
 
-    User findUserByChatId(Long chatId); //Получение пользователя по chat id
+    User findUserByChatId(Long chatId);
 
     User chooseShelterForUser(Long chatId, Long shelterId);
 
@@ -22,4 +22,10 @@ public interface UserService {
     User turnOnReportSending(User user);
 
     User turnOffReportSending(User user);
+
+    /**
+     * Очистить сессию пользователя с дополнительными флагами, которые обозначают отправку текстового сообщения
+     * пользователем. Например флаг для отправки контактов будет очищен и переведен в состояние по умолчанию.
+     */
+    User clearSessionAdditionalFlags(User user);
 }
