@@ -9,6 +9,7 @@ import com.skypro.skyprotelegrambot.entity.User;
 public interface UserService {
     /**
      * Получение пользователя
+     *
      * @param userId идентификатор пользователя
      * @return пользователя с заданным идентификатором
      */
@@ -16,13 +17,15 @@ public interface UserService {
 
     /**
      * Существует ли пользователь в базе?
+     *
      * @param chatId идентификатор пользователя
-     * @return true - если пользователь найден, false если нет.
+     * @return true если пользователь найден, false если нет.
      */
     boolean existUser(long chatId);
 
     /**
      * Запись пользователя в базу
+     *
      * @param user записываемый пользователь
      * @return записанный пользователь
      */
@@ -30,6 +33,7 @@ public interface UserService {
 
     /**
      * Поиск пользователя по идентификатору
+     *
      * @param chatId идентификатор пользователя
      * @return найденного пользователя
      */
@@ -37,7 +41,8 @@ public interface UserService {
 
     /**
      * Сохранение выбранного пользователем приюта
-     * @param chatId идентификатор пользователя
+     *
+     * @param chatId    идентификатор пользователя
      * @param shelterId идентификатор приюта который выбрал ползователь
      * @return пользователя с указанным идентификатором
      */
@@ -45,27 +50,24 @@ public interface UserService {
 
     /**
      * Создание пользователя.
+     *
      * @param chatId идентификатор пользователя
-     * @return созданного пользователя
-     */
-    User createUser(Long chatId);
-
-    /**
-     * Создание пользователя.
-     * @param chatId идентификатор пользователя
-     * @param name Имя пользователя
+     * @param name   Имя пользователя
      * @return
      */
     User createUser(Long chatId, String name);
 
     /**
      * Включение режима отправки отчета по питомцу
+     *
      * @param user пользователь для которого включается режим
      * @return пользователя с включенным режимом
      */
     User turnOnReportSending(User user);
+
     /**
      * Выключение режима отправки отчета по питомцу
+     *
      * @param user пользователь для которого выключается режим
      * @return пользователя с выключенным режимом
      */

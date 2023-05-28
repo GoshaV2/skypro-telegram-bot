@@ -43,18 +43,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    /**
-     * Метод находит пользователя по chat id
-     */
-
     public User findUserByChatId(Long chatId) {
         return userRepository.findUserByChatId(chatId).orElseThrow(()
                 -> new UserNotFoundException("User not found with chatId=" + chatId));
     }
-
-    /**
-     * Метод выбора приюта для пользователя
-     */
 
     @Override
     public User chooseShelterForUser(Long chatId, Long id) {
@@ -63,19 +55,6 @@ public class UserServiceImpl implements UserService {
         Session session = user.getSession();
         session.setSelectedShelter(shelter);
         sessionRepository.save(session);
-        return user;
-    }
-
-    /**
-     * Метод создания нового пользователя
-     */
-    @Override
-    public User createUser(Long chatId) {
-        User user = new User();
-        user.setChatId(chatId);
-        Session session = new Session();
-        user.setSession(session);
-        userRepository.save(user);
         return user;
     }
 
