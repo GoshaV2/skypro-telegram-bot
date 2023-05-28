@@ -15,7 +15,7 @@ public class User {
     private String name;
     @Column(name = "contact")
     private String contact;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 

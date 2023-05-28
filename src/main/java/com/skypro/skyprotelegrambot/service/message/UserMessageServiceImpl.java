@@ -21,4 +21,17 @@ public class UserMessageServiceImpl implements UserMessageService {
         sendMessage.replyMarkup(shelterButtonService.getInfoMenu());
         return sendMessage;
     }
+
+    @Override
+    public SendMessage getMessageForOverdueReportToUser(long chatId, String shelterName) {
+        return new SendMessage(chatId,
+                String.format(propertyMessageService.getMessage("report.overdue.message"), shelterName));
+    }
+
+    @Override
+    public SendMessage getMessageForOverdueReportToVolunteer(long chatId, String userName, long userChatId) {
+        return new SendMessage(chatId,
+                String.format(propertyMessageService.getMessage("report.overdue.message.toVolunteer"),
+                        userName, userChatId));
+    }
 }

@@ -11,6 +11,8 @@ public class VolunteerContact {
     private Long id;
     @Column(name = "phone")
     private String phone;
+    @Column(name = "chat_id")
+    private long chatId;
     @Column(name = "telegram_tag")
     private String telegramTag;
     @Column(name = "email")
@@ -30,6 +32,14 @@ public class VolunteerContact {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(long chatId) {
+        this.chatId = chatId;
     }
 
     public String getPhone() {

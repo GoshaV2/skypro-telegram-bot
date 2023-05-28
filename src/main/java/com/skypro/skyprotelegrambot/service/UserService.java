@@ -7,6 +7,8 @@ import com.skypro.skyprotelegrambot.entity.User;
  * Общий сервис пользователей
  */
 public interface UserService {
+    User getUserById(long userId);
+
     boolean existUser(long chatId);
 
     User saveUser(User user);
@@ -15,7 +17,7 @@ public interface UserService {
 
     User chooseShelterForUser(Long chatId, Long shelterId);
 
-    User createUser(Long chatId);
+    User createUser(Long chatId, String name);
 
     User turnOnReportSending(User user);
 

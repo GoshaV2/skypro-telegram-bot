@@ -28,13 +28,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserById(long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with userId=" + userId));
+    }
+
+    @Override
     public boolean existUser(long chatId) {
         return userRepository.existsByChatId(chatId);
     }
 
     @Override
-    public User saveUser(User user) { //поменять передаваемое значение
-        sessionRepository.save(user.getSession());
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
 
@@ -66,12 +71,12 @@ public class UserServiceImpl implements UserService {
      */
 
     @Override
-    public User createUser(Long chatId) {
+    public User createUser(Long chatId, String name) {
         User user = new User();
         user.setChatId(chatId);
+        user.setName(name);
         Session session = new Session();
         user.setSession(session);
-        sessionRepository.save(session);
         userRepository.save(user);
         return user;
     }

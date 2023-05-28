@@ -7,13 +7,15 @@ public class VolunteerContactDto {
     private String email;
     private String fullName;
     private Long shelterId;
+    private long chatId;
 
-    public VolunteerContactDto(String phone, String telegramTag, String email, String fullName, Long shelterId) {
+    public VolunteerContactDto(String phone, String telegramTag, String email, String fullName, Long shelterId, long chatId) {
         this.phone = phone;
         this.telegramTag = telegramTag;
         this.email = email;
         this.fullName = fullName;
         this.shelterId = shelterId;
+        this.chatId = chatId;
     }
 
     public VolunteerContactDto() {
@@ -57,5 +59,13 @@ public class VolunteerContactDto {
 
     public void setShelterId(Long shelterId) {
         this.shelterId = shelterId;
+    }
+
+    public long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(long chatId) {
+        this.chatId = chatId;
     }
 }

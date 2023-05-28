@@ -17,7 +17,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
- * Обработчик базовой информации о приюте (Этап 1 по ТЗ)
+ * Обработчик базовой информации о приюте по категории
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
@@ -40,11 +40,7 @@ public class GetInfoMenuHandler implements CommandHandler {
         if (callbackQuery == null) {
             return false;
         }
-        Long chatId = callbackQuery.from().id();
         String command = callbackQuery.data();
-        if (chatId == null && command == null) {
-            return false;
-        }
         return command.matches(ShelterCommand.GET_INFO_MENU.getStartPathPattern());
     }
 
