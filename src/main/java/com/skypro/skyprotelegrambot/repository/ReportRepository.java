@@ -19,6 +19,8 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     List<Report> findAllByUserAndShelter(User user, Shelter shelter);
 
+    List<Report> findAllByDateAndShelter(LocalDate date, Shelter shelter);
+
     @Query("select new com.skypro.skyprotelegrambot.model.OverdueDayData(max(r.date),r.user,r.shelter)" +
             "from Report r group by r.shelter,r.user having max(r.date)<:to")
     List<OverdueDayData> getDataOfOverdueDays(@Param("to") LocalDate to);

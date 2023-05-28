@@ -69,6 +69,15 @@ public class UserServiceImpl implements UserService {
     /**
      * Метод создания нового пользователя
      */
+    @Override
+    public User createUser(Long chatId) {
+        User user = new User();
+        user.setChatId(chatId);
+        Session session = new Session();
+        user.setSession(session);
+        userRepository.save(user);
+        return user;
+    }
 
     @Override
     public User createUser(Long chatId, String name) {
