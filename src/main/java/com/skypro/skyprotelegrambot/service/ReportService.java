@@ -55,6 +55,6 @@ public interface ReportService {
      * @param to дата до который отчёт считается просроченным
      * @return список информации о просроченных отчётах пользователя по приюту
      */
- //   List<OverdueDayData> getOverdueDayData(LocalDate to);
+    List<OverdueDayData> getOverdueDayData(LocalDate to);
 
 }

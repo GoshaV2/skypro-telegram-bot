@@ -1,5 +1,6 @@
 package com.skypro.skyprotelegrambot.model;
 
+import com.skypro.skyprotelegrambot.entity.Probation;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
 
@@ -7,13 +8,11 @@ import java.time.LocalDate;
 
 public class OverdueDayData {
     private LocalDate lastLoadDate;
-    private User user;
-    private Shelter shelter;
+    private Probation probation;
 
-    public OverdueDayData(LocalDate lastLoadDate, User user, Shelter shelter) {
+    public OverdueDayData(LocalDate lastLoadDate, Probation probation) {
         this.lastLoadDate = lastLoadDate;
-        this.user = user;
-        this.shelter = shelter;
+        this.probation = probation;
     }
 
     public LocalDate getLastLoadDate() {
@@ -24,19 +23,11 @@ public class OverdueDayData {
         this.lastLoadDate = lastLoadDate;
     }
 
-    public User getUser() {
-        return user;
+    public Probation getProbation() {
+        return probation;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Shelter getShelter() {
-        return shelter;
-    }
-
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
+    public void setProbation(Probation probation) {
+        this.probation = probation;
     }
 }

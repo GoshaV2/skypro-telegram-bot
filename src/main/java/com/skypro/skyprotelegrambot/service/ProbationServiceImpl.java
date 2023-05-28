@@ -61,9 +61,10 @@ public class ProbationServiceImpl implements ProbationService {
         List<OverdueDayData> overdueDayDataList = reportService.getOverdueDayData(overdueDate);
         overdueDayDataList.forEach(overdueDayData -> {
             long overdueDays = ChronoUnit.DAYS.between(overdueDayData.getLastLoadDate(), overdueDate);
+            Probation probation = overdueDayData.getProbation();
+            User user = probation.getUser();
+            Shelter shelter = probation.getShelter();
             if (overdueDays % daysToCallVolunteer == 0) {
-                User user = overdueDayData.getUser();
-                Probation probation = getProbation(user, overdueDayData.getShelter());
                 notificationService.sendNotificationAboutOverdueReportToVolunteer(
                         probation.getVolunteerContact().getChatId(),
                         user.getName(),
@@ -71,8 +72,8 @@ public class ProbationServiceImpl implements ProbationService {
                 );
             } else {
                 notificationService.sendNotificationAboutOverdueReportToUser(
-                        overdueDayData.getUser().getChatId(),
-                        overdueDayData.getShelter().getName());
+                        user.getChatId(),
+                        shelter.getName());
             }
         });
     }

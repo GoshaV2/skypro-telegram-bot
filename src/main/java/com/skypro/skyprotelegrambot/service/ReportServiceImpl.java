@@ -52,10 +52,8 @@ public class ReportServiceImpl implements ReportService {
     public void deleteReport(Report report) {
         reportRepository.delete(report);
     }
-/*
     @Override
     public List<OverdueDayData> getOverdueDayData(LocalDate to) {
         return reportRepository.getDataOfOverdueDays(to);
     }
- */
 }
