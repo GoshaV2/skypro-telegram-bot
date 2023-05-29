@@ -9,6 +9,7 @@ import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.exception.ProbationChangeStatusException;
+import com.skypro.skyprotelegrambot.exception.UserAlreadyHasShelterProbation;
 import com.skypro.skyprotelegrambot.model.OverdueDayData;
 import com.skypro.skyprotelegrambot.repository.ProbationRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,10 @@ public class ProbationServiceImpl implements ProbationService {
     public ProbationResponse createProbation(ProbationDto probationDto) {
         Shelter shelter = shelterService.findShelterById(probationDto.getShelterId());
         User user = userService.getUserById(probationDto.getUserId());
+        if (probationRepository.existsByUserAndShelterAndProbationStatus(user, shelter,
+                ProbationStatus.APPOINTED)) {
+            throw new UserAlreadyHasShelterProbation(user.getId(), shelter.getId());
+        }
         Probation probation = new Probation();
         probation.setCountProbationDays(probationDto.getCountProbationDays());
         probation.setUser(user);
