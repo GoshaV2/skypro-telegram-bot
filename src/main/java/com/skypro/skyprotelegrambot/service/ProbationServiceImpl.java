@@ -111,11 +111,13 @@ public class ProbationServiceImpl implements ProbationService {
     @Override
     public Probation getProbation(User user, Shelter shelter) {
         return probationRepository.findByUserAndShelter(user, shelter).orElseThrow(() ->
-                new NotFoundElement(String.format("Not Probation by user(id=%d) and shelter(id=%d)", user.getId(), shelter.getId())));
+                new NotFoundElement(String.format("Not Probation by user(id=%d) and shelter(id=%d)",
+                        user.getId(), shelter.getId())));
     }
 
     @Override
     public List<Probation> gatAllByShelter(Shelter shelter) {
         return probationRepository.findAllByShelter(shelter);
+
     }
 }
