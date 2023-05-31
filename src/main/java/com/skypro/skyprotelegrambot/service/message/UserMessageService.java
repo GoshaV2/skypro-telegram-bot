@@ -14,4 +14,6 @@ public interface UserMessageService {
     SendMessage getMessageForOverdueReportToUser(long chatId, String shelterName);
 
     SendMessage getMessageForOverdueReportToVolunteer(long chatId, String userName, long userChatId);
+
+    SendMessage getMessageAboutPassedProbation(long chatId, boolean isPassed);
 }

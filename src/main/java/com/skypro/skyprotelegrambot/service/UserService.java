@@ -15,6 +15,9 @@ public interface UserService {
 
     User findUserByChatId(Long chatId);
 
+    /**
+     * Выбор приюта и запись в сессию, так же сохраняет пользователя в базу приюта
+     */
     User chooseShelterForUser(Long chatId, Long shelterId);
 
     User createUser(Long chatId, String name);

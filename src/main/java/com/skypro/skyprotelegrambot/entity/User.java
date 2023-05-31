@@ -12,7 +12,7 @@ public class User {
     /**
      * Индентификатор пользователя в телеграмм
      */
-    @Column(name = "chat_id")
+    @Column(name = "chat_id", unique = true, nullable = false)
     private Long chatId;
     /**
      * Полное имя пользователя
@@ -69,5 +69,23 @@ public class User {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (!id.equals(user.id)) return false;
+        return chatId.equals(user.chatId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + chatId.hashCode();
+        return result;
     }
 }

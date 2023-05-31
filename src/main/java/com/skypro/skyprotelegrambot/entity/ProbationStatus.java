@@ -2,7 +2,7 @@ package com.skypro.skyprotelegrambot.entity;
 
 public enum ProbationStatus {
     /**
-     * Назначен
+     * Назначен, активный испытательный срок
      */
     APPOINTED,
     /**

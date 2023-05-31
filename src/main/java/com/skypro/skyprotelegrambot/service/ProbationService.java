@@ -1,9 +1,9 @@
 package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.dto.request.ProbationAddAdditionalDaysDto;
-import com.skypro.skyprotelegrambot.dto.request.ProbationChangeStatusDto;
 import com.skypro.skyprotelegrambot.dto.request.ProbationDto;
 import com.skypro.skyprotelegrambot.dto.response.ProbationResponse;
+import com.skypro.skyprotelegrambot.entity.ProbationStatus;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public interface ProbationService {
     /**
      * Поменять статус испытательного срока
      */
-    ProbationResponse changeProbationStatus(ProbationChangeStatusDto probationDto, long probationId);
+    ProbationResponse changeProbationStatus(ProbationStatus probationStatus, long probationId);
 
     /**
      * Получить список испытательных сроков по пользователю в приюте

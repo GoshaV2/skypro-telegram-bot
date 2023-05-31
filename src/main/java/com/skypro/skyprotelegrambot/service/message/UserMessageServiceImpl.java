@@ -34,4 +34,15 @@ public class UserMessageServiceImpl implements UserMessageService {
                 String.format(propertyMessageService.getMessage("report.overdue.message.toVolunteer"),
                         userName, userChatId));
     }
+
+    @Override
+    public SendMessage getMessageAboutPassedProbation(long chatId, boolean isPassed) {
+        String message;
+        if (isPassed) {
+            message = propertyMessageService.getMessage("probation.passed");
+        } else {
+            message = propertyMessageService.getMessage("probation.notPassed");
+        }
+        return new SendMessage(chatId, message);
+    }
 }

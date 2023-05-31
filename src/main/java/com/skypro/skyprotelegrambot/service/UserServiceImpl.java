@@ -7,6 +7,7 @@ import com.skypro.skyprotelegrambot.exception.UserNotFoundException;
 import com.skypro.skyprotelegrambot.repository.SessionRepository;
 import com.skypro.skyprotelegrambot.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -57,9 +58,13 @@ public class UserServiceImpl implements UserService {
      */
 
     @Override
+    @Transactional
     public User chooseShelterForUser(Long chatId, Long id) {
         Shelter shelter = shelterService.findShelterById(id);
         User user = findUserByChatId(chatId);
+        if (!shelterService.hasUser(user, shelter)) {
+            shelter.getUserSet().add(user);
+        }
         Session session = user.getSession();
         session.setSelectedShelter(shelter);
         sessionRepository.save(session);

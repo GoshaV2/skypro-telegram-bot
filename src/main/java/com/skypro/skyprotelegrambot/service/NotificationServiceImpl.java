@@ -22,6 +22,13 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendNotificationAboutOverdueReportToVolunteer(long chatId, String userName, long userChatId) {
+        SendMessage sendMessage = userMessageService.getMessageForOverdueReportToVolunteer(chatId, userName, userChatId);
+        telegramMessageService.execute(sendMessage);
+    }
 
+    @Override
+    public void sendNotificationAboutPassProbation(long chatId, boolean isPassed) {
+        SendMessage sendMessage = userMessageService.getMessageAboutPassedProbation(chatId, isPassed);
+        telegramMessageService.execute(sendMessage);
     }
 }

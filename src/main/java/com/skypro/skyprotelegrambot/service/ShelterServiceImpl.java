@@ -1,10 +1,13 @@
 package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.dto.request.ShelterDto;
+import com.skypro.skyprotelegrambot.dto.response.UserResponse;
 import com.skypro.skyprotelegrambot.entity.Shelter;
+import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.repository.ShelterRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class ShelterServiceImpl implements ShelterService {
     }
 
     @Override
+    @Transactional
     public Shelter findShelterById(Long id) {
         return shelterRepository.findShelterById(id)
                 .orElseThrow(() -> new NotFoundElement(id, Shelter.class));
@@ -43,7 +47,19 @@ public class ShelterServiceImpl implements ShelterService {
     }
 
     @Override
+    public boolean hasUser(User user, Shelter shelter) {
+        return shelterRepository.hasUser(user, shelter);
+    }
+
+    @Override
     public List<Shelter> getShelters() {
         return shelterRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public List<UserResponse> getUsersOfShelter(long shelterId) {
+        Shelter shelter = findShelterById(shelterId);
+        return UserResponse.from(shelter.getUserSet());
     }
 }

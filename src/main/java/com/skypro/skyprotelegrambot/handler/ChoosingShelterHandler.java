@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
+import com.skypro.skyprotelegrambot.service.ShelterService;
 import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
@@ -21,11 +22,13 @@ public class ChoosingShelterHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;
     private final UserService userService;
     private final TelegramMessageService telegramMessageService;
+    private final ShelterService shelterService;
 
-    public ChoosingShelterHandler(ShelterMessageService shelterMessageService, UserService userService, TelegramMessageService telegramMessageService) {
+    public ChoosingShelterHandler(ShelterMessageService shelterMessageService, UserService userService, TelegramMessageService telegramMessageService, ShelterService shelterService) {
         this.shelterMessageService = shelterMessageService;
         this.userService = userService;
         this.telegramMessageService = telegramMessageService;
+        this.shelterService = shelterService;
     }
 
     @Override
@@ -38,6 +41,9 @@ public class ChoosingShelterHandler implements CommandHandler {
         return command.matches(ShelterCommand.CHOOSE_SHELTER.getStartPathPattern());
     }
 
+    /**
+     * Записать в сессию пользователя информацию о выбраном приюте
+     */
     @Override
     public void process(Update update) {
         CallbackQuery callbackQuery = update.callbackQuery();
