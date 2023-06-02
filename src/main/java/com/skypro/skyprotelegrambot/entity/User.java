@@ -11,7 +11,7 @@ public class User {
     private Long id;
     @Column(name = "chat_id")
     private Long chatId;
-    @Column(name = "name")
+    @Column(name = "names")
     private String name;
     @Column(name = "contact")
     private String contact;

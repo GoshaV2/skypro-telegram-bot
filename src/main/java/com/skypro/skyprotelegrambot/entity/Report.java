@@ -19,7 +19,7 @@ public class Report {
     @Column(name = "photo_path")
     private String photoPath;
 
-    @Column(name = "date")
+    @Column(name = "dates")
     private final LocalDate date;
 
     @ManyToOne

@@ -10,7 +10,7 @@ public class Shelter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "name")
+    @Column(name = "names")
     private String name;
     @ManyToMany
     @JoinTable(name = "shelter_user",

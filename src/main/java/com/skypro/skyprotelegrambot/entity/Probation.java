@@ -10,10 +10,14 @@ public class Probation {
     @Column(name = "id")
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "shelter_id")
     private Shelter shelter;
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
+    @Column(name = "pet_name")
     private String petName;
+    @Column(name = "start_date")
     private LocalDate startDate;
     @Column(name = "probation_status")
     @Enumerated(EnumType.STRING)
@@ -24,6 +28,7 @@ public class Probation {
     /**
      * количество дней испытательного срока
      */
+    @Column (name = "count_probation_days")
     private int countProbationDays;
 
     public Long getId() {
