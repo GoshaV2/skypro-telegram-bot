@@ -14,7 +14,7 @@ public class Shelter {
     /**
      * Название приюта
      */
-    @Column(name = "name")
+    @Column(name = "names")
     private String name;
     @ManyToMany
     @JoinTable(name = "shelter_user",

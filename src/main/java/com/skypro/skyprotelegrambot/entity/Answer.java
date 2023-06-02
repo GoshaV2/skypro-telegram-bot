@@ -17,7 +17,7 @@ public class Answer {
     /**
      * Ответ на вопрос
      */
-    @Column(name = "text", nullable = false)
+    @Column(name = "texts", nullable = false)
     private String text;
     /**
      * Категория к которой относится вопрос

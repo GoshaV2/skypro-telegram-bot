@@ -17,7 +17,7 @@ public class User {
     /**
      * Полное имя пользователя
      */
-    @Column(name = "name")
+    @Column(name = "names")
     private String name;
     /**
      * Контакты пользователя
