@@ -43,4 +43,11 @@ public interface ShelterMessageService {
      * @return сообщение с указаниями по отчету
      */
     SendMessage getMessageBeforeReport(long chatId, Shelter shelter);
+
+    /**
+     * @param chatId  чат куда шлем сообщение
+     * @param shelter выбранный пользователем приют
+     * @return сообщение об успешном принятии отчета + кнопки после выбора приюта.
+     */
+    SendMessage getMessageAfterReport(long chatId, Shelter shelter);
 }

@@ -18,10 +18,14 @@ public class ReportServiceImpl implements ReportService {
     public ReportServiceImpl(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
+    @Override
+    public List<Report> getAll(){
+        return  reportRepository.findAll();
+    }
 
     @Override
-    public Report createReport(User user, String text, byte[] photo) {
-        return reportRepository.save(new Report(text, photo,
+    public Report createReport(User user, String text, String photoPath) {
+        return reportRepository.save(new Report(text, photoPath,
                 user, user.getSession().getSelectedShelter()));
     }
 
@@ -36,11 +40,16 @@ public class ReportServiceImpl implements ReportService {
     public List<Report> getAllByUserAndShelter(User user, Shelter shelter) {
         return reportRepository.findAllByUserAndShelter(user, shelter);
     }
+    @Override
+    public List<Report> getAllByDateAndShelter(LocalDate date, Shelter shelter) {
+        return reportRepository.findAllByDateAndShelter(date, shelter);
+    }
 
     @Override
-    public void updatePhoto(byte[] photo, Long id) {
+    public void updatePhoto(String photoPath, Long id) {
+        //надо подумать как менять фото в новой реализации
         Report edited = getById(id);
-        edited.setPhoto(photo);
+        edited.setPhotoPath(photoPath);
         reportRepository.save(edited);
     }
 
