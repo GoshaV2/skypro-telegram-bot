@@ -7,8 +7,7 @@ import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.service.*;
 import io.swagger.v3.oas.annotations.Operation;
-
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/reports")
 public class ReportController {
-    @Value("${report.server.address}")
-    private String serverAddress;
     private final ReportService reportService;
     private final UserService userService;
     private final ShelterService shelterService;
@@ -50,34 +47,32 @@ public class ReportController {
 
     @GetMapping("/{userId}{shelterId}")
     @Operation(summary = "список всех отчетов пользователя для указанного приюта")
-    public String getReportsFromUserToShelter(@PathVariable(name = "userId") Long userId,
-                                              @PathVariable(name = "shelterId") Long shelterId) {
+    public ResponseEntity<List<Report>> getReportsFromUserToShelter(@PathVariable(name = "userId") Long userId,
+                                                      @PathVariable(name = "shelterId") Long shelterId) {
         User user = userService.findUserByChatId(userId);
         Shelter shelter = shelterService.findShelterById(shelterId);
         Probation probation;
         try {
             probation = probationService.getProbation(user, shelter);
         } catch (NotFoundElement e) {
-            return "Пользователю еще не назначени испытательный срок в приюте";
+            return ResponseEntity.ok(new ArrayList<>());
         }
         List<Report> reports = reportService.getAllByProbation(probation);
-        return reportsToText(reports);
+        return ResponseEntity.ok(reports);
     }
 
     @GetMapping("/today{shelterId}")
     @Operation(summary = "список всех сегодняшних отчетов для приюта")
-    public String getAllTodayReportToShelter(@PathVariable(name = "shelterId") Long shelterId) {
+    public ResponseEntity<List<Report>> getAllTodayReportToShelter(@PathVariable(name = "shelterId") Long shelterId) {
         List<Probation> probations = probationService.gatAllByShelter(shelterService.findShelterById(shelterId));
-
-
         if (probations.size() == 0) {
-            return "Отчетов не найдено";
+            return ResponseEntity.ok(new ArrayList<>());
         }
         List<Report> reports = new ArrayList<>();
         for (Probation pb : probations) {
             reports.addAll(reportService.getAllByDateAndProbation(LocalDate.now(), pb));
         }
-        return reportsToText(reports);
+        return ResponseEntity.ok(reports);
     }
 
     @GetMapping("/photo{reportId}")
@@ -91,28 +86,5 @@ public class ReportController {
             e.printStackTrace();
         }
         return result;
-    }
-
-    private String reportToText(Report report) {
-        Long id = report.getId();
-        String userName = report.getProbation().getUser().getName();
-        long userId = report.getProbation().getUser().getId();
-        String shelterName = report.getProbation().getShelter().getName();
-        LocalDate date = report.getDate();
-        String text = report.getReport();
-        String link = String.format("%s/reports/photo%d", serverAddress, report.getId());
-
-        return String.format(
-                "ID: %1$d\n From: %2$s id:%7$d\n To: %3$s\n Date: %4$te %4$tB %4$tY\nText: %5$s\n Photo link: %6$s",
-                id, userName, shelterName, date, text, link, userId);
-    }
-
-    private String reportsToText(List<Report> reports) {
-        StringBuilder sb = new StringBuilder();
-        for (Report r : reports) {
-            sb.append(reportToText(r));
-            sb.append("\n\n");
-        }
-        return sb.toString().trim();
     }
 }
