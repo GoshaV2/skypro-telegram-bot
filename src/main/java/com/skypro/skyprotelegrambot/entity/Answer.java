@@ -9,13 +9,25 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    /**
+     * Название кнопки
+     */
     @Column(name = "title", nullable = false)
     private String title;
+    /**
+     * Ответ на вопрос
+     */
     @Column(name = "texts", nullable = false)
     private String text;
+    /**
+     * Категория к которой относится вопрос
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
     private Category category;
+    /**
+     * Приют к которому относится вопрос
+     */
     @ManyToOne
     @JoinColumn(name = "shelter_id", nullable = false)
     private Shelter shelter;

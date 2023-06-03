@@ -41,7 +41,7 @@ public class ReportInitialHandler implements CommandHandler {
     public void process(Update update) {
         Long id = update.callbackQuery().from().id();
         User user = userService.findUserByChatId(id);
-
+        userService.clearSessionAdditionalFlags(user);
         userService.turnOnReportSending(user);
 
         SendMessage sendMessage = shelterMessageService.getMessageBeforeReport(id,

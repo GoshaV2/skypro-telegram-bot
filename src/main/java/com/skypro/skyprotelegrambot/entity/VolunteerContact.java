@@ -6,19 +6,37 @@ import javax.persistence.*;
 @Table(name = "volunteer_contact")
 public class VolunteerContact {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    /**
+     * Телефон пользователя
+     */
     @Column(name = "phone")
     private String phone;
+    /**
+     * Индентификатор пользователя в телеграмм
+     */
     @Column(name = "chat_id")
     private long chatId;
+    /**
+     * Телеграмм тег пользователя
+     */
     @Column(name = "telegram_tag")
     private String telegramTag;
+    /**
+     * Почта пользователя
+     */
     @Column(name = "email")
     private String email;
+    /**
+     * Полное имя
+     */
     @Column(name = "full_name", nullable = false)
     private String fullName;
+    /**
+     * Приют к которому относится волонтер
+     */
     @ManyToOne
     @JoinColumn(name = "shelter_id")
     private Shelter shelter;

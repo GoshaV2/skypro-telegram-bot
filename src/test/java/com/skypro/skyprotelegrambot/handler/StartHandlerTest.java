@@ -29,8 +29,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {TelegramBotTestConfiguration.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Sql(scripts = {"/script/clear-all-data.sql"})
 @Sql(scripts = {"/script/handler/test-data-for-start-handler.sql"})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class StartHandlerTest {
     @Autowired
     private StartHandler startHandler;
@@ -74,7 +75,7 @@ class StartHandlerTest {
         when(update.callbackQuery()).thenReturn(callbackQuery);
         when(callbackQuery.data()).thenReturn("/start");
         when(callbackQuery.from()).thenReturn(user);
-        when(user.id()).thenReturn(1L);
+        when(user.id()).thenReturn(100L);
         startHandler.process(update);
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
@@ -88,18 +89,19 @@ class StartHandlerTest {
         InlineKeyboardButton[][] inlineKeyboardButtons = inlineKeyboardMarkup.inlineKeyboard();
 
         assertEquals(text, propertyMessageService.getMessage("shelter.menu.choose"));
-        assertEquals(chatId, 1);
+        assertEquals(chatId, 100);
         assertEquals(inlineKeyboardButtons.length, 3);
-        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseShelter/1");
-        assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/chooseShelter/2");
-        assertEquals(inlineKeyboardButtons[2][0].callbackData(), "/chooseShelter/3");
+        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseShelter/100");
+        assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/chooseShelter/200");
+        assertEquals(inlineKeyboardButtons[2][0].callbackData(), "/chooseShelter/300");
     }
+
     @Test
     void process_whenIsMessageAndFirstRequest_thenSendMessageWithMessageWithGreeting() {
         when(update.message()).thenReturn(message);
         when(message.text()).thenReturn("/start");
         when(message.from()).thenReturn(user);
-        when(user.id()).thenReturn(1L);
+        when(user.id()).thenReturn(100L);
         startHandler.process(update);
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
@@ -113,18 +115,19 @@ class StartHandlerTest {
         InlineKeyboardButton[][] inlineKeyboardButtons = inlineKeyboardMarkup.inlineKeyboard();
 
         assertEquals(text, propertyMessageService.getMessage("shelter.menu.choose.greeting"));
-        assertEquals(chatId, 1);
+        assertEquals(chatId, 100);
         assertEquals(inlineKeyboardButtons.length, 3);
-        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseShelter/1");
-        assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/chooseShelter/2");
-        assertEquals(inlineKeyboardButtons[2][0].callbackData(), "/chooseShelter/3");
+        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseShelter/100");
+        assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/chooseShelter/200");
+        assertEquals(inlineKeyboardButtons[2][0].callbackData(), "/chooseShelter/300");
     }
+
     @Test
     void process_whenIsMessageAndNotFirstRequest_thenSendMessageWithMessageWithoutGreeting() {
         when(update.message()).thenReturn(message);
         when(message.text()).thenReturn("/start");
         when(message.from()).thenReturn(user);
-        when(user.id()).thenReturn(2L);
+        when(user.id()).thenReturn(200L);
         startHandler.process(update);
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
@@ -138,10 +141,10 @@ class StartHandlerTest {
         InlineKeyboardButton[][] inlineKeyboardButtons = inlineKeyboardMarkup.inlineKeyboard();
 
         assertEquals(text, propertyMessageService.getMessage("shelter.menu.choose"));
-        assertEquals(chatId, 2);
+        assertEquals(chatId, 200);
         assertEquals(inlineKeyboardButtons.length, 3);
-        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseShelter/1");
-        assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/chooseShelter/2");
-        assertEquals(inlineKeyboardButtons[2][0].callbackData(), "/chooseShelter/3");
+        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseShelter/100");
+        assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/chooseShelter/200");
+        assertEquals(inlineKeyboardButtons[2][0].callbackData(), "/chooseShelter/300");
     }
 }

@@ -3,7 +3,6 @@ package com.skypro.skyprotelegrambot.service.message;
 import com.pengrad.telegrambot.model.request.Keyboard;
 import com.skypro.skyprotelegrambot.entity.Category;
 import com.skypro.skyprotelegrambot.entity.Shelter;
-import com.skypro.skyprotelegrambot.service.AnswerService;
 import com.skypro.skyprotelegrambot.service.PropertyMessageService;
 import com.skypro.skyprotelegrambot.service.message.button.ShelterButtonService;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -21,8 +20,6 @@ class ShelterMessageServiceImplTest {
     private ShelterButtonService shelterButtonService;
     @Mock
     private PropertyMessageService propertyMessageService;
-    @Mock
-    private AnswerService answerService;
     @InjectMocks
     private ShelterMessageServiceImpl shelterMessageService;
 

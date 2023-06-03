@@ -1,5 +1,5 @@
 databaseChangeLog:
   - include:
-      file: liquibase/scripts/createTables.sql
-      -include:
-        file: liquibase/scripts/createChanges.sql
+      file: /liquibase/scripts/createTables.sql
+  - include:
+      file: /liquibase/scripts/addTestData.sql

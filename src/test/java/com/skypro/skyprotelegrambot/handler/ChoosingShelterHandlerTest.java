@@ -30,8 +30,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {TelegramBotTestConfiguration.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Sql(scripts = {"/script/clear-all-data.sql"})
 @Sql(scripts = {"/script/handler/test-data-for-choosing-shelter-handler.sql"})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ChoosingShelterHandlerTest {
     @Autowired
     private ChoosingShelterHandler choosingShelterHandler;
@@ -59,16 +60,16 @@ class ChoosingShelterHandlerTest {
     @Test
     void apply_whenCommandIsCorrect() {
         when(update.callbackQuery()).thenReturn(callbackQuery);
-        when(callbackQuery.data()).thenReturn("/chooseShelter/1");
+        when(callbackQuery.data()).thenReturn("/chooseShelter/100");
         assertTrue(choosingShelterHandler.apply(update));
     }
 
     @Test
     void process_whenShelterFound_thenUserSessionHasDataAboutThis() {
         when(update.callbackQuery()).thenReturn(callbackQuery);
-        when(callbackQuery.data()).thenReturn("/chooseShelter/1");
+        when(callbackQuery.data()).thenReturn("/chooseShelter/100");
         when(callbackQuery.from()).thenReturn(user);
-        when(user.id()).thenReturn(1L);
+        when(user.id()).thenReturn(100L);
         choosingShelterHandler.process(update);
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
@@ -80,13 +81,13 @@ class ChoosingShelterHandlerTest {
         long chatId = (Long) parameters.get("chat_id");
         InlineKeyboardMarkup inlineKeyboardMarkup = (InlineKeyboardMarkup) parameters.get("reply_markup");
         InlineKeyboardButton[][] inlineKeyboardButtons = inlineKeyboardMarkup.inlineKeyboard();
-        Shelter selectedShelter=userRepository.findById(1L).get().getSession().getSelectedShelter();
+        Shelter selectedShelter = userRepository.findById(100L).get().getSession().getSelectedShelter();
 
-        assertEquals(selectedShelter.getId(),1);
+        assertEquals(selectedShelter.getId(), 100);
         assertEquals(text,
                 String.format(propertyMessageService.getMessage("shelter.menu.chosen.getInfo"),
                         "test1"));
-        assertEquals(chatId, 1);
+        assertEquals(chatId, 100);
         assertEquals(inlineKeyboardButtons.length, 6);
         assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/getInfoMenu/INFORMATION");
         assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/getInfoMenu/GETTING_ANIMAL");

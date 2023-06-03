@@ -5,6 +5,8 @@ import com.skypro.skyprotelegrambot.entity.ProbationStatus;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 public class ProbationResponse {
@@ -42,6 +44,10 @@ public class ProbationResponse {
                 .countProbationDays(probation.getCountProbationDays())
                 .volunteerContactId(probation.getVolunteerContact().getId())
                 .build();
+    }
+
+    public static List<ProbationResponse> from(List<Probation> probationList) {
+        return probationList.stream().map(ProbationResponse::from).collect(Collectors.toList());
     }
 
     public long getVolunteerContactId() {

@@ -1,5 +1,6 @@
 package com.skypro.skyprotelegrambot.service;
 
+import com.skypro.skyprotelegrambot.dto.request.ProbationAddAdditionalDaysDto;
 import com.skypro.skyprotelegrambot.dto.request.ProbationDto;
 import com.skypro.skyprotelegrambot.dto.response.ProbationResponse;
 import com.skypro.skyprotelegrambot.entity.Probation;
@@ -7,6 +8,7 @@ import com.skypro.skyprotelegrambot.entity.ProbationStatus;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
+import com.skypro.skyprotelegrambot.exception.ProbationChangeStatusException;
 import com.skypro.skyprotelegrambot.model.OverdueDayData;
 import com.skypro.skyprotelegrambot.repository.ProbationRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,6 +75,36 @@ public class ProbationServiceImpl implements ProbationService {
                         overdueDayData.getShelter().getName());
             }
         });
+    }
+
+    @Override
+    public ProbationResponse changeProbationStatus(ProbationStatus probationStatus, long probationId) {
+        Probation probation = getProbation(probationId);
+        if (probation.getProbationStatus() != ProbationStatus.APPOINTED) {
+            throw new ProbationChangeStatusException(probation.getId());
+        }
+        probation.setProbationStatus(probationStatus);
+        boolean isPassed = probationStatus == ProbationStatus.PASSED;
+        notificationService.sendNotificationAboutPassProbation(probation.getUser().getId(), isPassed);
+        return ProbationResponse.from(probationRepository.save(probation));
+    }
+
+    @Override
+    public List<ProbationResponse> getUserProbationByShelter(long chatId, long shelterId) {
+        return ProbationResponse.from(probationRepository.findAllByUserChatIdAndShelterId(chatId, shelterId));
+    }
+
+    @Override
+    public ProbationResponse addAdditionalDays(ProbationAddAdditionalDaysDto probationDto, long probationId) {
+        Probation probation = getProbation(probationId);
+        int newCountDays = probation.getCountProbationDays() + probationDto.getDays();
+        probation.setCountProbationDays(newCountDays);
+        return ProbationResponse.from(probationRepository.save(probation));
+    }
+
+    private Probation getProbation(long id) {
+        return probationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundElement(id, Probation.class));
     }
 
     private Probation getProbation(User user, Shelter shelter) {

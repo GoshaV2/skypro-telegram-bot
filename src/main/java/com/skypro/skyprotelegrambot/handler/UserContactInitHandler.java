@@ -48,6 +48,7 @@ public class UserContactInitHandler implements CommandHandler {
         CallbackQuery callbackQuery = update.callbackQuery();
         long chatId = callbackQuery.from().id();
         User user = userService.findUserByChatId(chatId);
+        userService.clearSessionAdditionalFlags(user);
         Session session = user.getSession();
         session.setHasWaitingContact(true);
         userService.saveUser(user);

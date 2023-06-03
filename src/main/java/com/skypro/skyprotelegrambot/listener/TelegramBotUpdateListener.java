@@ -63,9 +63,9 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                     user = update.message().from();
                 } else {
                     chatId = update.callbackQuery().from().id();
-                    user = update.callbackQuery().message().from();
+                    user = update.callbackQuery().from();
                 }
-                name = String.format("%s %s", user.lastName(), user.firstName());
+                name = (user.lastName() != null ? user.lastName() + " " : "") + user.firstName();
                 if (!userService.existUser(chatId)) {
                     userService.createUser(chatId, name);
                     logger.info(String.format("User(chatId=%d) was be created", chatId));

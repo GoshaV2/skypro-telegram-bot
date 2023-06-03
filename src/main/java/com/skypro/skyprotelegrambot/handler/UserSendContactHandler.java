@@ -45,6 +45,7 @@ public class UserSendContactHandler implements CommandHandler {
         User user = userService.findUserByChatId(chatId);
         user.setContact(contact);
         userService.saveUser(user);
+        userService.clearSessionAdditionalFlags(user);
         telegramMessageService.execute(userMessageService.getMessageAfterSentContact(chatId));
     }
 }

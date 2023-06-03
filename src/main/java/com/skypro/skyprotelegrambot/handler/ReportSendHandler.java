@@ -48,6 +48,14 @@ public class ReportSendHandler implements CommandHandler {
     @Override
     public void process(Update update) {
         Message message = update.message();
+        CallbackQuery callbackQuery = update.callbackQuery();
+
+        if (callbackQuery != null) {
+            User user = userService.findUserByChatId(callbackQuery.from().id());
+            userService.clearSessionAdditionalFlags(user);
+            return;
+        }
+
         Long id = message.from().id();
         PhotoSize[] photoSizes = message.photo();
         String caption = message.caption();

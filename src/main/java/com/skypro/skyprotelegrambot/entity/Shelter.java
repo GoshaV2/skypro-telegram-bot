@@ -1,7 +1,8 @@
 package com.skypro.skyprotelegrambot.entity;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "shelter")
@@ -10,13 +11,16 @@ public class Shelter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    /**
+     * Название приюта
+     */
     @Column(name = "names")
     private String name;
     @ManyToMany
     @JoinTable(name = "shelter_user",
             joinColumns = @JoinColumn(name = "shelter_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    List<User> userList;
+    Set<User> userSet = new HashSet<>();
 
     public Shelter() {
     }
@@ -33,11 +37,11 @@ public class Shelter {
         this.name = name;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public Set<User> getUserSet() {
+        return userSet;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUserSet(Set<User> userSet) {
+        this.userSet = userSet;
     }
 }
