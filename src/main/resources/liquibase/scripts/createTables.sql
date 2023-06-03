@@ -61,6 +61,5 @@ id bigserial not null primary key,
 dates date,
 photo_path varchar not null,
 report varchar not null,
-shelter_id bigint not null references shelter (id),
-user_id bigint not null references users (id)
+probation_id bigint not null references probation (id)
 );
