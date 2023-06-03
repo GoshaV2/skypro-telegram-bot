@@ -1,8 +1,7 @@
 package com.skypro.skyprotelegrambot.repository;
 
+import com.skypro.skyprotelegrambot.entity.Probation;
 import com.skypro.skyprotelegrambot.entity.Report;
-import com.skypro.skyprotelegrambot.entity.Shelter;
-import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.model.OverdueDayData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,11 +16,12 @@ import java.util.Optional;
 public interface ReportRepository extends JpaRepository<Report, Long> {
     Optional<Report> findById(Long id);
 
-    List<Report> findAllByUserAndShelter(User user, Shelter shelter);
+    List<Report> findAllByProbation(Probation probation);
 
-    List<Report> findAllByDateAndShelter(LocalDate date, Shelter shelter);
+    List<Report> findAllByDateAndProbation(LocalDate date, Probation probation);
 
-    @Query("select new com.skypro.skyprotelegrambot.model.OverdueDayData(max(r.date),r.user,r.shelter)" +
-            "from Report r group by r.shelter,r.user having max(r.date)<:to")
+
+    @Query("select new com.skypro.skyprotelegrambot.model.OverdueDayData(max(r.date),r.probation)" +
+            "from Report r where r.probation.probationStatus='APPOINTED' group by r.probation having max(r.date)<:to")
     List<OverdueDayData> getDataOfOverdueDays(@Param("to") LocalDate to);
 }

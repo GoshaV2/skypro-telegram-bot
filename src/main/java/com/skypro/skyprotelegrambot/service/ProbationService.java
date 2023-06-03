@@ -1,9 +1,10 @@
 package com.skypro.skyprotelegrambot.service;
 
-import com.skypro.skyprotelegrambot.dto.request.ProbationAddAdditionalDaysDto;
 import com.skypro.skyprotelegrambot.dto.request.ProbationDto;
 import com.skypro.skyprotelegrambot.dto.response.ProbationResponse;
-import com.skypro.skyprotelegrambot.entity.ProbationStatus;
+import com.skypro.skyprotelegrambot.entity.Probation;
+import com.skypro.skyprotelegrambot.entity.Shelter;
+import com.skypro.skyprotelegrambot.entity.User;
 
 import java.util.List;
 
@@ -19,17 +20,12 @@ public interface ProbationService {
     void sendNotificationAboutReport();
 
     /**
-     * Поменять статус испытательного срока
+     * Получение "испытательного срока" для заданного пользователя и приюта
+     * @param user пользователь которому назначен "испытательный срок"
+     * @param shelter приют который назначил "испытательный срок" пользователю
+     * @return объект испытательного срока, если такого нет выбрасывается исключение NotFoundElement
      */
-    ProbationResponse changeProbationStatus(ProbationStatus probationStatus, long probationId);
+    Probation getProbation(User user, Shelter shelter);
 
-    /**
-     * Получить список испытательных сроков по пользователю в приюте
-     */
-    List<ProbationResponse> getUserProbationByShelter(long chatId, long shelterId);
-
-    /**
-     * Добавить дополнительные дни к испытательному сроку
-     */
-    ProbationResponse addAdditionalDays(ProbationAddAdditionalDaysDto probationDto, long id);
+    List<Probation> gatAllByShelter (Shelter shelter);
 }
