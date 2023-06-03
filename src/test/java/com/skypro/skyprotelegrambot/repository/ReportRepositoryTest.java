@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
+@Sql(scripts = {"/script/clear-all-data.sql"})
 @Sql(scripts = "/script/test-data-for-reportRepository.sql")
 class ReportRepositoryTest {
 

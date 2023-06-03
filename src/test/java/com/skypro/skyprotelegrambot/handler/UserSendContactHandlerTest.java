@@ -23,13 +23,15 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {TelegramBotTestConfiguration.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Sql(scripts = {"/script/clear-all-data.sql"})
 @Sql(scripts = {"/script/handler/test-data-for-send-contact-handler.sql"})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserSendContactHandlerTest {
     @Autowired
     private UserSendContactHandler userSendContactHandler;
@@ -58,18 +60,18 @@ class UserSendContactHandlerTest {
     void apply_whenUserSessionHasWaitingContact_thenReturnTrue() {
         when(update.message()).thenReturn(message);
         when(message.from()).thenReturn(user);
-        when(user.id()).thenReturn(1L);
+        when(user.id()).thenReturn(100L);
         assertTrue(userSendContactHandler.apply(update));
     }
 
 
     @Test
     void process_whenUserSessionHasWaitingContact_thenSaveUserContact() {
-        final String contact="+777777777";
+        final String contact = "+777777777";
         when(update.message()).thenReturn(message);
         when(message.text()).thenReturn(contact);
         when(message.from()).thenReturn(user);
-        when(user.id()).thenReturn(1L);
+        when(user.id()).thenReturn(100L);
         userSendContactHandler.process(update);
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
@@ -81,9 +83,9 @@ class UserSendContactHandlerTest {
         long chatId = (Long) parameters.get("chat_id");
         InlineKeyboardMarkup inlineKeyboardMarkup = (InlineKeyboardMarkup) parameters.get("reply_markup");
         InlineKeyboardButton[][] inlineKeyboardButtons = inlineKeyboardMarkup.inlineKeyboard();
-        assertEquals(userRepository.findById(1L).get().getContact(),contact);
+        assertEquals(userRepository.findById(100L).get().getContact(), contact);
         assertEquals(text, propertyMessageService.getMessage("contact.sent"));
-        assertEquals(chatId, 1);
+        assertEquals(chatId, 100);
         assertEquals(inlineKeyboardButtons.length, 6);
         assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/getInfoMenu/INFORMATION");
         assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/getInfoMenu/GETTING_ANIMAL");

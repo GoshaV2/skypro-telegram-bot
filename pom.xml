@@ -36,7 +36,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/com.github.pengrad/java-telegram-bot-api -->
         <dependency>
             <groupId>com.github.pengrad</groupId>

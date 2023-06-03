@@ -22,13 +22,15 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {TelegramBotTestConfiguration.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Sql(scripts = {"/script/clear-all-data.sql"})
 @Sql(scripts = {"/script/handler/test-data-for-user-contact-init-handler.sql"})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserContactInitHandlerTest {
     @Autowired
     private UserContactInitHandler userContactInitHandler;
@@ -65,13 +67,13 @@ class UserContactInitHandlerTest {
         when(update.callbackQuery()).thenReturn(callbackQuery);
         when(callbackQuery.data()).thenReturn("/sendContact");
         when(callbackQuery.from()).thenReturn(user);
-        when(user.id()).thenReturn(1L);
+        when(user.id()).thenReturn(100L);
         userContactInitHandler.process(update);
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
 
-        Session userSession=userRepository.findUserByChatId(1L).get().getSession();
+        Session userSession = userRepository.findUserByChatId(100L).get().getSession();
 
         SendMessage sendMessage = argumentCaptor.getValue();
         Map<String, Object> parameters = sendMessage.getParameters();
@@ -79,7 +81,7 @@ class UserContactInitHandlerTest {
         long chatId = (Long) parameters.get("chat_id");
 
         assertEquals(text, propertyMessageService.getMessage("contact.init"));
-        assertEquals(chatId, 1);
+        assertEquals(chatId, 100);
         assertTrue(userSession.hasWaitingContact());
     }
 }

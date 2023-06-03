@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "volunteer_contact")
 public class VolunteerContact {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     /**

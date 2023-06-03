@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset velikorodnova:1
+--changeset velikorodnova:init_tables
 
 create table shelter(
 id bigserial not null primary key,
@@ -8,7 +8,7 @@ names varchar not null
 
 create table session(
 id bigserial not null primary key,
-selected_shelter_id bigint not null references shelter (id),
+selected_shelter_id bigint references shelter (id),
 has_waiting_contact boolean default false,
 is_report_sending boolean default false,
 is_first_request boolean default true
@@ -18,7 +18,7 @@ create table users (
 id bigserial not null primary key,
 chat_id bigint not null,
 names varchar not null,
-contact varchar not null,
+contact varchar,
 session_id bigint not null references session (id)
 );
 
@@ -50,7 +50,7 @@ id bigserial not null primary key,
 shelter_id bigint not null references shelter (id),
 user_id bigint not null references users (id),
 pet_name varchar not null,
-start_date date,
+start_date date not null,
 probation_status varchar not null,
 volunteer_contact_id bigint not null references volunteer_contact (id),
 count_probation_days int not null
@@ -59,7 +59,7 @@ count_probation_days int not null
 create table report(
 id bigserial not null primary key,
 dates date,
-photo bytea,
+photo_path varchar not null,
 report varchar not null,
 shelter_id bigint not null references shelter (id),
 user_id bigint not null references users (id)

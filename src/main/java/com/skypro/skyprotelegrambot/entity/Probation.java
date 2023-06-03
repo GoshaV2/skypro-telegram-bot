@@ -10,37 +10,37 @@ public class Probation {
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "shelter_id")
+    @JoinColumn(name = "shelter_id", nullable = false)
     private Shelter shelter;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     /**
      * Имя животного
      */
-    @Column(name = "pet_name")
+    @Column(name = "pet_name", nullable = false)
     private String petName;
     /**
      * Дата начала
      */
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
     /**
      * Статус отчёта
      */
-    @Column(name = "probation_status")
+    @Column(name = "probation_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ProbationStatus probationStatus;
     /**
      * Контакты отвественного волонтёра за этот испытательный срок
      */
     @ManyToOne
-    @JoinColumn(name = "volunteer_contact_id")
+    @JoinColumn(name = "volunteer_contact_id", nullable = false)
     private VolunteerContact volunteerContact;
     /**
      * количество дней испытательного срока
      */
-    @Column (name = "count_probation_days")
+    @Column(name = "count_probation_days", nullable = false)
     private int countProbationDays;
 
     public Long getId() {

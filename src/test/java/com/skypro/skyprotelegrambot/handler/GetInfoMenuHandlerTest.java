@@ -22,13 +22,15 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {TelegramBotTestConfiguration.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Sql(scripts = {"/script/clear-all-data.sql"})
 @Sql(scripts = {"/script/handler/test-data-for-get-info-menu-handler.sql"})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GetInfoMenuHandlerTest {
     @Autowired
     private GetInfoMenuHandler getInfoMenuHandler;
@@ -50,6 +52,7 @@ class GetInfoMenuHandlerTest {
         when(baseResponse.isOk()).thenReturn(true);
         when(telegramBot.execute(any())).thenReturn(baseResponse);
     }
+
     @Test
     void apply_whenCommandIsCorrect() {
         when(update.callbackQuery()).thenReturn(callbackQuery);
@@ -62,7 +65,7 @@ class GetInfoMenuHandlerTest {
         when(update.callbackQuery()).thenReturn(callbackQuery);
         when(callbackQuery.data()).thenReturn("/getInfoMenu/INFORMATION");
         when(callbackQuery.from()).thenReturn(user);
-        when(user.id()).thenReturn(1L);
+        when(user.id()).thenReturn(100L);
         getInfoMenuHandler.process(update);
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
@@ -76,18 +79,19 @@ class GetInfoMenuHandlerTest {
         InlineKeyboardButton[][] inlineKeyboardButtons = inlineKeyboardMarkup.inlineKeyboard();
 
         assertEquals(text, propertyMessageService.getMessage("shelter.selectFromList"));
-        assertEquals(chatId, 1);
+        assertEquals(chatId, 100);
         assertEquals(inlineKeyboardButtons.length, 3);
-        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseAnswer/1");
-        assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/chooseAnswer/2");
-        assertEquals(inlineKeyboardButtons[2][0].callbackData(), "/chooseShelter/1");
+        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseAnswer/100");
+        assertEquals(inlineKeyboardButtons[1][0].callbackData(), "/chooseAnswer/200");
+        assertEquals(inlineKeyboardButtons[2][0].callbackData(), "/chooseShelter/100");
     }
+
     @Test
     void process_whenMenuNotHasLoadData() {
         when(update.callbackQuery()).thenReturn(callbackQuery);
         when(callbackQuery.data()).thenReturn("/getInfoMenu/GETTING_ANIMAL");
         when(callbackQuery.from()).thenReturn(user);
-        when(user.id()).thenReturn(1L);
+        when(user.id()).thenReturn(100L);
         getInfoMenuHandler.process(update);
 
         ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
@@ -101,8 +105,8 @@ class GetInfoMenuHandlerTest {
         InlineKeyboardButton[][] inlineKeyboardButtons = inlineKeyboardMarkup.inlineKeyboard();
 
         assertEquals(text, propertyMessageService.getMessage("notLoadInformation"));
-        assertEquals(chatId, 1);
+        assertEquals(chatId, 100);
         assertEquals(inlineKeyboardButtons.length, 1);
-        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseShelter/1");
+        assertEquals(inlineKeyboardButtons[0][0].callbackData(), "/chooseShelter/100");
     }
 }

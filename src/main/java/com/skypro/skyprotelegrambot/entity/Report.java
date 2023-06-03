@@ -13,7 +13,7 @@ public class Report {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "report")
+    @Column(name = "report",nullable = false)
     private String report;
 
     @Column(name = "photo_path")
