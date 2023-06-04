@@ -1,5 +1,6 @@
 package com.skypro.skyprotelegrambot.controller;
 
+import com.skypro.skyprotelegrambot.dto.response.ReportResponse;
 import com.skypro.skyprotelegrambot.entity.Probation;
 import com.skypro.skyprotelegrambot.entity.Report;
 import com.skypro.skyprotelegrambot.entity.Shelter;
@@ -47,7 +48,7 @@ public class ReportController {
 
     @GetMapping("/{userId}{shelterId}")
     @Operation(summary = "список всех отчетов пользователя для указанного приюта")
-    public ResponseEntity<List<Report>> getReportsFromUserToShelter(@PathVariable(name = "userId") Long userId,
+    public ResponseEntity<List<ReportResponse>> getReportsFromUserToShelter(@PathVariable(name = "userId") Long userId,
                                                       @PathVariable(name = "shelterId") Long shelterId) {
         User user = userService.findUserByChatId(userId);
         Shelter shelter = shelterService.findShelterById(shelterId);
@@ -58,12 +59,12 @@ public class ReportController {
             return ResponseEntity.ok(new ArrayList<>());
         }
         List<Report> reports = reportService.getAllByProbation(probation);
-        return ResponseEntity.ok(reports);
+        return ResponseEntity.ok(ReportResponse.from(reports));
     }
 
     @GetMapping("/today{shelterId}")
     @Operation(summary = "список всех сегодняшних отчетов для приюта")
-    public ResponseEntity<List<Report>> getAllTodayReportToShelter(@PathVariable(name = "shelterId") Long shelterId) {
+    public ResponseEntity<List<ReportResponse>> getAllTodayReportToShelter(@PathVariable(name = "shelterId") Long shelterId) {
         List<Probation> probations = probationService.gatAllByShelter(shelterService.findShelterById(shelterId));
         if (probations.size() == 0) {
             return ResponseEntity.ok(new ArrayList<>());
@@ -72,7 +73,7 @@ public class ReportController {
         for (Probation pb : probations) {
             reports.addAll(reportService.getAllByDateAndProbation(LocalDate.now(), pb));
         }
-        return ResponseEntity.ok(reports);
+        return ResponseEntity.ok(ReportResponse.from(reports));
     }
 
     @GetMapping("/photo{reportId}")
