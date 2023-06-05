@@ -1,5 +1,6 @@
 package com.skypro.skyprotelegrambot.service;
 
+import com.skypro.skyprotelegrambot.entity.Probation;
 import com.skypro.skyprotelegrambot.entity.Report;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
@@ -13,12 +14,12 @@ public interface ReportService {
 
     /**
      * Создание отчета в БД
-     * @param user пользователь отправивший отчет
+     * @param probation "испытательный срок" к которому относится отчет
      * @param text текст отчета
      * @param photoPath путь к фотографии
      * @return созданный отчет
      */
-    Report createReport(User user, String text, String photoPath);
+    Report createReport(Probation probation, String text, String photoPath);
 
     /**
      * Получение отчета по идентификатору
@@ -29,33 +30,18 @@ public interface ReportService {
 
     /**
      * Формирование списка отчетов пользователя по заданному приюту
-     * @param user пользователь для формирования списка
-     * @param shelter приют для формирования списка
+     * @param probation "испытательный срок" для формирования списка
      * @return Список отчетов пользователя по заданному приюту
      */
-    List<Report> getAllByUserAndShelter(User user, Shelter shelter);
+    List<Report> getAllByProbation(Probation probation);
 
     /**
      * Формирут список отчетов по дате и приюту
      * @param date дата для формирования списка
-     * @param shelter приют для формирования списка
+     * @param probation "испытательный срок" для формирования списка
      * @return список отчетов для заданного приют на заданную дату
      */
-    List<Report> getAllByDateAndShelter(LocalDate date, Shelter shelter);
-
-    /**
-     * Обновление фото для данного отчета. Потенциальный функционал...
-     * @param photoPath новый путь к фотографии
-     * @param id идентификатор отчета
-     */
-    void updatePhoto(String photoPath, Long id);
-
-    /**
-     * Обновление текста для данного отчета. Потенциальный функционал...
-     * @param text новый текст
-     * @param id идентификатор отчета
-     */
-    void updateText(String text, Long id);
+    List<Report> getAllByDateAndProbation(LocalDate date, Probation probation);
 
     /**
      * Удаление отчета из базы
@@ -70,4 +56,5 @@ public interface ReportService {
      * @return список информации о просроченных отчётах пользователя по приюту
      */
     List<OverdueDayData> getOverdueDayData(LocalDate to);
+
 }

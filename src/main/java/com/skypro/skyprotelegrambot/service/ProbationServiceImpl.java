@@ -9,6 +9,7 @@ import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.exception.ProbationChangeStatusException;
+import com.skypro.skyprotelegrambot.exception.UserAlreadyHasShelterProbation;
 import com.skypro.skyprotelegrambot.model.OverdueDayData;
 import com.skypro.skyprotelegrambot.repository.ProbationRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,10 @@ public class ProbationServiceImpl implements ProbationService {
     public ProbationResponse createProbation(ProbationDto probationDto) {
         Shelter shelter = shelterService.findShelterById(probationDto.getShelterId());
         User user = userService.getUserById(probationDto.getUserId());
+        if (probationRepository.existsByUserAndShelterAndProbationStatus(user, shelter,
+                ProbationStatus.APPOINTED)) {
+            throw new UserAlreadyHasShelterProbation(user.getId(), shelter.getId());
+        }
         Probation probation = new Probation();
         probation.setCountProbationDays(probationDto.getCountProbationDays());
         probation.setUser(user);
@@ -61,9 +66,10 @@ public class ProbationServiceImpl implements ProbationService {
         List<OverdueDayData> overdueDayDataList = reportService.getOverdueDayData(overdueDate);
         overdueDayDataList.forEach(overdueDayData -> {
             long overdueDays = ChronoUnit.DAYS.between(overdueDayData.getLastLoadDate(), overdueDate);
+            Probation probation = overdueDayData.getProbation();
+            User user = probation.getUser();
+            Shelter shelter = probation.getShelter();
             if (overdueDays % daysToCallVolunteer == 0) {
-                User user = overdueDayData.getUser();
-                Probation probation = getProbation(user, overdueDayData.getShelter());
                 notificationService.sendNotificationAboutOverdueReportToVolunteer(
                         probation.getVolunteerContact().getChatId(),
                         user.getName(),
@@ -71,8 +77,8 @@ public class ProbationServiceImpl implements ProbationService {
                 );
             } else {
                 notificationService.sendNotificationAboutOverdueReportToUser(
-                        overdueDayData.getUser().getChatId(),
-                        overdueDayData.getShelter().getName());
+                        user.getChatId(),
+                        shelter.getName());
             }
         });
     }
@@ -107,8 +113,16 @@ public class ProbationServiceImpl implements ProbationService {
                 .orElseThrow(() -> new NotFoundElement(id, Probation.class));
     }
 
-    private Probation getProbation(User user, Shelter shelter) {
+    @Override
+    public Probation getProbation(User user, Shelter shelter) {
         return probationRepository.findByUserAndShelter(user, shelter).orElseThrow(() ->
-                new NotFoundElement(String.format("Not Probation by user(id=%d) and shelter(id=%d)", user.getId(), shelter.getId())));
+                new NotFoundElement(String.format("Not Probation by user(id=%d) and shelter(id=%d)",
+                        user.getId(), shelter.getId())));
+    }
+
+    @Override
+    public List<Probation> gatAllByShelter(Shelter shelter) {
+        return probationRepository.findAllByShelter(shelter);
+
     }
 }

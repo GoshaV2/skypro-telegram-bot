@@ -1,6 +1,7 @@
 package com.skypro.skyprotelegrambot.repository;
 
 import com.skypro.skyprotelegrambot.entity.Probation;
+import com.skypro.skyprotelegrambot.entity.ProbationStatus;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,9 @@ import java.util.Optional;
 public interface ProbationRepository extends JpaRepository<Probation, Long> {
     Optional<Probation> findByUserAndShelter(User user, Shelter shelter);
 
+    List<Probation> findAllByShelter (Shelter shelter);
+
     List<Probation> findAllByUserChatIdAndShelterId(long chatId, long shelterId);
+
+    boolean existsByUserAndShelterAndProbationStatus(User user, Shelter shelter, ProbationStatus probationStatus);
 }
