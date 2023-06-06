@@ -1,6 +1,5 @@
 package com.skypro.skyprotelegrambot.dto.response;
 
-import com.skypro.skyprotelegrambot.entity.Session;
 import com.skypro.skyprotelegrambot.entity.User;
 import lombok.Builder;
 

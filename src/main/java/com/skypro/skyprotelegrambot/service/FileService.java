@@ -6,7 +6,8 @@ import java.nio.file.Path;
 public interface FileService {
     /**
      * Запись файла
-     * @param path путь к файлу
+     *
+     * @param path   путь к файлу
      * @param source данные для записи
      * @throws IOException
      */
@@ -14,6 +15,7 @@ public interface FileService {
 
     /**
      * Чтение из файла
+     *
      * @param path путь к файлу
      * @return данные файла
      * @throws IOException

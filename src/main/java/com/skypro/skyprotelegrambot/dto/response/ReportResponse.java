@@ -28,7 +28,7 @@ public class ReportResponse {
         return new ReportResponse(report.getId(), report.getReport(), report.getDate(), report.getProbation());
     }
 
-    public static List<ReportResponse> from (Collection<Report> reports){
+    public static List<ReportResponse> from(Collection<Report> reports) {
         return reports.stream().map(ReportResponse::from).collect(Collectors.toList());
     }
 

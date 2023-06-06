@@ -9,15 +9,17 @@ import java.io.IOException;
 public interface TelegramMessageService {
     /**
      * Исполнение запроса ботом
+     *
      * @param request исполняемый запрос
+     * @param <T>     extends BaseRequest<T, R>
+     * @param <R>     extends BaseResponse
      * @return ответ на исполненный запрос
-     * @param <T> extends BaseRequest<T, R>
-     * @param <R> extends BaseResponse
      */
     <T extends BaseRequest<T, R>, R extends BaseResponse> R execute(BaseRequest<T, R> request);
 
     /**
      * Получение содержимого файла
+     *
      * @param file запрашивавемый файл (см. com.pengrad.telegrambot.model)
      * @return содержимое файла как массив байт
      * @throws IOException

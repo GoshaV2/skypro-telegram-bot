@@ -2,8 +2,6 @@ package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.entity.Probation;
 import com.skypro.skyprotelegrambot.entity.Report;
-import com.skypro.skyprotelegrambot.entity.Shelter;
-import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.model.OverdueDayData;
 import com.skypro.skyprotelegrambot.repository.ReportRepository;
@@ -19,9 +17,10 @@ public class ReportServiceImpl implements ReportService {
     public ReportServiceImpl(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
+
     @Override
-    public List<Report> getAll(){
-        return  reportRepository.findAll();
+    public List<Report> getAll() {
+        return reportRepository.findAll();
     }
 
     @Override
@@ -52,6 +51,7 @@ public class ReportServiceImpl implements ReportService {
     public void deleteReport(Report report) {
         reportRepository.delete(report);
     }
+
     @Override
     public List<OverdueDayData> getOverdueDayData(LocalDate to) {
         return reportRepository.getDataOfOverdueDays(to);

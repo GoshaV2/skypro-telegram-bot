@@ -1,8 +1,6 @@
 package com.skypro.skyprotelegrambot.model;
 
 import com.skypro.skyprotelegrambot.entity.Probation;
-import com.skypro.skyprotelegrambot.entity.Shelter;
-import com.skypro.skyprotelegrambot.entity.User;
 
 import java.time.LocalDate;
 

@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.GetFileResponse;
 import com.skypro.skyprotelegrambot.entity.Probation;
+import com.skypro.skyprotelegrambot.entity.ProbationStatus;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.service.*;
@@ -36,6 +37,7 @@ public class ReportSendHandler implements CommandHandler {
         this.fileService = fileService;
         this.probationService = probationService;
     }
+
     @Override
     public boolean apply(Update update) {
         Message message = update.message();
@@ -43,6 +45,7 @@ public class ReportSendHandler implements CommandHandler {
         Long id = (message != null) ? message.from().id() : callbackQuery.from().id();
         return userService.findUserByChatId(id).getSession().isReportSending();
     }
+
     @Override
     public void process(Update update) {
         Message message = update.message();
@@ -60,7 +63,7 @@ public class ReportSendHandler implements CommandHandler {
         User user = userService.findUserByChatId(id);
         Probation probation;
         try {
-            probation = probationService.getProbation(user, user.getSession().getSelectedShelter());
+            probation = probationService.getProbation(user, user.getSession().getSelectedShelter(), ProbationStatus.APPOINTED);
         } catch (NotFoundElement e) {
             telegramMessageService.execute(new SendMessage(id, "Вам не назначен испытательный срок!"));
             SendMessage sendMessage =

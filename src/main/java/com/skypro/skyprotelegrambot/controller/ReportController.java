@@ -49,7 +49,7 @@ public class ReportController {
     @GetMapping("/{userId}{shelterId}")
     @Operation(summary = "список всех отчетов пользователя для указанного приюта")
     public ResponseEntity<List<ReportResponse>> getReportsFromUserToShelter(@PathVariable(name = "userId") Long userId,
-                                                      @PathVariable(name = "shelterId") Long shelterId) {
+                                                                            @PathVariable(name = "shelterId") Long shelterId) {
         User user = userService.findUserByChatId(userId);
         Shelter shelter = shelterService.findShelterById(shelterId);
         Probation probation;

@@ -2,8 +2,6 @@ package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.entity.Probation;
 import com.skypro.skyprotelegrambot.entity.Report;
-import com.skypro.skyprotelegrambot.entity.Shelter;
-import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.model.OverdueDayData;
 
 import java.time.LocalDate;
@@ -14,8 +12,9 @@ public interface ReportService {
 
     /**
      * Создание отчета в БД
+     *
      * @param probation "испытательный срок" к которому относится отчет
-     * @param text текст отчета
+     * @param text      текст отчета
      * @param photoPath путь к фотографии
      * @return созданный отчет
      */
@@ -23,6 +22,7 @@ public interface ReportService {
 
     /**
      * Получение отчета по идентификатору
+     *
      * @param id идентификатор отчета
      * @return очет с указанным идентификатором
      */
@@ -30,6 +30,7 @@ public interface ReportService {
 
     /**
      * Формирование списка отчетов пользователя по заданному приюту
+     *
      * @param probation "испытательный срок" для формирования списка
      * @return Список отчетов пользователя по заданному приюту
      */
@@ -37,7 +38,8 @@ public interface ReportService {
 
     /**
      * Формирут список отчетов по дате и приюту
-     * @param date дата для формирования списка
+     *
+     * @param date      дата для формирования списка
      * @param probation "испытательный срок" для формирования списка
      * @return список отчетов для заданного приют на заданную дату
      */
@@ -45,6 +47,7 @@ public interface ReportService {
 
     /**
      * Удаление отчета из базы
+     *
      * @param report удаляемый отчет.
      */
     void deleteReport(Report report);

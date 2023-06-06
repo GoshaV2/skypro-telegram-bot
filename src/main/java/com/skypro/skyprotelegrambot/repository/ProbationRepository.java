@@ -14,7 +14,9 @@ import java.util.Optional;
 public interface ProbationRepository extends JpaRepository<Probation, Long> {
     Optional<Probation> findByUserAndShelter(User user, Shelter shelter);
 
-    List<Probation> findAllByShelter (Shelter shelter);
+    Optional<Probation> findByUserAndShelterAndProbationStatus(User user, Shelter shelter, ProbationStatus probationStatus);
+
+    List<Probation> findAllByShelter(Shelter shelter);
 
     List<Probation> findAllByUserChatIdAndShelterId(long chatId, long shelterId);
 
