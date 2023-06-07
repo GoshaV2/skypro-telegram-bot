@@ -3,12 +3,12 @@ package com.skypro.skyprotelegrambot.service;
 import com.skypro.skyprotelegrambot.dto.request.ProbationAddAdditionalDaysDto;
 import com.skypro.skyprotelegrambot.dto.request.ProbationDto;
 import com.skypro.skyprotelegrambot.dto.response.ProbationResponse;
-import com.skypro.skyprotelegrambot.entity.ProbationStatus;
-
-import java.util.List;
 import com.skypro.skyprotelegrambot.entity.Probation;
+import com.skypro.skyprotelegrambot.entity.ProbationStatus;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
+
+import java.util.List;
 
 
 public interface ProbationService {
@@ -39,11 +39,22 @@ public interface ProbationService {
 
     /**
      * Получение "испытательного срока" для заданного пользователя и приюта
-     * @param user пользователь которому назначен "испытательный срок"
+     *
+     * @param user    пользователь которому назначен "испытательный срок"
      * @param shelter приют который назначил "испытательный срок" пользователю
      * @return объект испытательного срока, если такого нет выбрасывается исключение NotFoundElement
      */
     Probation getProbation(User user, Shelter shelter);
 
-    List<Probation> gatAllByShelter (Shelter shelter);
+    /**
+     * Получение "испытательного срока" для заданного пользователя и приюта по статусу
+     *
+     * @param user            пользователь которому назначен "испытательный срок"
+     * @param shelter         приют который назначил "испытательный срок" пользователю
+     * @param probationStatus статус испытательного срока
+     * @return объект испытательного срока, если такого нет выбрасывается исключение NotFoundElement
+     */
+    Probation getProbation(User user, Shelter shelter, ProbationStatus probationStatus);
+
+    List<Probation> gatAllByShelter(Shelter shelter);
 }
