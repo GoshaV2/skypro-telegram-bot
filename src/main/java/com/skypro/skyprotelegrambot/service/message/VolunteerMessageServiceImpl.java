@@ -18,15 +18,19 @@ public class VolunteerMessageServiceImpl implements VolunteerMessageService {
 
     @Override
     public SendMessage getMessageAfterSentVolunteerContact(long id, Shelter shelter) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder contactBuilder = new StringBuilder();
         List<VolunteerContact> contactList = volunteerContactService.findAllByShelter(shelter);
         for (VolunteerContact volunteerContact : contactList) {
-            stringBuilder.append("Номер телефона волонтера - ").append(volunteerContact.getPhone());
-            stringBuilder.append("\nТелеграм-тэг волонтера - ").append(volunteerContact.getTelegramTag());
-            stringBuilder.append("\nЭл. почта волонтера - ").append(volunteerContact.getEmail());
-            stringBuilder.append("\nИмя волонтера - ").append(volunteerContact.getFullName());
-            stringBuilder.append("\nПриют - ").append(volunteerContact.getShelter());
+            contactBuilder.append("Номер телефона волонтера - ").append(volunteerContact.getPhone());
+            contactBuilder.append("\nТелеграм-тэг волонтера - ").append(volunteerContact.getTelegramTag());
+            contactBuilder.append("\nЭл. почта волонтера - ").append(volunteerContact.getEmail());
+            contactBuilder.append("\nИмя волонтера - ").append(volunteerContact.getFullName());
+            contactBuilder.append("\nПриют - ").append(volunteerContact.getShelter());
         }
-        return new SendMessage(id, stringBuilder.toString());
+        String contact = contactBuilder.toString();
+        if (contact.isEmpty()) {
+            contact = "Информация временно не загруженна";
+        }
+        return new SendMessage(id, contact);
     }
 }
