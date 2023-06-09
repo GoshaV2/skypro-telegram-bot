@@ -42,8 +42,8 @@ public class ReportController {
 
     @GetMapping()
     @Operation(summary = "список всех отчетов")
-    public List<Report> getAll() {
-        return reportService.getAll();
+    public List<ReportResponse> getAll() {
+        return ReportResponse.from(reportService.getAll());
     }
 
     @GetMapping("/{userId}/{shelterId}")

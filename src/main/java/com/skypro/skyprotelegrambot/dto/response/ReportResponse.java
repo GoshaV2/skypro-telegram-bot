@@ -1,6 +1,5 @@
 package com.skypro.skyprotelegrambot.dto.response;
 
-import com.skypro.skyprotelegrambot.entity.Probation;
 import com.skypro.skyprotelegrambot.entity.Report;
 
 import java.time.LocalDate;
@@ -12,12 +11,10 @@ public class ReportResponse {
     private Long id;
     private String report;
     private LocalDate date;
-    private Probation probation;
+    private ProbationResponse probation;
 
-    public ReportResponse() {
-    }
 
-    public ReportResponse(Long id, String report, LocalDate date, Probation probation) {
+    public ReportResponse(Long id, String report, LocalDate date, ProbationResponse probation) {
         this.id = id;
         this.report = report;
         this.date = date;
@@ -25,7 +22,7 @@ public class ReportResponse {
     }
 
     public static ReportResponse from(Report report) {
-        return new ReportResponse(report.getId(), report.getReport(), report.getDate(), report.getProbation());
+        return new ReportResponse(report.getId(), report.getReport(), report.getDate(),ProbationResponse.from(report.getProbation()));
     }
 
     public static List<ReportResponse> from(Collection<Report> reports) {
@@ -56,11 +53,11 @@ public class ReportResponse {
         this.date = date;
     }
 
-    public Probation getProbation() {
+    public ProbationResponse getProbation() {
         return probation;
     }
 
-    public void setProbation(Probation probation) {
+    public void setProbation(ProbationResponse probation) {
         this.probation = probation;
     }
 }
