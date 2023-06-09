@@ -7,7 +7,6 @@ import com.pengrad.telegrambot.response.GetFileResponse;
 import com.skypro.skyprotelegrambot.entity.Probation;
 import com.skypro.skyprotelegrambot.entity.ProbationStatus;
 import com.skypro.skyprotelegrambot.entity.User;
-import com.skypro.skyprotelegrambot.exception.NotFoundElement;
 import com.skypro.skyprotelegrambot.service.*;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
 import org.springframework.stereotype.Component;
@@ -61,21 +60,11 @@ public class ReportSendHandler implements CommandHandler {
         PhotoSize[] photoSizes = message.photo();
         String caption = message.caption();
         User user = userService.findUserByChatId(id);
-        Probation probation;
-        try {
-            probation = probationService.getProbation(user, user.getSession().getSelectedShelter(), ProbationStatus.APPOINTED);
-        } catch (NotFoundElement e) {
-            telegramMessageService.execute(new SendMessage(id, "Вам не назначен испытательный срок!"));
-            SendMessage sendMessage =
-                    shelterMessageService.getMessageAfterChosenShelter(id, user.getSession().getSelectedShelter());
-            telegramMessageService.execute(sendMessage);
-            return;
-        }
+        Probation probation = probationService.getProbation(user, user.getSession().getSelectedShelter(), ProbationStatus.APPOINTED);
 
         if (photoSizes == null || caption == null) {
-            telegramMessageService.execute(new SendMessage(id, "Неверный формат сообщения! Попробуйте снова."));
             SendMessage sendMessage =
-                    shelterMessageService.getMessageBeforeReport(id, user.getSession().getSelectedShelter());
+                    shelterMessageService.getBadReportMessage(id, user.getSession().getSelectedShelter());
             telegramMessageService.execute(sendMessage);
             return;
         }
@@ -83,7 +72,9 @@ public class ReportSendHandler implements CommandHandler {
         try {
             createReport(probation, caption, photoSizes);
         } catch (IOException e) {
-            telegramMessageService.execute(new SendMessage(id, "Что-то пошло не так! Попробуйте снова чуть позже."));
+            telegramMessageService.execute(shelterMessageService.getBadSavingReportMessage(id,
+                    user.getSession().getSelectedShelter()));
+            userService.clearSessionAdditionalFlags(user);
             e.printStackTrace();
         }
         //отправка сообщения пользователю что отчет принят

@@ -40,7 +40,7 @@ public interface ShelterMessageService {
     /**
      * @param chatId  чат куда шлем сообщение
      * @param shelter выбранный пользователем приют
-     * @return сообщение с указаниями по отчету
+     * @return сообщение с указаниями по отчету + кнопка назад.
      */
     SendMessage getMessageBeforeReport(long chatId, Shelter shelter);
 
@@ -50,4 +50,24 @@ public interface ShelterMessageService {
      * @return сообщение об успешном принятии отчета + кнопки после выбора приюта.
      */
     SendMessage getMessageAfterReport(long chatId, Shelter shelter);
+
+    /**
+     * @param chatId  чат куда шлем сообщение
+     * @return сообщение об отсутствии "испытательного срока" + кнопки после выбора приюта.
+     */
+    SendMessage getNoProbationMessage(long chatId);
+
+    /**
+     * @param chatId  чат куда шлем сообщение
+     * @param shelter выбранный пользователем приют
+     * @return сообщение о плохом отчете + кнопка назад.
+     */
+    SendMessage getBadReportMessage(long chatId, Shelter shelter);
+
+    /**
+     * @param chatId  чат куда шлем сообщение
+     * @param shelter выбранный пользователем приют
+     * @return сообщение о плохом отчете + кнопки после выбора приюта.
+     */
+    SendMessage getBadSavingReportMessage(long chatId, Shelter shelter);
 }

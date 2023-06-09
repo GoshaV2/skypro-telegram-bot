@@ -86,4 +86,26 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
         sendMessage.replyMarkup(shelterButtonService.getInfoMenu());
         return sendMessage;
     }
+
+    @Override
+    public SendMessage getNoProbationMessage(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("report.no.probation"));
+        sendMessage.replyMarkup(shelterButtonService.getInfoMenu());
+        return sendMessage;
+    }
+
+    @Override
+    public SendMessage getBadReportMessage(long chatId, Shelter shelter) {
+        String text = propertyMessageService.getMessage("report.is.bad") + " " +
+                propertyMessageService.getMessage("shelter.send.report.info");
+        SendMessage sendMessage = new SendMessage(chatId, text);
+        sendMessage.replyMarkup(shelterButtonService.backFromReport(shelter));
+        return sendMessage;
+    }
+    @Override
+    public SendMessage getBadSavingReportMessage(long chatId, Shelter shelter){
+        SendMessage sendMessage = new SendMessage(chatId, propertyMessageService.getMessage("report.bad.record"));
+        sendMessage.replyMarkup(shelterButtonService.getInfoMenu());
+        return sendMessage;
+    }
 }
