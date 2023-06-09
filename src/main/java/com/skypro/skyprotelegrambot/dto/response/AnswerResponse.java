@@ -2,7 +2,6 @@ package com.skypro.skyprotelegrambot.dto.response;
 
 import com.skypro.skyprotelegrambot.entity.Answer;
 import com.skypro.skyprotelegrambot.entity.Category;
-import com.skypro.skyprotelegrambot.entity.Shelter;
 import lombok.Builder;
 
 import java.util.List;
@@ -14,14 +13,14 @@ public class AnswerResponse {
     private String title;
     private String text;
     private Category category;
-    private Shelter shelter;
+    private ShelterResponse shelterResponse;
 
-    public AnswerResponse(Long id, String title, String text, Category category, Shelter shelter) {
+    public AnswerResponse(Long id, String title, String text, Category category, ShelterResponse shelterResponse) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.category = category;
-        this.shelter = shelter;
+        this.shelterResponse = shelterResponse;
     }
 
     public static AnswerResponse from(Answer answer) {
@@ -30,7 +29,7 @@ public class AnswerResponse {
                 .title(answer.getTitle())
                 .text(answer.getText())
                 .category(answer.getCategory())
-                .shelter(answer.getShelter()).build();
+                .shelterResponse(ShelterResponse.from(answer.getShelter())).build();
     }
 
     public static List<AnswerResponse> from(List<Answer> answerList) {
@@ -69,11 +68,11 @@ public class AnswerResponse {
         this.category = category;
     }
 
-    public Shelter getShelter() {
-        return shelter;
+    public ShelterResponse getShelterResponse() {
+        return shelterResponse;
     }
 
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
+    public void setShelterResponse(ShelterResponse shelterResponse) {
+        this.shelterResponse = shelterResponse;
     }
 }

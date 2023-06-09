@@ -1,6 +1,5 @@
 package com.skypro.skyprotelegrambot.dto.response;
 
-import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.VolunteerContact;
 import lombok.Builder;
 
@@ -15,16 +14,17 @@ public class VolunteerContactResponse {
     private String telegramTag;
     private String email;
     private String fullName;
-    private Shelter shelter;
+    private ShelterResponse shelterResponse;
 
-    public VolunteerContactResponse(Long id, String phone, Long chatId, String telegramTag, String email, String fullName, Shelter shelter) {
+    public VolunteerContactResponse(Long id, String phone, Long chatId, String telegramTag, String email,
+                                    String fullName, ShelterResponse shelterResponse) {
         this.id = id;
         this.phone = phone;
         this.chatId = chatId;
         this.telegramTag = telegramTag;
         this.email = email;
         this.fullName = fullName;
-        this.shelter = shelter;
+        this.shelterResponse = shelterResponse;
     }
 
     public static VolunteerContactResponse from(VolunteerContact volunteerContact) {
@@ -35,7 +35,7 @@ public class VolunteerContactResponse {
                 .telegramTag(volunteerContact.getTelegramTag())
                 .email(volunteerContact.getEmail())
                 .fullName(volunteerContact.getFullName())
-                .shelter(volunteerContact.getShelter()).build();
+                .shelterResponse(ShelterResponse.from(volunteerContact.getShelter())).build();
     }
 
     public static List<VolunteerContactResponse> from(List<VolunteerContact> volunteerContactsList) {
@@ -91,11 +91,11 @@ public class VolunteerContactResponse {
         this.fullName = fullName;
     }
 
-    public Shelter getShelter() {
-        return shelter;
+    public ShelterResponse getShelterResponse() {
+        return shelterResponse;
     }
 
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
+    public void setShelterResponse(ShelterResponse shelterResponse) {
+        this.shelterResponse = shelterResponse;
     }
 }
