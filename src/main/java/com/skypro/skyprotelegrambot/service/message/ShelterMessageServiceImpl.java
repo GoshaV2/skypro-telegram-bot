@@ -96,7 +96,7 @@ public class ShelterMessageServiceImpl implements ShelterMessageService {
 
     @Override
     public SendMessage getBadReportMessage(long chatId, Shelter shelter) {
-        String text = propertyMessageService.getMessage("report.is.bad") + " " +
+        String text = propertyMessageService.getMessage("report.is.bad") + "\n" +
                 propertyMessageService.getMessage("shelter.send.report.info");
         SendMessage sendMessage = new SendMessage(chatId, text);
         sendMessage.replyMarkup(shelterButtonService.backFromReport(shelter));

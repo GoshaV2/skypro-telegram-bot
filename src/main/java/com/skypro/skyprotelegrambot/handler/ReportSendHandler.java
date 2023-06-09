@@ -48,14 +48,6 @@ public class ReportSendHandler implements CommandHandler {
     @Override
     public void process(Update update) {
         Message message = update.message();
-        CallbackQuery callbackQuery = update.callbackQuery();
-
-        if (callbackQuery != null) {
-            User user = userService.findUserByChatId(callbackQuery.from().id());
-            userService.clearSessionAdditionalFlags(user);
-            return;
-        }
-
         Long id = message.from().id();
         PhotoSize[] photoSizes = message.photo();
         String caption = message.caption();
@@ -74,8 +66,10 @@ public class ReportSendHandler implements CommandHandler {
         } catch (IOException e) {
             telegramMessageService.execute(shelterMessageService.getBadSavingReportMessage(id,
                     user.getSession().getSelectedShelter()));
-            userService.clearSessionAdditionalFlags(user);
             e.printStackTrace();
+            return;
+        } finally {
+            userService.clearSessionAdditionalFlags(user);
         }
         //отправка сообщения пользователю что отчет принят
         SendMessage sendMessage = shelterMessageService.getMessageAfterReport(id,
