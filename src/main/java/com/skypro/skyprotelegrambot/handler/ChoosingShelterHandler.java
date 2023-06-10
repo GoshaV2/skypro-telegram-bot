@@ -5,7 +5,6 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.skypro.skyprotelegrambot.entity.User;
 import com.skypro.skyprotelegrambot.model.command.ShelterCommand;
-import com.skypro.skyprotelegrambot.service.ShelterService;
 import com.skypro.skyprotelegrambot.service.TelegramMessageService;
 import com.skypro.skyprotelegrambot.service.UserService;
 import com.skypro.skyprotelegrambot.service.message.ShelterMessageService;
@@ -22,13 +21,11 @@ public class ChoosingShelterHandler implements CommandHandler {
     private final ShelterMessageService shelterMessageService;
     private final UserService userService;
     private final TelegramMessageService telegramMessageService;
-    private final ShelterService shelterService;
 
-    public ChoosingShelterHandler(ShelterMessageService shelterMessageService, UserService userService, TelegramMessageService telegramMessageService, ShelterService shelterService) {
+    public ChoosingShelterHandler(ShelterMessageService shelterMessageService, UserService userService, TelegramMessageService telegramMessageService) {
         this.shelterMessageService = shelterMessageService;
         this.userService = userService;
         this.telegramMessageService = telegramMessageService;
-        this.shelterService = shelterService;
     }
 
     @Override
@@ -51,7 +48,7 @@ public class ChoosingShelterHandler implements CommandHandler {
         String text = callbackQuery.data();
         long shelterId = Long.parseLong(text.replace(ShelterCommand.CHOOSE_SHELTER.getStartPath(), ""));
         User user = userService.chooseShelterForUser(chatId, shelterId);
-        userService.turnOffReportSending(user);// на сучай возврата из меню отправки отчета о питомце
+        userService.clearSessionAdditionalFlags(user);// на сучай возврата из меню отправки отчета о питомце
         SendMessage sendMessage = shelterMessageService.getMessageAfterChosenShelter(chatId, user.getSession().getSelectedShelter());
         telegramMessageService.execute(sendMessage);
     }

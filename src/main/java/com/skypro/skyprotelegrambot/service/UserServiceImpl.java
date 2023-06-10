@@ -83,14 +83,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User turnOffReportSending(User user) {
-        Session session = user.getSession();
-        session.setReportSending(false);
-        sessionRepository.save(session);
-        return user;
-    }
-
-    @Override
     public User clearSessionAdditionalFlags(User user) {
         Session session = user.getSession();
         session.setReportSending(false);

@@ -42,11 +42,11 @@ public class ReportController {
 
     @GetMapping()
     @Operation(summary = "список всех отчетов")
-    public List<Report> getAll() {
-        return reportService.getAll();
+    public List<ReportResponse> getAll() {
+        return ReportResponse.from(reportService.getAll());
     }
 
-    @GetMapping("/{userId}{shelterId}")
+    @GetMapping("/{userId}/{shelterId}")
     @Operation(summary = "список всех отчетов пользователя для указанного приюта")
     public ResponseEntity<List<ReportResponse>> getReportsFromUserToShelter(@PathVariable(name = "userId") Long userId,
                                                                             @PathVariable(name = "shelterId") Long shelterId) {
@@ -62,7 +62,7 @@ public class ReportController {
         return ResponseEntity.ok(ReportResponse.from(reports));
     }
 
-    @GetMapping("/today{shelterId}")
+    @GetMapping("/today/{shelterId}")
     @Operation(summary = "список всех сегодняшних отчетов для приюта")
     public ResponseEntity<List<ReportResponse>> getAllTodayReportToShelter(@PathVariable(name = "shelterId") Long shelterId) {
         List<Probation> probations = probationService.gatAllByShelter(shelterService.findShelterById(shelterId));
@@ -76,7 +76,7 @@ public class ReportController {
         return ResponseEntity.ok(ReportResponse.from(reports));
     }
 
-    @GetMapping("/photo{reportId}")
+    @GetMapping("/photo/{reportId}")
     @Operation(summary = "Получение фото")
     public byte[] getPhoto(@PathVariable(name = "reportId") Long reportId) {
         Path filepath = Path.of(reportService.getById(reportId).getPhotoPath());
