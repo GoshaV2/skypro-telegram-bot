@@ -1,127 +1,127 @@
 --liquibase formatted sql
 --changeset velikorodnova:init_test_data
-insert into shelter (id, names)
-values (1, 'Приют для кошек');
+insert into shelter ( names)
+values ('Приют для кошек');
 
-insert into shelter (id, names)
-values (2, 'Приют для собак');
+insert into shelter  (names)
+values ('Приют для собак');
 
-insert into answer (id, category, texts, title, shelter_id)
-values (2, 'INFORMATION',
+insert into answer ( category, texts, title, shelter_id)
+values ('INFORMATION',
 'Приют для кошек работает с 09:00 до 18:00 и находится по адресу: ул. Советска, 15',
 'Расписание работы приюта для кошек и адрес', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values (3, 'INFORMATION', '8987656565',
+insert into answer ( category, texts, title, shelter_id)
+values ('INFORMATION', '8987656565',
 'Контактные данные охраны для оформления пропуска на машину', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(4, 'INFORMATION',
+insert into answer ( category, texts, title, shelter_id)
+values ('INFORMATION',
 'Находясь на территории приюта, пожалуйста, соблюдайте наши правила и технику безопасности!',
 'Рекомендации о технике безопасности на территории приюта', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values (8, 'INFORMATION',
+insert into answer ( category, texts, title, shelter_id)
+values ('INFORMATION',
 'Приют для собак работает с 09:00 до 18:00 и находится по адресу: ул. Советска, 15',
 'Расписание работы приюта для кошек и адрес', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values (9, 'INFORMATION', '8987656565',
+insert into answer ( category, texts, title, shelter_id)
+values ('INFORMATION', '8987656565',
 'Контактные данные охраны для оформления пропуска на машину', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(10, 'INFORMATION',
+insert into answer ( category, texts, title, shelter_id)
+values('INFORMATION',
 'Находясь на территории приюта, пожалуйста, соблюдайте наши правила и технику безопасности!',
 'Рекомендации о технике безопасности на территории приюта', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(14, 'GETTING_ANIMAL', 'Правила знакомства с животным, вы можете узнать в памятке, которая расположена на стенде',
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Правила знакомства с животным, вы можете узнать в памятке, которая расположена на стенде',
 'Правила знакомства с животным до того, как забрать его из приюта', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(15, 'GETTING_ANIMAL', 'Паспорт, заполненная анкета', 'Список документов', 1);
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Паспорт, заполненная анкета', 'Список документов', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(16, 'GETTING_ANIMAL',
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL',
 'При размещении животного в личном автомобиле придерживайтесь базовых правил безопасности.',
 'Список рекомендаций по транспортировке животного', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(17, 'GETTING_ANIMAL', 'Обеспечьте безопасность котенка в доме и в саду,
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Обеспечьте безопасность котенка в доме и в саду,
 Приобретите необходимые аксессуары для котенка, таких как переноска, туалетный лоток и игрушки,
 Выберите подходящий корм для котенка,
 Подготовьте членов семьи, домашних животных и гостей к появлению нового питомца,
 Подберите ветеринарную клинику',
 'Список рекомендаций по обустройству дома для котенка', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(18, 'GETTING_ANIMAL', 'Обеспечьте безопасность кота в доме и в саду,
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Обеспечьте безопасность кота в доме и в саду,
 Приобретите необходимые аксессуары для кота, таких как переноска, туалетный лоток и игрушки,
 Выберите подходящий корм для кота,
 Подготовьте членов семьи, домашних животных и гостей к появлению нового питомца,
 Подберите ветеринарную клинику',
 'Список рекомендаций по обустройству дома для взрослого животного', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(19, 'GETTING_ANIMAL', 'Полноценная счастливая жизнь кота с ограниченными возможностями напрямую зависит от хозяина.
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Полноценная счастливая жизнь кота с ограниченными возможностями напрямую зависит от хозяина.
 Необходимо приложить немало усилий, чтобы обеспечить комфортную жизнь питомцу, и,
 тогда животное легко приспосабливается ко многим вещам и проживает длинную и полноценную жизнь.
 В отличие от человека, кошка вряд ли будет себя жалеть или сравнивать с другими кошками,
 поэтому гораздо легче приспосабливается к жизни в случае приобретенной или врожденной инвалидности',
 'Список рекомендаций по обустройству дома для животного с ограниченными возможностями (зрение, передвижение)', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(20, 'GETTING_ANIMAL', 'Не приложены необходимые документы',
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Не приложены необходимые документы',
 'Почему мы не можем дать забрать кошку из приюта', 1);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(24, 'GETTING_ANIMAL', 'Правила знакомства с животным, вы можете узнать в памятке, которая расположена на стенде',
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Правила знакомства с животным, вы можете узнать в памятке, которая расположена на стенде',
 'Правила знакомства с животным до того, как забрать его из приюта', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(25, 'GETTING_ANIMAL', 'Паспорт, заполненная анкета', 'Список документов', 2);
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Паспорт, заполненная анкета', 'Список документов', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(26, 'GETTING_ANIMAL',
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL',
 'При размещении животного в личном автомобиле придерживайтесь базовых правил безопасности.',
 'Список рекомендаций по транспортировке животного', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(27, 'GETTING_ANIMAL', 'Обеспечьте безопасность щенка в доме и в саду,
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Обеспечьте безопасность щенка в доме и в саду,
 Приобретите необходимые аксессуары для щенка, таких как переноска, туалетный лоток и игрушки,
 Выберите подходящий корм для щенка,
 Подготовьте членов семьи, домашних животных и гостей к появлению нового питомца,
 Подберите ветеринарную клинику',
 'Список рекомендаций по обустройству дома для щенка', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(28, 'GETTING_ANIMAL', 'Обеспечьте безопасность собаки в доме и в саду,
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Обеспечьте безопасность собаки в доме и в саду,
 Приобретите необходимые аксессуары для собаки, таких как переноска, туалетный лоток и игрушки,
 Выберите подходящий корм для собаки,
 Подготовьте членов семьи, домашних животных и гостей к появлению нового питомца,
 Подберите ветеринарную клинику',
 'Список рекомендаций по обустройству дома для взрослого животного', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(29, 'GETTING_ANIMAL', 'Полноценная счастливая жизнь собаки с ограниченными возможностями напрямую зависит от хозяина.
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Полноценная счастливая жизнь собаки с ограниченными возможностями напрямую зависит от хозяина.
 Необходимо приложить немало усилий, чтобы обеспечить комфортную жизнь питомцу, и,
 тогда животное легко приспосабливается ко многим вещам и проживает длинную и полноценную жизнь.
 В отличие от человека, собака вряд ли будет себя жалеть или сравнивать с другими собаками,
 поэтому гораздо легче приспосабливается к жизни в случае приобретенной или врожденной инвалидности',
 'Список рекомендаций по обустройству дома для животного с ограниченными возможностями (зрение, передвижение)', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(30, 'GETTING_ANIMAL', 'Не приложены необходимые документы',
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Не приложены необходимые документы',
 'Почему мы не можем дать забрать собаку из приюта', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(33, 'GETTING_ANIMAL', 'Как правильно начать знакомство с собакой?
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Как правильно начать знакомство с собакой?
 Если вы хотите с ней познакомиться, присядьте на ее уровень и спокойно попросите ее подойти, произнеся кличку.
 Если собака насторожилась или боится, не настаивайте на контакте, дождитесь, пока она сама захочет к вам подойти.
 Дайте собаке возможность вас обнюхать, не смотрите ей прямо в глаза.',
 'Советы кинолога по первичному общению с собакой', 2);
 
-insert into answer (id, category, texts, title, shelter_id)
-values(34, 'GETTING_ANIMAL', 'Бобрецов Е.С. Инструктор - дрессировщик.
+insert into answer ( category, texts, title, shelter_id)
+values('GETTING_ANIMAL', 'Бобрецов Е.С. Инструктор - дрессировщик.
 Специалист по коррекции поведения. Зоопсихолог.',
 'Рекомендации по проверенным кинологам для дальнейшего обращения к ним', 2);

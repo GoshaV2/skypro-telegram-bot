@@ -1,6 +1,7 @@
 package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.dto.request.ShelterDto;
+import com.skypro.skyprotelegrambot.dto.response.ShelterResponse;
 import com.skypro.skyprotelegrambot.dto.response.UserResponse;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.User;
@@ -14,9 +15,11 @@ import java.util.List;
 public interface ShelterService {
     Shelter findShelterById(Long id);
 
-    Shelter createShelter(ShelterDto shelterDto);
+    ShelterResponse getShelterResponse(Long id);
 
-    Shelter updateShelter(ShelterDto shelterDto, Long id);
+    ShelterResponse createShelter(ShelterDto shelterDto);
+
+    ShelterResponse updateShelter(ShelterDto shelterDto, Long id);
 
     boolean hasUser(User user, Shelter shelter);
 
