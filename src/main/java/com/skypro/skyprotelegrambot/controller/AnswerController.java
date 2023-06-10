@@ -2,7 +2,7 @@ package com.skypro.skyprotelegrambot.controller;
 
 
 import com.skypro.skyprotelegrambot.dto.request.AnswerDto;
-import com.skypro.skyprotelegrambot.entity.Answer;
+import com.skypro.skyprotelegrambot.dto.response.AnswerResponse;
 import com.skypro.skyprotelegrambot.service.AnswerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,23 +22,16 @@ public class AnswerController {
     @Operation(
             summary = "Получение ответа"
     )
-    public Answer getAnswer(@PathVariable("id") long id) {
-        return answerService.getAnswer(id);
+    public AnswerResponse getAnswer(@PathVariable("id") long id) {
+        return answerService.getAnswerResponse(id);
     }
 
-    /*@GetMapping
-    @Operation(
-            summary = "Получение ответа по категории"
-    )
-    public List<Answer> getAnswersByCategory(Category category, Shelter shelter) {
-        return answerService.getAnswersByCategory(category, shelter);
-    }*/
 
     @PostMapping
     @Operation(
             summary = "Создание ответа"
     )
-    public Answer create(@RequestBody AnswerDto answerDto) {
+    public AnswerResponse create(@RequestBody AnswerDto answerDto) {
         return answerService.createAnswer(answerDto);
     }
 
@@ -46,7 +39,7 @@ public class AnswerController {
     @Operation(
             summary = "Изменение параметров ответа"
     )
-    public Answer update(@RequestBody AnswerDto answerDto, @PathVariable(name = "id") Long id) {
+    public AnswerResponse update(@RequestBody AnswerDto answerDto, @PathVariable(name = "id") Long id) {
         return answerService.updateAnswer(answerDto, id);
     }
 

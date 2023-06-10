@@ -1,8 +1,8 @@
 package com.skypro.skyprotelegrambot.controller;
 
 import com.skypro.skyprotelegrambot.dto.request.ShelterDto;
+import com.skypro.skyprotelegrambot.dto.response.ShelterResponse;
 import com.skypro.skyprotelegrambot.dto.response.UserResponse;
-import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.service.ShelterService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class ShelterController {
     @Operation(
             summary = "Создание приюта"
     )
-    public Shelter create(@RequestBody ShelterDto shelterDto) {
+    public ShelterResponse create(@RequestBody ShelterDto shelterDto) {
         return shelterService.createShelter(shelterDto);
     }
 
@@ -31,7 +31,7 @@ public class ShelterController {
     @Operation(
             summary = "Изменение параметров приюта"
     )
-    public Shelter update(@RequestBody ShelterDto shelterDto, @PathVariable(name = "id") Long id) {
+    public ShelterResponse update(@RequestBody ShelterDto shelterDto, @PathVariable(name = "id") Long id) {
         return shelterService.updateShelter(shelterDto, id);
     }
 
@@ -39,8 +39,8 @@ public class ShelterController {
     @Operation(
             summary = "Поиск приюта по id"
     )
-    public Shelter findShelterById(@PathVariable(name = "id") Long id) {
-        return shelterService.findShelterById(id);
+    public ShelterResponse findShelterById(@PathVariable(name = "id") Long id) {
+        return shelterService.getShelterResponse(id);
     }
 
     @GetMapping("/{id}/users")

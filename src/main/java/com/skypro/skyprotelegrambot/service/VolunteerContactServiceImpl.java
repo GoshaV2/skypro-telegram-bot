@@ -1,6 +1,7 @@
 package com.skypro.skyprotelegrambot.service;
 
 import com.skypro.skyprotelegrambot.dto.request.VolunteerContactDto;
+import com.skypro.skyprotelegrambot.dto.response.VolunteerContactResponse;
 import com.skypro.skyprotelegrambot.entity.Shelter;
 import com.skypro.skyprotelegrambot.entity.VolunteerContact;
 import com.skypro.skyprotelegrambot.exception.NotFoundElement;
@@ -26,7 +27,12 @@ public class VolunteerContactServiceImpl implements VolunteerContactService {
     }
 
     @Override
-    public VolunteerContact createVolunteerContact(VolunteerContactDto volunteerContactDto) {
+    public VolunteerContactResponse getVolunteerContactResponse(long id) {
+        return VolunteerContactResponse.from(findVolunteerContactById(id));
+    }
+
+    @Override
+    public VolunteerContactResponse createVolunteerContact(VolunteerContactDto volunteerContactDto) {
         VolunteerContact volunteerContact = new VolunteerContact();
         volunteerContact.setPhone(volunteerContactDto.getPhone());
         volunteerContact.setTelegramTag(volunteerContactDto.getTelegramTag());
@@ -34,18 +40,18 @@ public class VolunteerContactServiceImpl implements VolunteerContactService {
         volunteerContact.setFullName(volunteerContactDto.getFullName());
         volunteerContact.setShelter(shelterService.findShelterById(volunteerContactDto.getShelterId()));
         volunteerContact.setChatId(volunteerContact.getChatId());
-        return volunteerContactRepository.save(volunteerContact);
+        return VolunteerContactResponse.from(volunteerContactRepository.save(volunteerContact));
     }
 
     @Override
-    public VolunteerContact updateVolunteerContact(VolunteerContactDto volunteerContactDto, Long id) {
+    public VolunteerContactResponse updateVolunteerContact(VolunteerContactDto volunteerContactDto, Long id) {
         VolunteerContact volunteerContact = findVolunteerContactById(id);
         volunteerContact.setPhone(volunteerContactDto.getPhone());
         volunteerContact.setTelegramTag(volunteerContactDto.getTelegramTag());
         volunteerContact.setEmail(volunteerContactDto.getEmail());
         volunteerContact.setFullName(volunteerContactDto.getFullName());
         volunteerContact.setChatId(volunteerContact.getChatId());
-        return volunteerContactRepository.save(volunteerContact);
+        return VolunteerContactResponse.from(volunteerContactRepository.save(volunteerContact));
     }
 
     @Override
