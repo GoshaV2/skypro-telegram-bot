@@ -25,7 +25,7 @@ public class VolunteerMessageServiceImpl implements VolunteerMessageService {
             contactBuilder.append("\nТелеграм-тэг волонтера - ").append(volunteerContact.getTelegramTag());
             contactBuilder.append("\nЭл. почта волонтера - ").append(volunteerContact.getEmail());
             contactBuilder.append("\nИмя волонтера - ").append(volunteerContact.getFullName());
-            contactBuilder.append("\nПриют - ").append(volunteerContact.getShelter());
+            contactBuilder.append("\nПриют - ").append(volunteerContact.getShelter().getName());
         }
         String contact = contactBuilder.toString();
         if (contact.isEmpty()) {
